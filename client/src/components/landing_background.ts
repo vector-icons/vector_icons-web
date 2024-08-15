@@ -6,19 +6,45 @@ function randomRange(min: number, max: number) {
     return Math.random() * (max - min) + min;
 }
 
+function getIconImageAt(index: number, color: string): NetImage {
+    const docs = new DOMParser().parseFromString(icons[index]["content"]["normal"], "image/svg+xml");
+    const svg = docs.getElementsByTagName("svg")[0];
+
+    return new NetImage(svg, color);
+}
+
+class NetImage {
+    element: HTMLImageElement;
+    isLoaded: boolean = false;
+
+    constructor(svg: SVGSVGElement, color: string) {
+        svg.style.fill = color;
+
+        this.element = new Image();
+        this.element.src = 'data:image/svg+xml;base64,' + btoa(svg.outerHTML);
+        this.element.onload = () => {
+            this.isLoaded = true;
+        }
+    }
+}
+
 class Net {
     x: Animation;
     y: Animation;
+    rotate: Animation;
     fade: Animation;
     size: number;
     opacity: number;
+    image: NetImage;
 
     constructor(duration: number) {
         this.x = new Animation(duration, null, randomRange(0, 1));
         this.y = new Animation(duration, null, randomRange(0, 1));
+        this.rotate = new Animation(duration, null, randomRange(0, Math.PI * 2));
         this.fade = new Animation(1000, Curve.Ease);
-        this.size = randomRange(2, 5);
+        this.size = randomRange(20, 40);
         this.opacity = randomRange(0.5, 1);
+        this.image = getIconImageAt(Math.floor(randomRange(0, icons.length)), "gray")
     }
 
     start() {
@@ -42,6 +68,21 @@ class Net {
         return Math.sqrt(x * x + y * y);
     }
 
+    drawAt(ctx: CanvasRenderingContext2D, x: number, y: number) {
+        const dx = x - this.size / 2;
+        const dy = y - this.size / 2;
+
+        if (this.image.isLoaded) {
+            ctx.globalAlpha = this.opacity * this.fade.value;
+            ctx.drawImage(
+                this.image.element,
+                dx,
+                dy,
+                this.size, this.size
+            );
+        }
+    }
+
     draw(ctx: CanvasRenderingContext2D, others: Net[]) {
         const width = ctx.canvas.width;
         const height = ctx.canvas.height;
@@ -50,9 +91,7 @@ class Net {
         const fade = this.fade.value;
 
         ctx.beginPath();
-        ctx.arc(width * x, height * y, this.size, 0, 2 * Math.PI);
-        ctx.fillStyle = `rgb(255, 255, 255, ${fade * this.opacity})`;
-        ctx.fill();
+        this.drawAt(ctx, width * x, height * y);
 
         for (const other of others) {
             const distance = other.distanceTo(this);
@@ -61,11 +100,11 @@ class Net {
                 ctx.beginPath();
                 ctx.moveTo(other.x.value * width, other.y.value * height);
                 ctx.lineTo(x * width, y * height);
-                ctx.lineWidth = 1;
+                ctx.lineWidth = 2;
 
                 // 투명도 계산 (0.1 이하일 때 1, 0.1 이상일 때 0으로 변함)
                 const opacity = Math.max(0, 1 - (distance * 10));
-                
+
                 ctx.strokeStyle = `rgb(255, 255, 255, ${opacity * Math.min(fade, otherFade)})`;
                 ctx.stroke();
             }
@@ -80,7 +119,6 @@ class NetController {
         this.context = canvas.getContext("2d");
 
         const observer = new ResizeObserver(() => {
-            console.log("dsfsfsfds");
             const rect = canvas.getBoundingClientRect();
             const ppi = devicePixelRatio;
 
@@ -129,7 +167,7 @@ export class LandingBackgroundElement extends HTMLElement {
         }
 
         const attachNet = () => {
-            const duration = randomRange(5000, 10000);
+            const duration = randomRange(10000, 50000);
             const net = new Net(duration);
             setTimeout(() => {
                 net.end(() => {this.controller.detach(net); attachNet()});
@@ -138,7 +176,7 @@ export class LandingBackgroundElement extends HTMLElement {
             this.controller.attach(net);
         }
 
-        attachNets(200);
+        attachNets(100);
         this.controller.start();
     }
 
