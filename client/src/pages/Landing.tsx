@@ -23,11 +23,18 @@ export function LandingPage() {
                     <h1>Vector Icons</h1>
                     <span>This is just icon template that is modern and simply design.</span>
                 </div>
-                <div>
+                <div style={{position: "absolute", width: "100%", height: "100%", zIndex: "-1"}}>
                     {/** @ts-ignore */}
                     <landing-background />
                 </div>
             </div>
+            {
+                Array.from({length: 100}).map((_, index) => {
+                    return (
+                        <div>Hello, World! {index}</div>
+                    )
+                })
+            }
         </>
     )
 }
