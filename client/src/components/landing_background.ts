@@ -13,7 +13,7 @@ function randomRange(min: number, max: number) {
 function getIconImageAt(index: number, color: string): NetImage {
     const docs = new DOMParser().parseFromString(icons[index]["content"]["normal"], "image/svg+xml");
     const svg = docs.getElementsByTagName("svg")[0];
-    svg.style.fill = color
+    svg.style.fill = color;
 
     return new NetImage(svg);
 }
@@ -22,12 +22,19 @@ class NetImage {
     element: HTMLImageElement;
     isLoaded: boolean = false;
 
+    width: number;
+    height: number;
+
     constructor(svg: SVGSVGElement) {
         this.element = new Image();
         this.element.src = 'data:image/svg+xml;base64,' + btoa(svg.outerHTML);
         this.element.onload = () => {
             this.isLoaded = true;
         }
+
+        const viewbox = svg.getAttribute("viewBox").split(" ");
+        this.width = parseInt(viewbox[2]);
+        this.height = parseInt(viewbox[3]);
     }
 }
 
@@ -45,7 +52,7 @@ class Net {
         this.y = new Animation(duration, null, randomRange(0, 1));
         this.rotate = new Animation(duration, null, randomRange(0, Math.PI * 2));
         this.fade = new Animation(1000, Curve.Ease);
-        this.size = randomRange(20, 40);
+        this.size = randomRange(0.75, 1.25);
         this.opacity = randomRange(0.5, 1);
         this.image = getIconImageAt(Math.floor(randomRange(0, icons.length)), "gray")
     }
@@ -72,17 +79,14 @@ class Net {
     }
 
     drawAt(ctx: CanvasRenderingContext2D, x: number, y: number) {
-        const dx = x - this.size / 2;
-        const dy = y - this.size / 2;
+        const dw = this.image.width * this.size;
+        const dh = this.image.height * this.size;
+        const dx = x - dw / 2;
+        const dy = y - dh / 2;
 
         if (this.image.isLoaded) {
             ctx.globalAlpha = this.opacity * this.fade.value;
-            ctx.drawImage(
-                this.image.element,
-                dx,
-                dy,
-                this.size, this.size
-            );
+            ctx.drawImage(this.image.element, dx, dy, dw, dh);
         }
     }
 
