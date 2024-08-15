@@ -99,9 +99,9 @@ module.exports = {
                         drop_debugger: true
                     },
                     mangle: {
-                        properties: true,
+                        properties: false,
                         toplevel: true,
-                        eval: true
+                        eval: true,
                     }
                 }
             })

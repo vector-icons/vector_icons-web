@@ -1,6 +1,10 @@
 import { Animation, Curve, Ticker } from "animatable-js";
 
-const icons = require("../../../assets/icons-dist.json");
+type IconType = {
+    content: {normal: string, filled: string}
+}
+
+const icons: IconType[] = require("../../../assets/icons-dist.json");
 
 function randomRange(min: number, max: number) {
     return Math.random() * (max - min) + min;
@@ -9,17 +13,16 @@ function randomRange(min: number, max: number) {
 function getIconImageAt(index: number, color: string): NetImage {
     const docs = new DOMParser().parseFromString(icons[index]["content"]["normal"], "image/svg+xml");
     const svg = docs.getElementsByTagName("svg")[0];
+    svg.style.fill = color
 
-    return new NetImage(svg, color);
+    return new NetImage(svg);
 }
 
 class NetImage {
     element: HTMLImageElement;
     isLoaded: boolean = false;
 
-    constructor(svg: SVGSVGElement, color: string) {
-        svg.style.fill = color;
-
+    constructor(svg: SVGSVGElement) {
         this.element = new Image();
         this.element.src = 'data:image/svg+xml;base64,' + btoa(svg.outerHTML);
         this.element.onload = () => {
