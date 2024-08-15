@@ -9,7 +9,7 @@
     <meta http-equiv="Email" content ="r.ttankkeo112@gmail.com">
     <meta name="description" content="A global platform for novel, comics, webtoons, and animation.">
     <meta name="keywords" content="novel, comics, webtoons, animation">
-    <title>Preact with Typescript</title>
+    <title>Vector Icons</title>
 </head>
 <body>
     <% if (!Boolean(process.env.IS_DEBUG)) { %>
