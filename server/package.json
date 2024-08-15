@@ -1,8 +1,8 @@
 {
   "scripts": {
     "serve": "npm run build & npm run start",
-    "start": "ts-node src/index.ts",
-    "build": "cd ../client & npm i & npm run build",
+    "start": "ts-node src/http/index.ts",
+    "build": "ts-node src/build/index.ts",
     "watch": "nodemon --watch src/index.ts"
   },
   "devDependencies": {

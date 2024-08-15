@@ -32,6 +32,4 @@ const server = http.createServer((request, response) => {
     }
 });
 
-server.listen(8080, () => {
-    console.log("Hello, World!");
-});
+server.listen(8080);
