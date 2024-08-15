@@ -124,6 +124,7 @@ class NetController {
 
             canvas.setAttribute("width", `${rect.width * ppi}px`);
             canvas.setAttribute("height", `${rect.height * ppi}px`);
+            this.draw();
         });
         
         observer.observe(canvas);
