@@ -2,7 +2,8 @@ const Webpack = require('webpack');
 const WebpackHtmlPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CSSMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const CSSMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const path = require('path');
 
 // Whether it is in debug build mode.
 const isDebug = process.env.BUILD_TYPE.includes("dev");
@@ -52,9 +53,9 @@ module.exports = {
 
         // Resolves compatibility issues that arise during the building of React packages.
         alias: {
-            "react": "preact/compat",
-            "react-dom": "preact/compat",
-            "react/jsx-runtime": "preact/jsx-runtime"
+            "react": path.resolve(__dirname, 'node_modules/preact/compat'),
+            "react-dom": path.resolve(__dirname, 'node_modules/preact/compat'),
+            "react/jsx-runtime": path.resolve(__dirname, 'node_modules/preact/jsx-runtime')
         },
     },
     plugins: [

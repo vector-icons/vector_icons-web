@@ -1,3 +1,6 @@
 [submodule "assets"]
 	path = assets
 	url = https://github.com/vector-icons/vector_icons-assets
+[submodule "packages/react-widgets"]
+	path = packages/react-widgets
+	url = https://github.com/react-widgets/react_widgets
