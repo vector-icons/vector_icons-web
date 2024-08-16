@@ -1,7 +1,14 @@
 
 :root {
+    --primary: rgb(43, 224, 134);
+    --primary-hover: rgb(91, 255, 173);
     --background: black;
+    --rearground: rgb(30, 32, 34);
+    --rearground-border: rgb(50, 52, 54);
     --foreground: white;
     --foreground2: rgb(200, 200, 200);
     --foreground3: rgb(150, 150, 150);
+    --foreground4: rgb(100, 100, 100);
+    --ripple: rgb(255, 255, 255, 0.15);
+    --ripple-hover: rgb(255, 255, 255, 0.05);
 }

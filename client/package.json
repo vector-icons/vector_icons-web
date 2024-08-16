@@ -26,6 +26,7 @@
     "preact": "^10.23.2",
     "react-router": "^6.26.0",
     "react-router-dom": "^6.26.0",
-    "react-widgets": "file:../packages/react-widgets"
+    "react-widgets": "file:../packages/react-widgets",
+    "web-touch-ripple": "^1.1.31"
   }
 }

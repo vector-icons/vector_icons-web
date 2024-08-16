@@ -1,17 +1,12 @@
 import { Animation, Curve, Ticker } from "animatable-js";
-
-type IconType = {
-    content: {normal: string, filled: string}
-}
-
-const icons: IconType[] = require("../../../assets/icons-dist.json");
+import { Icons } from "../pages/App";
 
 function randomRange(min: number, max: number) {
     return Math.random() * (max - min) + min;
 }
 
 function getIconImageAt(index: number, color: string): NetImage {
-    const docs = new DOMParser().parseFromString(icons[index]["content"]["normal"], "image/svg+xml");
+    const docs = new DOMParser().parseFromString(Icons[index]["content"]["normal"], "image/svg+xml");
     const svg = docs.getElementsByTagName("svg")[0];
     svg.style.fill = color;
 
@@ -54,7 +49,7 @@ class Net {
         this.fade = new Animation(1000, Curve.Ease);
         this.size = randomRange(0.75, 1.25);
         this.opacity = randomRange(0.5, 1);
-        this.image = getIconImageAt(Math.floor(randomRange(0, icons.length)), "gray")
+        this.image = getIconImageAt(Math.floor(randomRange(0, Icons.length)), "gray")
     }
 
     start() {

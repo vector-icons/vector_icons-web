@@ -12,8 +12,19 @@ body {
     background-color: var(--background);
 }
 
-h1, h2, h3, h4, h5, h6, a, p, span { margin: 0px; }
+h1, h2, h3, h4, h5, h6, a, p, span, ol, ul { margin: 0px; }
 
 span {
     color: var(--foreground3);
 }
+
+button {
+    font-family: "Pretendard";
+    background-color: transparent;
+    color: var(--foreground);
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+}
+
+touch-ripple { cursor: pointer; }

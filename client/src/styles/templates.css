@@ -1,0 +1,12 @@
+
+/* ../templates/Button.tsx of Primary */
+button.primary {
+    background-color: var(--primary);
+    color: var(--background);
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+
+    --ripple: rgb(255, 255, 255, 0.6);
+    --ripple-hover: rgb(255, 255, 255, 0.3);
+}
