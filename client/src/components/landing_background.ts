@@ -106,8 +106,13 @@ class Net {
 
                 // 투명도 계산 (0.1 이하일 때 1, 0.1 이상일 때 0으로 변함)
                 const opacity = Math.max(0, 1 - (distance * 10));
+                const alpha = opacity * Math.min(fade, otherFade);
 
-                ctx.strokeStyle = `rgb(255, 255, 255, ${opacity * Math.min(fade, otherFade)})`;
+                const style = getComputedStyle(document.documentElement);
+                const color = style.getPropertyValue("--foreground4");
+
+                ctx.strokeStyle = color;
+                ctx.globalAlpha = alpha;
                 ctx.stroke();
             }
         }

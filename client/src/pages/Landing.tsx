@@ -39,7 +39,7 @@ export function LandingPage() {
                     width="100%"
                     height="100%"
                     zIndex="-1"
-                    background="linear-gradient(0deg, black 20%, transparent)"
+                    background="linear-gradient(0deg, var(--background) 20%, transparent)"
                 />
             </Box>
             <Column gap="15px" padding="15px">

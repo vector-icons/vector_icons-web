@@ -2,7 +2,7 @@
 /* ../templates/Button.tsx of Primary */
 button.primary {
     background-color: var(--primary);
-    color: var(--background);
+    color: black;
     padding: 10px 15px;
     cursor: pointer;
     border-radius: 5px;
