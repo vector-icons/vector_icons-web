@@ -2,6 +2,7 @@ import { AnimatedFoldable, Box, Column, Row, Text } from "react-widgets";
 import Icon from "../assets/favicon.svg";
 import { RenderIcon } from "../templates/RenderIcon";
 import { Icons } from "./App";
+import { TouchRipple } from "web-touch-ripple/jsx";
 
 export function SearchPage() {
     return (
@@ -21,20 +22,22 @@ export function SearchPage() {
                 >{
                     Icons.map(icon => {
                         return (
-                            <Column center gap="5px">
-                                {
-                                    Object.entries(icon.content).map(innerHTML => {
+                            <Column className="icon-grid_item" center gap="5px">
+                                <Column gap="5px">
+                                    {Object.entries(icon.content).map(innerHTML => {
                                         return (
-                                            <Box
-                                                padding="var(--padding-df)"
-                                                backgroundColor="var(--rearground)"
-                                                borderRadius="10px"
-                                            >
-                                                <RenderIcon size="32px" innerHTML={innerHTML[1]} />
-                                            </Box>
+                                            <TouchRipple onTap={() => {}}>
+                                                <Box
+                                                    padding="var(--padding-df)"
+                                                    backgroundColor="var(--rearground)"
+                                                    borderRadius="10px"
+                                                >
+                                                    <RenderIcon size="32px" innerHTML={innerHTML[1]} />
+                                                </Box>
+                                            </TouchRipple>
                                         )
-                                    })
-                                }
+                                    })}
+                                </Column>
                                 <Text.span
                                     fontSize="12px"
                                     maxWidth="50px"

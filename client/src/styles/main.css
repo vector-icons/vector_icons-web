@@ -1,7 +1,8 @@
 
-:root {
+body {
     font-family: "Pretendard";
     color: var(--foreground);
+    fill: var(--foreground);
 }
 
 html { width: 100%; height: 100%; }

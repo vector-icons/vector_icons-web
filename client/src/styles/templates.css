@@ -10,3 +10,13 @@ button.primary {
     --ripple: rgb(255, 255, 255, 0.6);
     --ripple-hover: rgb(255, 255, 255, 0.3);
 }
+
+/* ../pages/Search.tsx of SearchPage */
+.icon-grid_item {
+    fill: var(--foreground2);
+    transition-property: fill;
+    transition-duration: 0.3s;
+}
+.icon-grid_item:hover {
+    fill: var(--foreground);
+}

@@ -11,7 +11,7 @@
     <meta name="keywords" content="novel, comics, webtoons, animation">
     <title>Vector Icons</title>
 </head>
-<body>
+<body class="dark">
     <% if (!Boolean(process.env.IS_DEBUG)) { %>
         <style><%= compilation.assets["main.css"].source() %></style>
         <script><%= compilation.assets["main.js"].source() %></script>

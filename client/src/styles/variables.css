@@ -19,6 +19,15 @@
 }
 
 .dark {
+    --background: black;
+    --rearground: rgb(30, 31, 33);
+    --rearground-border: rgb(50, 51, 53);
+    --foreground: white;
+    --foreground2: rgb(200, 200, 200);
+    --foreground3: rgb(150, 150, 150);
+    --foreground4: rgb(100, 100, 100);
+
+    /* About web-touch-ripple */
     --ripple: rgb(255, 255, 255, 0.15);
     --ripple-hover: rgb(255, 255, 255, 0.05);
 }
