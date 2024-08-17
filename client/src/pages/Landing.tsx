@@ -28,7 +28,7 @@ export function LandingPage() {
                         <h1>Vector Icons</h1>
                         <span>This is just icon template that is modern and simply design.</span>
                     </Column>
-                    <Button.Primary text="Get download" onTap={() => route("/preview")} />
+                    <Button.Primary text="Get started" onTap={() => route("/search")} />
                 </Column>
                 <Box position="absolute" size="100%" zIndex="-1">
                     {/** @ts-ignore */}

@@ -11,6 +11,13 @@
     --foreground4: rgb(150, 150, 150);
 }
 
+:root {
+    --padding-sm: 10px; /* small */
+    --padding-md: 15px; /* medium */
+    --padding-lg: 30px; /* large */
+    --padding-df: var(--padding-md); /* default = medium */
+}
+
 .dark {
     --ripple: rgb(255, 255, 255, 0.15);
     --ripple-hover: rgb(255, 255, 255, 0.05);
