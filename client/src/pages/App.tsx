@@ -1,8 +1,9 @@
-import { Route, Routes } from "react-router";
-import { BrowserRouter } from "react-router-dom";
+import Router, { Route } from "preact-router";
 import { LandingPage } from "./Landing";
+import { PreviewPage } from "./Preview";
 
 export type IconType = {
+    path: {normal: string, filled: string}
     content: {normal: string, filled: string}
 }
 
@@ -10,10 +11,9 @@ export const Icons: IconType[] = require("../../../assets/icons-dist.json");
 
 export function App() {
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="*" Component={LandingPage} />
-            </Routes>
-        </BrowserRouter>
+        <Router>
+            <Route path="/"        component={LandingPage} />
+            <Route path="/preview" component={PreviewPage} />
+        </Router>
     )
 }

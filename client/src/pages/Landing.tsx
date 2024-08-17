@@ -4,6 +4,7 @@ import { TouchRipple } from "web-touch-ripple/jsx";
 import Logo from "../assets/favicon.svg";
 import { Button } from "../templates/Button";
 import { ReactNode, useState } from "preact/compat";
+import { route } from "preact-router";
 
 export function LandingPage() {
     return (
@@ -27,7 +28,7 @@ export function LandingPage() {
                         <h1>Vector Icons</h1>
                         <span>This is just icon template that is modern and simply design.</span>
                     </Column>
-                    <Button.Primary text="Get download" />
+                    <Button.Primary text="Get download" onTap={() => route("/preview")} />
                 </Column>
                 <Box position="absolute" size="100%" zIndex="-1">
                     {/** @ts-ignore */}
