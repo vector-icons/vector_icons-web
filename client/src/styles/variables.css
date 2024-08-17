@@ -9,6 +9,9 @@
     --foreground2: rgb(50, 50, 50);
     --foreground3: rgb(100, 100, 100);
     --foreground4: rgb(150, 150, 150);
+}
+
+.dark {
     --ripple: rgb(255, 255, 255, 0.15);
     --ripple-hover: rgb(255, 255, 255, 0.05);
 }
