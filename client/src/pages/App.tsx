@@ -1,4 +1,5 @@
-import Router, { Route } from "preact-router";
+
+import { Route, Switch } from "wouter";
 import { LandingPage } from "./Landing";
 import { SearchPage } from "./Search";
 
@@ -12,9 +13,9 @@ export const Icons: IconType[] = require("../../../assets/icons-dist.json");
 
 export function App() {
     return (
-        <Router>
+        <Switch>
             <Route path="/" component={LandingPage} />
             <Route path="/search" component={SearchPage} />
-        </Router>
+        </Switch>
     )
 }
