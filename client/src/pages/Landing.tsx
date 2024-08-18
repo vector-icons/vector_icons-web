@@ -2,11 +2,13 @@ import { AnimatedFoldable, Box, Column } from "react-widgets";
 import { TouchRipple } from "web-touch-ripple/jsx";
 import { Button } from "../templates/Button";
 import { ReactNode, useState } from "preact/compat";
+import { useLocation, useRoute } from "wouter";
 
 import Logo from "../assets/favicon.svg";
-import { useRoute } from "wouter";
 
 export function LandingPage() {
+    const [location, setLocation] = useLocation();
+
     return (
         <>
             <Box
@@ -28,7 +30,7 @@ export function LandingPage() {
                         <h1>Vector Icons</h1>
                         <span>This is just icon template that is modern and simply design.</span>
                     </Column>
-                    <Button.Primary text="Get started" onTap={() => useRoute("/search")} />
+                    <Button.Primary text="Get started" onTap={() => setLocation("/search")} />
                 </Column>
                 <Box position="absolute" size="100%" zIndex="-1">
                     {/** @ts-ignore */}
