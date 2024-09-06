@@ -67,7 +67,7 @@ module.exports = {
         new HtmlInlinePlugin({
             template: "./src/index.html",
             filename: "./index.html",
-            favicon: "./src/assets/favicon.svg",
+            favIcon: "./src/assets/favicon.svg",
 
             // When in debug mode, static resources such as CSS or JS are
             // not merged into the document in inline form.

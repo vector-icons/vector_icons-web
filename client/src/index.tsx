@@ -12,5 +12,5 @@ import "web-touch-ripple";
 render(<App />, document.body);
 
 addEventListener("DOMContentLoaded", () => { // for temp
-    // document.body.className = "dark";
+    document.body.className = "dark";
 });

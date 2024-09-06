@@ -2,8 +2,8 @@
 :root {
     --primary: rgb(43, 224, 134);
     --primary-hover: rgb(91, 255, 173);
-    --background: rgb(240, 241, 244);
-    --rearground: rgb(255, 255, 255);
+    --background: rgb(255, 255, 255);
+    --rearground: rgb(240, 241, 244);
     --rearground-border: rgb(220, 221, 223);
     --foreground: black;
     --foreground2: rgb(50, 50, 50);
@@ -13,6 +13,8 @@
     /* About web-touch-ripple */
     --ripple: rgba(0, 100, 30, 0.15);
     --ripple-hover: rgba(0, 100, 30, 0.1);
+    --ripple-fadein-duration: 0.15s;
+    --ripple-fadeout-duration: 0.3s;
 }
 
 :root {
@@ -24,8 +26,8 @@
 
 .dark {
     --background: black;
-    --rearground: rgb(30, 31, 33);
-    --rearground-border: rgb(50, 51, 53);
+    --rearground: rgb(28, 30, 32);
+    --rearground-border: rgb(50, 52, 54);
     --foreground: white;
     --foreground2: rgb(200, 200, 200);
     --foreground3: rgb(150, 150, 150);
