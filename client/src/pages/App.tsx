@@ -1,4 +1,3 @@
-
 import { Route, Switch } from "wouter";
 import { LandingPage } from "./Landing";
 import { SearchPage } from "./Search";

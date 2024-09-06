@@ -32,24 +32,29 @@ export namespace SideBar {
                 backgroundColor="var(--rearground)"
                 borderRight="1px solid var(--rearground-border)"
             >
-                <Row center>
-                    <AnimatedFoldable.Horizontal visible={close} duration="0.3s" opacity={true}>
-                        <Logo width="24px" />
+                <Row>
+                    <AnimatedFoldable.Horizontal visible={close} duration="0.3s" opacity={true} overflow="visible">
+                        <Box marginLeft="15px"><Logo width="24px" /></Box>
                     </AnimatedFoldable.Horizontal>
                     <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" opacity={true}>
                         <Text.h1 fontSize="22px" padding="0px var(--padding-df)">VECTOR ICONS</Text.h1>
                     </AnimatedFoldable.Horizontal>
                 </Row>
-                <TabNavigation.Vertical
-                    index={index}
-                    duration="0.3s"
-                    style={{borderRadius: "1e10px", backgroundColor: "var(--foreground2)", width: "50%"}}
-                >
-                    <Item closed={close} selected={index == 0} onTap={() => setIndex(0)} iconName="home" title="Home" />
-                    <Item closed={close} selected={index == 1} onTap={() => setIndex(1)} iconName="community" title="Community" />
-                    <Item closed={close} selected={index == 2} onTap={() => setIndex(2)} iconName="storage" title="Storage" />
-                    <Item closed={close} selected={index == 3} onTap={() => setIndex(3)} iconName="settings" title="Settings" />
-                </TabNavigation.Vertical>
+                <Box paddingLeft="3px">
+                    <PrimaryButton close={close} text="Download All" iconName="import" onTap={() => {}} />
+                </Box>
+                <Scrollable.Vertical>
+                    <TabNavigation.Vertical
+                        index={index}
+                        duration="0.3s"
+                        style={{borderRadius: "1e10px", backgroundColor: "var(--foreground2)", width: "50%"}}
+                    >
+                        <Item closed={close} selected={index == 0} onTap={() => setIndex(0)} iconName="home" title="Home" />
+                        <Item closed={close} selected={index == 1} onTap={() => setIndex(1)} iconName="community" title="Community" />
+                        <Item closed={close} selected={index == 2} onTap={() => setIndex(2)} iconName="storage" title="Storage" />
+                        <Item closed={close} selected={index == 3} onTap={() => setIndex(3)} iconName="settings" title="Settings" />
+                    </TabNavigation.Vertical>
+                </Scrollable.Vertical>
                 <Column marginTop="auto">
                     <Button close={close} text="Close" iconName="arrow_left" onTap={() => setClose(!close)} />
                 </Column>
@@ -68,7 +73,7 @@ export namespace SideBar {
             <TouchRipple onTap={onTap}>
                 <Row centerLeft padding="var(--padding-df)" borderRadius="10px">
                     <RenderIcon.Name filled={selected} size="18px" name={iconName} />
-                    <AnimatedFoldable.Horizontal visible={!closed} duration="0.3s" opacity={true}>
+                    <AnimatedFoldable.Horizontal visible={!closed} duration="0.3s" opacity={true} overflow="visible">
                         <Box
                             marginLeft="var(--padding-df)"
                             color={selected ? "var(--foreground)" : "var(--foreground3)"}
@@ -92,11 +97,37 @@ export namespace SideBar {
             <TouchRipple onTap={onTap}>
                 <Row padding="var(--padding-sm) var(--padding-df)" borderRadius="1e10px">
                     <RenderIcon.Name name={iconName} size="18px" />
-                    <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" opacity={true}>
+                    <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" opacity={true} overflow="visible">
                         <Box paddingLeft="var(--padding-df)">{text}</Box>
                     </AnimatedFoldable.Horizontal>
                 </Row>
             </TouchRipple>
+        )
+    }
+
+    export function PrimaryButton({text, close, iconName, onTap}: {
+        text: string;
+        close: boolean;
+        iconName: string;
+        onTap: VoidFunction;
+    }) {
+        return (
+            <Box maxWidth="max-content">
+                <TouchRipple onTap={onTap}>
+                    <Row
+                        backgroundColor="var(--primary2)"
+                        color="white"
+                        fill="white"
+                        padding="var(--padding-sm) var(--padding-df)"
+                        borderRadius="1e10px"
+                    >
+                        <RenderIcon.Name name={iconName} size="18px" />
+                        <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" opacity={true} overflow="visible">
+                            <Box paddingLeft="10px">{text}</Box>
+                        </AnimatedFoldable.Horizontal>
+                    </Row>
+                </TouchRipple>
+            </Box>
         )
     }
 }
