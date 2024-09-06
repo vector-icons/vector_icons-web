@@ -2,12 +2,12 @@ import { AnimatedFoldable, Box, Column } from "react-widgets";
 import { TouchRipple } from "web-touch-ripple/jsx";
 import { Button } from "../templates/Button";
 import { ReactNode, useState } from "preact/compat";
-import { useLocation, useRoute } from "wouter";
+import { useLocation } from "wouter";
 
 import Logo from "../assets/favicon.svg";
 
 export function LandingPage() {
-    const [location, setLocation] = useLocation();
+    const [_, setLocation] = useLocation();
 
     return (
         <>

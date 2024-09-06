@@ -1,4 +1,4 @@
-import { AnimatedFoldable, Box, Column, Row, Scrollable, TabNavigation, Text } from "react-widgets";
+import { AnimatedFoldable, Box, Column, Expanded, Row, Scrollable, TabNavigation, Text } from "react-widgets";
 import { RenderIcon } from "../templates/RenderIcon";
 import { Icons } from "./App";
 import { TouchRipple } from "web-touch-ripple/jsx";
@@ -10,7 +10,7 @@ import { useState } from "preact/hooks";
 export function SearchPage() {
     return (
         <Row size="100%">
-            <SideBar />
+            <SideBar.Body />
             <Column size="100%" flexShrink="1">
                 <SearchHeader />
                 <SearchBody />
@@ -19,58 +19,86 @@ export function SearchPage() {
     )
 }
 
-function SideBar() {
-    const [index, setIndex] = useState(0); // temp
+export namespace SideBar {
+    export function Body() {
+        const [index, setIndex] = useState(0); // temp
+        const [close, setClose] = useState(false);
 
-    return (
-        <Column
-            flexShrink="0"
-            gap="var(--padding-df)"
-            padding="var(--padding-df)"
-            backgroundColor="var(--rearground)"
-            borderRight="1px solid var(--rearground-border)"
-        >
-            <Row center gap="var(--padding-sm)" padding="0px var(--padding-df)">
-                <Logo width="20px" />
-                <AnimatedFoldable.Horizontal visible={true} duration="0.3">
-                    <Text.h1 fontSize="22px">Icons Search</Text.h1>
-                </AnimatedFoldable.Horizontal>
-            </Row>
-            <TabNavigation.Vertical
-                index={index}
-                duration="0.3s"
-                style={{borderRadius: "1e10px", backgroundColor: "var(--foreground2)", width: "50%"}}
+        return (
+            <Column
+                flexShrink="0"
+                gap="var(--padding-df)"
+                padding="var(--padding-df)"
+                backgroundColor="var(--rearground)"
+                borderRight="1px solid var(--rearground-border)"
             >
-                <SizeBarItem selected={index == 0} onTap={() => setIndex(0)} iconName="home" title="Home" />
-                <SizeBarItem selected={index == 1} onTap={() => setIndex(1)} iconName="community" title="Community" />
-                <SizeBarItem selected={index == 2} onTap={() => setIndex(2)} iconName="storage" title="Storage" />
-                <SizeBarItem selected={index == 3} onTap={() => setIndex(3)} iconName="settings" title="Settings" />
-            </TabNavigation.Vertical>
-        </Column>
-    )
-}
+                <Row center>
+                    <AnimatedFoldable.Horizontal visible={close} duration="0.3s" opacity={true}>
+                        <Logo width="24px" />
+                    </AnimatedFoldable.Horizontal>
+                    <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" opacity={true}>
+                        <Text.h1 fontSize="22px" padding="0px var(--padding-df)">VECTOR ICONS</Text.h1>
+                    </AnimatedFoldable.Horizontal>
+                </Row>
+                <TabNavigation.Vertical
+                    index={index}
+                    duration="0.3s"
+                    style={{borderRadius: "1e10px", backgroundColor: "var(--foreground2)", width: "50%"}}
+                >
+                    <Item closed={close} selected={index == 0} onTap={() => setIndex(0)} iconName="home" title="Home" />
+                    <Item closed={close} selected={index == 1} onTap={() => setIndex(1)} iconName="community" title="Community" />
+                    <Item closed={close} selected={index == 2} onTap={() => setIndex(2)} iconName="storage" title="Storage" />
+                    <Item closed={close} selected={index == 3} onTap={() => setIndex(3)} iconName="settings" title="Settings" />
+                </TabNavigation.Vertical>
+                <Column marginTop="auto">
+                    <Button close={close} text="Close" iconName="arrow_left" onTap={() => setClose(!close)} />
+                </Column>
+            </Column>
+        )
+    }
 
-function SizeBarItem({selected, iconName, title, onTap}: {
-    selected: boolean;
-    iconName: string;
-    title: string;
-    onTap: VoidFunction;
-}) {
-    return (
-        <TouchRipple onTap={onTap}>
-            <Row centerLeft padding="var(--padding-df)" borderRadius="10px">
-                <RenderIcon.Name filled={selected} size="18px" name={iconName} />
-                <Box
-                    width="100%"
-                    marginLeft="var(--padding-df)"
-                    color={selected ? "var(--foreground)" : "var(--foreground3)"}
-                    transitionProperty="color"
-                    transitionDuration="0.3s"
-                    children={title}
-                />
-            </Row>
-        </TouchRipple>
-    )
+    export function Item({selected, closed, iconName, title, onTap}: {
+        selected: boolean;
+        iconName: string;
+        closed: boolean;
+        title: string;
+        onTap: VoidFunction;
+    }) {
+        return (
+            <TouchRipple onTap={onTap}>
+                <Row centerLeft padding="var(--padding-df)" borderRadius="10px">
+                    <RenderIcon.Name filled={selected} size="18px" name={iconName} />
+                    <AnimatedFoldable.Horizontal visible={!closed} duration="0.3s" opacity={true}>
+                        <Box
+                            marginLeft="var(--padding-df)"
+                            color={selected ? "var(--foreground)" : "var(--foreground3)"}
+                            transitionProperty="color"
+                            transitionDuration="0.3s"
+                            children={title}
+                        />
+                    </AnimatedFoldable.Horizontal>
+                </Row>
+            </TouchRipple>
+        )
+    }
+
+    export function Button({text, close, iconName, onTap}: {
+        text: string;
+        close: boolean;
+        iconName: string;
+        onTap: VoidFunction;
+    }) {
+        return (
+            <TouchRipple onTap={onTap}>
+                <Row padding="var(--padding-sm) var(--padding-df)" borderRadius="1e10px">
+                    <RenderIcon.Name name={iconName} size="18px" />
+                    <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" opacity={true}>
+                        <Box paddingLeft="var(--padding-df)">{text}</Box>
+                    </AnimatedFoldable.Horizontal>
+                </Row>
+            </TouchRipple>
+        )
+    }
 }
 
 function SearchHeader() {
