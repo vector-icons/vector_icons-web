@@ -60,7 +60,10 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin(),
-        new CSSManglePlugin({minify: true}),
+        new CSSManglePlugin({
+            mangle: !isDebug,
+            minify: !isDebug,
+        }),
         new HtmlInlinePlugin({
             template: "./src/index.html",
             filename: "./index.html",
@@ -70,7 +73,7 @@ module.exports = {
             // not merged into the document in inline form.
             //
             // Instead, they are requested asynchronously by the client to track changes.
-            inline: isDebug,
+            inline: !isDebug,
             pretty: false,
         }),
         new Webpack.DefinePlugin({"process.env.IS_DEBUG": isDebug})

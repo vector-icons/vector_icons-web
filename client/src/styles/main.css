@@ -28,4 +28,11 @@ button {
     border: none;
 }
 
+input {
+    background-color: transparent;
+    color: var(--foreground);
+    outline: none;
+    border: none;
+}
+
 touch-ripple { cursor: pointer; }

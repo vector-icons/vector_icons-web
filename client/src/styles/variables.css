@@ -4,11 +4,15 @@
     --primary-hover: rgb(91, 255, 173);
     --background: rgb(240, 241, 244);
     --rearground: rgb(255, 255, 255);
-    --rearground-border: rgb(230, 231, 233);
+    --rearground-border: rgb(220, 221, 223);
     --foreground: black;
     --foreground2: rgb(50, 50, 50);
     --foreground3: rgb(100, 100, 100);
     --foreground4: rgb(150, 150, 150);
+    
+    /* About web-touch-ripple */
+    --ripple: rgba(0, 100, 30, 0.15);
+    --ripple-hover: rgba(0, 100, 30, 0.1);
 }
 
 :root {
@@ -29,5 +33,5 @@
 
     /* About web-touch-ripple */
     --ripple: rgb(255, 255, 255, 0.15);
-    --ripple-hover: rgb(255, 255, 255, 0.05);
+    --ripple-hover: rgb(255, 255, 255, 0.03);
 }

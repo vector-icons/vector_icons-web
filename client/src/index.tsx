@@ -10,3 +10,7 @@ import "./components/landing_background";
 import "web-touch-ripple";
 
 render(<App />, document.body);
+
+addEventListener("DOMContentLoaded", () => { // for temp
+    // document.body.className = "dark";
+});
