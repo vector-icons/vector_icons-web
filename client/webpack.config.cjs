@@ -1,8 +1,8 @@
 const Webpack = require('webpack');
-const WebpackHtmlPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const HtmlInlinePlugin = require("html-inline-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CSSMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const CSSManglePlugin = require("css-mangle-webpack-plugin");
 const path = require('path');
 
 // Whether it is in debug build mode.
@@ -53,22 +53,16 @@ module.exports = {
 
         // Resolves compatibility issues that arise during the building of React packages.
         alias: {
-            "react": path.resolve(__dirname, 'node_modules/preact/compat'),
-            "react-dom": path.resolve(__dirname, 'node_modules/preact/compat'),
-            "react/jsx-runtime": path.resolve(__dirname, 'node_modules/preact/jsx-runtime')
+            "react": path.resolve(__dirname, "node_modules/preact/compat"),
+            "react-dom": path.resolve(__dirname, "node_modules/preact/compat"),
+            "react/jsx-runtime": path.resolve(__dirname, "node_modules/preact/jsx-runtime")
         },
     },
     plugins: [
         new MiniCssExtractPlugin(),
-        new CSSMinimizerPlugin({
-            parallel: true, // Is parallel processing.
-            minify: [
-                CSSMinimizerPlugin.cssoMinify,
-                CSSMinimizerPlugin.cssnanoMinify,
-            ]
-        }),
-        new WebpackHtmlPlugin({
-            template: "./src/index.jsp",
+        new CSSManglePlugin({minify: true}),
+        new HtmlInlinePlugin({
+            template: "./src/index.html",
             filename: "./index.html",
             favicon: "./src/assets/favicon.svg",
 
@@ -76,12 +70,12 @@ module.exports = {
             // not merged into the document in inline form.
             //
             // Instead, they are requested asynchronously by the client to track changes.
-            inject: isDebug,
-            minify: false,
+            inline: isDebug,
+            pretty: false,
         }),
         new Webpack.DefinePlugin({"process.env.IS_DEBUG": isDebug})
     ],
-    
+
     // Ignores about assets resource size all. (i.g. font)
     performance: { hints: false },
     optimization: {
