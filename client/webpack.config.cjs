@@ -22,7 +22,8 @@ module.exports = {
                 changeOrigin: true
             }
         ],
-        historyApiFallback: true // SPA
+        historyApiFallback: true, // SPA
+
     },
     module: {
         rules: [
@@ -62,7 +63,7 @@ module.exports = {
         new MiniCssExtractPlugin(),
         new CSSManglePlugin({
             mangle: !isDebug,
-            minify: !isDebug,
+            minify: false, // This feature not support about stable yet.
         }),
         new HtmlInlinePlugin({
             template: "./src/index.html",
