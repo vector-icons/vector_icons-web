@@ -4,13 +4,13 @@
     "build:dev": "cross-env BUILD_TYPE=deveopment webpack",
     "watch": "cross-env BUILD_TYPE=production webpack --watch",
     "watch:dev": "cross-env BUILD_TYPE=deveopment webpack --watch",
-    "dev": "cross-env BUILD_TYPE=development webpack-dev-server --hot"
+    "serve": "cross-env BUILD_TYPE=development webpack-dev-server --hot"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
     "css-loader": "^7.1.2",
     "css-mangle-webpack-plugin": "^1.0.0-alpha17",
-    "html-inline-webpack-plugin": "file:../../../packages/html-inline-webpack-plugin",
+    "html-inline-webpack-plugin": "^1.0.0",
     "mini-css-extract-plugin": "^2.9.0",
     "preact-svg-loader": "^0.2.1",
     "terser": "^5.31.6",

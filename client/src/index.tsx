@@ -9,8 +9,4 @@ import "./styles/templates";
 import "./components/landing_background";
 import "web-touch-ripple";
 
-render(<App />, document.body);
-
-addEventListener("DOMContentLoaded", () => { // for temp
-    // document.body.className = "dark";
-});
+addEventListener("load", () => render(<App />, document.body));
