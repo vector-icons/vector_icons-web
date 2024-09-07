@@ -10,7 +10,7 @@
     "cross-env": "^7.0.3",
     "css-loader": "^7.1.2",
     "css-mangle-webpack-plugin": "^1.0.0-alpha17",
-    "html-inline-webpack-plugin": "^1.0.0-beta8",
+    "html-inline-webpack-plugin": "file:../../../packages/html-inline-webpack-plugin",
     "mini-css-extract-plugin": "^2.9.0",
     "preact-svg-loader": "^0.2.1",
     "terser": "^5.31.6",
