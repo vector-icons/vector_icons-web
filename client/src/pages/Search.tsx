@@ -13,7 +13,12 @@ export function SearchPage() {
             <SideBar.Body />
             <Column size="100%" flexShrink="1">
                 <SearchHeader />
-                <SearchBody />
+                <Expanded direction="vertical">
+                    <Row size="100%">
+                        <SearchBody />
+                        <SearchBodySideBar />
+                    </Row>
+                </Expanded>
             </Column>
         </Row>
     )
@@ -33,10 +38,10 @@ export namespace SideBar {
                 borderRight="1px solid var(--rearground-border)"
             >
                 <Row>
-                    <AnimatedFoldable.Horizontal visible={close} duration="0.3s" opacity={true} overflow="visible">
+                    <AnimatedFoldable.Horizontal visible={close} duration="0.3s" transition={{opacity: true}} overflow="visible">
                         <Box marginLeft="15px"><Logo width="24px" /></Box>
                     </AnimatedFoldable.Horizontal>
-                    <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" opacity={true}>
+                    <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" transition={{opacity: true}}>
                         <Text.h1 fontSize="22px" padding="0px var(--padding-df)">VECTOR ICONS</Text.h1>
                     </AnimatedFoldable.Horizontal>
                 </Row>
@@ -71,9 +76,9 @@ export namespace SideBar {
     }) {
         return (
             <TouchRipple onTap={onTap}>
-                <Row centerLeft padding="var(--padding-df)" borderRadius="10px">
+                <Row align="centerLeft" padding="var(--padding-df)" borderRadius="10px">
                     <RenderIcon.Name filled={selected} size="18px" name={iconName} />
-                    <AnimatedFoldable.Horizontal visible={!closed} duration="0.3s" opacity={true} overflow="visible">
+                    <AnimatedFoldable.Horizontal visible={!closed} duration="0.3s" transition={{opacity: true}} overflow="visible">
                         <Box
                             marginLeft="var(--padding-df)"
                             color={selected ? "var(--foreground)" : "var(--foreground3)"}
@@ -97,7 +102,7 @@ export namespace SideBar {
             <TouchRipple onTap={onTap}>
                 <Row padding="var(--padding-sm) var(--padding-df)" borderRadius="1e10px">
                     <RenderIcon.Name name={iconName} size="18px" />
-                    <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" opacity={true} overflow="visible">
+                    <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" transition={{opacity: true}} overflow="visible">
                         <Box paddingLeft="var(--padding-df)">{text}</Box>
                     </AnimatedFoldable.Horizontal>
                 </Row>
@@ -122,7 +127,7 @@ export namespace SideBar {
                         borderRadius="1e10px"
                     >
                         <RenderIcon.Name name={iconName} size="18px" />
-                        <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" opacity={true} overflow="visible">
+                        <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" transition={{opacity: true}} overflow="visible">
                             <Box paddingLeft="10px">{text}</Box>
                         </AnimatedFoldable.Horizontal>
                     </Row>
@@ -195,7 +200,7 @@ function SearchBody() {
                 >{
                     Icons.map(icon => {
                         return (
-                            <Column center className="icon-grid_item" gap="5px">
+                            <Column align="center" className="icon-grid_item" gap="5px">
                                 <Column gap="5px">
                                     {Object.entries(icon.content).map(innerHTML => {
                                         return (
@@ -223,5 +228,17 @@ function SearchBody() {
                 }</Box>
             </Column>
         </Scrollable.Vertical>
+    )
+}
+
+function SearchBodySideBar() {
+    return (
+        <Box flexShrink="0" borderLeft="1px solid var(--rearground-border)">
+            <Scrollable.Vertical>
+                <Box padding="var(--padding-df)">
+                    <div>Right SideBar</div>
+                </Box>
+            </Scrollable.Vertical>
+        </Box>
     )
 }

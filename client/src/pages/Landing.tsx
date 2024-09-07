@@ -20,13 +20,13 @@ export function LandingPage() {
                 flexDirection="column"
             >
                 <Column
-                    center
+                    align="center"
                     margin="auto"
                     gap="15px"
                     padding="15px"
                 >
-                    <Box width="100px"><Logo /></Box>
-                    <Column center>
+                    <Logo width="100px" />
+                    <Column align="center">
                         <h1>Vector Icons</h1>
                         <span>This is just icon template that is modern and simply design.</span>
                     </Column>
