@@ -5,7 +5,7 @@ import { RenderIcon } from "../templates/RenderIcon";
 import { Icons } from "./App";
 import { TouchRipple } from "web-touch-ripple/jsx";
 import { Container } from "../templates/Container";
-import { useContext, useEffect, useState } from "preact/hooks";
+import { useContext, useEffect, useRef, useState } from "preact/hooks";
 import { Input } from "../templates/Input";
 import { createContext } from "preact";
 
@@ -62,7 +62,19 @@ export function SearchPage() {
 export namespace SideBar {
     export function Body() {
         const [index, setIndex] = useState(0); // temp
-        const [close, setClose] = useState(false);
+        const [close, setClose] = useState(window.innerWidth < 1400);
+        const closeUserRef = useRef(false);
+
+        useEffect(() => {
+            let callback = null;
+            window.addEventListener("resize", callback = () => {
+                if (!closeUserRef.current) {
+                    setClose(window.innerWidth < 1400);
+                }
+            });
+
+            return () => window.removeEventListener("resize", callback);
+        }, []);
 
         return (
             <Column
@@ -96,7 +108,7 @@ export namespace SideBar {
                     </TabNavigation.Vertical>
                 </Scrollable.Vertical>
                 <Column marginTop="auto">
-                    <Button close={close} text="Close" iconName="arrow_left" onTap={() => setClose(!close)} />
+                    <Button close={close} text="Close" iconName="arrow_left" onTap={() => {closeUserRef.current = !close; setClose(!close)}} />
                 </Column>
             </Column>
         )
@@ -220,7 +232,7 @@ function SearchBody() {
                                 </Column>
                             </Container>
                         </TouchRipple>
-                        <TouchRipple onTap={() => {}}>
+                        <TouchRipple wait={true} onTap={() => window.open("https://github.com/vector-icons/vector_icons")}>
                             <Container>
                                 <Column gap="5px">
                                     <Text.p fontSize="18px">Github</Text.p>
@@ -289,7 +301,7 @@ function SearchBodySideBar() {
                         <RenderIcon.Name name="control" size="18px" />
                         <Text.h4 fontWeight="normal">Customize</Text.h4>
                     </Row>
-                    <Input.Range current={controller.iconSize} min={12} max={48} onChange={v => controller.iconSize = v} />
+                    <Input.Range current={controller.iconSize} min={12} max={48} onChange={v => controller.iconSize = Math.round(v)} />
                 </Box>
             </Scrollable.Vertical>
         </Box>
