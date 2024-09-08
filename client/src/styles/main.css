@@ -35,4 +35,10 @@ input {
     border: none;
 }
 
+input::-webkit-slider-runnable-track,
+input::-webkit-slider-thumb {
+    border: none;
+    -webkit-appearance: none;
+}
+
 touch-ripple { cursor: pointer; }

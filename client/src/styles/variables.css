@@ -2,6 +2,7 @@
 :root {
     --primary: rgb(43, 224, 134);
     --primary2: rgb(0, 100, 255);
+    --primary2-half: rgb(0, 100, 255, 0.3);
     --primary-hover: rgb(91, 255, 173);
     --background: rgb(255, 255, 255);
     --rearground: rgb(240, 241, 244);

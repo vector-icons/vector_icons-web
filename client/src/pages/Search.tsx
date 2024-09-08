@@ -1,26 +1,61 @@
+import Logo from "../assets/icons/logo.svg";
+
 import { AnimatedFoldable, Box, Column, Expanded, Row, Scrollable, TabNavigation, Text } from "react-widgets";
 import { RenderIcon } from "../templates/RenderIcon";
 import { Icons } from "./App";
 import { TouchRipple } from "web-touch-ripple/jsx";
-
-import Logo from "../assets/icons/logo.svg";
 import { Container } from "../templates/Container";
-import { useState } from "preact/hooks";
+import { useContext, useEffect, useState } from "preact/hooks";
+import { Input } from "../templates/Input";
+import { createContext } from "preact";
+
+const PreviewControllerContext = createContext<PreviewController>(null);
+
+type PreviewControllerListener = (id: number) => void;
+
+class PreviewController {
+    _iconSize: number;
+
+    constructor(iconSize: number) {
+        this._iconSize = iconSize;
+    };
+
+    count: number = 0;
+    listeners: PreviewControllerListener[] = [];
+
+    get iconSize() { return this._iconSize; }
+    set iconSize(newValue: number) {
+        this._iconSize = newValue;
+        this.notifyListeners();
+    }
+
+    addListener(listener: PreviewControllerListener) {
+        this.listeners.push(listener);
+    }
+
+    notifyListeners() {
+        this.listeners.forEach(listener => listener(this.count += 1));
+    }
+}
 
 export function SearchPage() {
+    const [controller, _] = useState(new PreviewController(32));
+
     return (
-        <Row size="100%">
-            <SideBar.Body />
-            <Column size="100%" flexShrink="1">
-                <SearchHeader />
-                <Expanded direction="vertical">
-                    <Row size="100%">
-                        <SearchBody />
-                        <SearchBodySideBar />
-                    </Row>
-                </Expanded>
-            </Column>
-        </Row>
+       <PreviewControllerContext.Provider value={controller}>
+             <Row size="100%">
+                <SideBar.Body />
+                <Column size="100%" flexShrink="1">
+                    <SearchHeader />
+                    <Expanded direction="vertical">
+                        <Row size="100%">
+                            <SearchBody />
+                            <SearchBodySideBar />
+                        </Row>
+                    </Expanded>
+                </Column>
+            </Row>
+       </PreviewControllerContext.Provider>
     )
 }
 
@@ -161,6 +196,13 @@ function SearchBar() {
 }
 
 function SearchBody() {
+    const countState = useState(0);
+    const controller = useContext(PreviewControllerContext);
+
+    useEffect(() => {
+        controller.addListener(countState[1]);
+    }, []);
+
     return (
         <Scrollable.Vertical>
             <Column>
@@ -210,7 +252,7 @@ function SearchBody() {
                                                     backgroundColor="var(--rearground)"
                                                     borderRadius="15px"
                                                 >
-                                                    <RenderIcon size="32px" innerHTML={innerHTML[1]} />
+                                                    <RenderIcon size={`${controller.iconSize}px`} innerHTML={innerHTML[1]} />
                                                 </Box>
                                             </TouchRipple>
                                         )
@@ -218,7 +260,7 @@ function SearchBody() {
                                 </Column>
                                 <Text.span
                                     fontSize="12px"
-                                    maxWidth="50px"
+                                    maxWidth={`${controller.iconSize + 15}px`}
                                     textOverflow="ellipsis"
                                     children={icon.name}
                                 />
@@ -232,11 +274,22 @@ function SearchBody() {
 }
 
 function SearchBodySideBar() {
+    const countState = useState(0);
+    const controller = useContext(PreviewControllerContext);
+
+    useEffect(() => {
+        controller.addListener(countState[1]);
+    }, []);
+
     return (
         <Box flexShrink="0" borderLeft="1px solid var(--rearground-border)">
             <Scrollable.Vertical>
                 <Box padding="var(--padding-df)">
-                    <div>Right SideBar</div>
+                    <Row align="centerLeft" gap="5px">
+                        <RenderIcon.Name name="control" size="18px" />
+                        <Text.h4 fontWeight="normal">Customize</Text.h4>
+                    </Row>
+                    <Input.Range current={controller.iconSize} min={12} max={48} onChange={v => controller.iconSize = v} />
                 </Box>
             </Scrollable.Vertical>
         </Box>

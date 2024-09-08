@@ -8,8 +8,7 @@ export function Container({children}: {
         <Box
             backgroundColor="var(--rearground)"
             padding="var(--padding-df)"
-            border="1px solid var(--rearground-border)"
-            borderRadius="5px"
+            borderRadius="15px"
             children={children}
         />
     )
