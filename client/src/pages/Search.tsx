@@ -2,12 +2,14 @@ import Logo from "../assets/icons/logo.svg";
 
 import { AnimatedFoldable, Box, Column, Expanded, Row, Scrollable, TabNavigation, Text } from "react-widgets";
 import { RenderIcon } from "../templates/RenderIcon";
-import { Icons } from "./App";
+import { Icons, IconType } from "./App";
 import { TouchRipple } from "web-touch-ripple/jsx";
 import { Container } from "../templates/Container";
 import { useContext, useEffect, useRef, useState } from "preact/hooks";
 import { Input } from "../templates/Input";
 import { createContext } from "preact";
+import * as Fuse from "fuse.js";
+import { Button } from "../templates/Button";
 
 const PreviewControllerContext = createContext<PreviewController>(null);
 
@@ -15,9 +17,11 @@ type PreviewControllerListener = (id: number) => void;
 
 class PreviewController {
     _iconSize: number;
+    _iconName: string;
 
-    constructor(iconSize: number) {
+    constructor(iconSize: number, iconName: string) {
         this._iconSize = iconSize;
+        this._iconName = iconName;
     };
 
     count: number = 0;
@@ -26,6 +30,12 @@ class PreviewController {
     get iconSize() { return this._iconSize; }
     set iconSize(newValue: number) {
         this._iconSize = newValue;
+        this.notifyListeners();
+    }
+
+    get iconName() { return this._iconName; }
+    set iconName(newValue: string) {
+        this._iconName = newValue;
         this.notifyListeners();
     }
 
@@ -39,7 +49,7 @@ class PreviewController {
 }
 
 export function SearchPage() {
-    const [controller, _] = useState(new PreviewController(32));
+    const [controller, _] = useState(new PreviewController(32, ""));
 
     return (
        <PreviewControllerContext.Provider value={controller}>
@@ -193,10 +203,15 @@ function SearchHeader() {
 }
 
 function SearchBar() {
+    const wrapperRef = useRef<HTMLInputElement>(null);
+    const controller = useContext(PreviewControllerContext);
+
     return (
         <input
+            ref={wrapperRef}
             type="text"
             placeholder="Enter a name of icons and keywords or alias"
+            onChange={() => controller.iconName = wrapperRef.current.value}
             style={{
                 width: "100%",
                 padding: "15px",
@@ -214,6 +229,19 @@ function SearchBody() {
     useEffect(() => {
         controller.addListener(countState[1]);
     }, []);
+
+    const iconSearchName = controller.iconName;
+    const iconSearch = new Fuse.default(Icons, {
+        keys: ["name"],
+        threshold: 0.2
+    });
+
+    let icons: IconType[];
+    if (iconSearchName == "") {
+        icons = Icons;
+    } else {
+        icons = iconSearch.search(iconSearchName).map(result => result.item);
+    }
 
     return (
         <Scrollable.Vertical>
@@ -242,52 +270,77 @@ function SearchBody() {
                         </TouchRipple>
                     </Row>
                 </Column>
-                <Box
-                    display="flex"
-                    flexWrap="wrap"
-                    alignContent="start"
-                    alignItems="start"
-                    flexShrink="1"
-                    columnGap="5px"
-                    rowGap="var(--padding-df)"
-                    padding="var(--padding-df)"
-                >{
-                    Icons.map(icon => {
-                        return (
-                            <Column align="center" className="icon-grid_item" gap="5px">
-                                <Column gap="5px">
-                                    {Object.entries(icon.content).map(innerHTML => {
-                                        return (
-                                            <TouchRipple onTap={() => {}}>
-                                                <Box
-                                                    padding="var(--padding-df)"
-                                                    backgroundColor="var(--rearground)"
-                                                    borderRadius="15px"
-                                                >
-                                                    <RenderIcon size={`${controller.iconSize}px`} innerHTML={innerHTML[1]} />
-                                                </Box>
-                                            </TouchRipple>
-                                        )
-                                    })}
-                                </Column>
-                                <Text.span
-                                    fontSize="12px"
-                                    maxWidth={`${controller.iconSize + 15}px`}
-                                    textOverflow="ellipsis"
-                                    children={icon.name}
-                                />
-                            </Column>
-                        )
-                    })
-                }</Box>
+                <SearchBodyContent icons={icons} controller={controller} />
             </Column>
         </Scrollable.Vertical>
     )
 }
 
+function SearchBodyContent({icons, controller}: {
+    icons: IconType[];
+    controller: PreviewController;
+}) {
+    if (icons.length != 0) {
+        const iconSize = controller.iconSize;
+
+        return (
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                alignContent="start"
+                alignItems="start"
+                flexShrink="1"
+                columnGap="5px"
+                rowGap="var(--padding-df)"
+                padding="var(--padding-df)"
+            >{
+                icons.map(icon => {
+                    return (
+                        <Column align="center" className="icon-grid_item" gap="5px">
+                            <Column gap="5px">
+                                {Object.entries(icon.content).map(innerHTML => {
+                                    return (
+                                        <TouchRipple onTap={() => {}}>
+                                            <Box
+                                                padding="var(--padding-df)"
+                                                backgroundColor="var(--rearground)"
+                                                borderRadius="15px"
+                                            >
+                                                <RenderIcon size={`${iconSize}px`} innerHTML={innerHTML[1]} />
+                                            </Box>
+                                        </TouchRipple>
+                                    )
+                                })}
+                            </Column>
+                            <Text.span
+                                fontSize="12px"
+                                maxWidth={`${iconSize + 15}px`}
+                                textOverflow="ellipsis"
+                                children={icon.name}
+                            />
+                        </Column>
+                    )
+                })
+            }</Box>
+        )
+    } else {
+        return (
+            <Column align="center" gap="var(--padding-df)" padding="30px">
+                <RenderIcon.Name name="search" size="50px" color="var(--foreground2)" />
+                <Column align="center">
+                    <Text.h3>None Result</Text.h3>
+                    <Text.span>An icon with a given name does not exist.</Text.span>
+                </Column>
+                <Button.Secondary text="Reset All" wait={true} onTap={() => controller.iconName = ""} />
+            </Column>
+        )
+    }
+}
+
 function SearchBodySideBar() {
     const countState = useState(0);
     const controller = useContext(PreviewControllerContext);
+    const iconSize = controller.iconSize;
 
     useEffect(() => {
         controller.addListener(countState[1]);
@@ -299,9 +352,9 @@ function SearchBodySideBar() {
                 <Box padding="var(--padding-df)">
                     <Row align="centerLeft" gap="5px">
                         <RenderIcon.Name name="control" size="18px" />
-                        <Text.h4 fontWeight="normal">Customize</Text.h4>
+                        <Text.h4 fontWeight="normal">Icon Size ({iconSize}px)</Text.h4>
                     </Row>
-                    <Input.Range current={controller.iconSize} min={12} max={48} onChange={v => controller.iconSize = Math.round(v)} />
+                    <Input.Range current={iconSize} min={12} max={48} onChange={v => controller.iconSize = Math.round(v)} />
                 </Box>
             </Scrollable.Vertical>
         </Box>

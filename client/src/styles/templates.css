@@ -11,6 +11,14 @@ button.primary {
     --ripple-hover: rgb(255, 255, 255, 0.3);
 }
 
+/* ../templates/Button.tsx of Secondary */
+button.secondary {
+    background-color: var(--rearground);
+    padding: var(--padding-sm) var(--padding-df);
+    border-radius: 1e10px;
+    cursor: pointer;
+}
+
 /* ../pages/Search.tsx of SearchPage */
 .icon-grid_item {
     fill: var(--foreground2);

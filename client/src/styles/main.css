@@ -3,6 +3,9 @@ body {
     font-family: "Pretendard";
     color: var(--foreground);
     fill: var(--foreground);
+
+    scrollbar-width: thin;
+    scrollbar-color: var(--rearground-border) transparent;
 }
 
 html { width: 100%; height: 100%; }
