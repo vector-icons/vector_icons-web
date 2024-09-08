@@ -1,0 +1,7 @@
+{
+    "scripts": {
+        "build": "git submodule update --init --recursive && npm run build:server && npm run build:client",
+        "build:client": "cd ./client && npm install && npm run build && cd ../",
+        "build:server": "cd ./server && npm install && npm run build && cd ../"
+    }
+}
