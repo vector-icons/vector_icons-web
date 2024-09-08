@@ -14,6 +14,7 @@ button.primary {
 /* ../templates/Button.tsx of Secondary */
 button.secondary {
     background-color: var(--rearground);
+    color: var(--foreground2);
     padding: var(--padding-sm) var(--padding-df);
     border-radius: 1e10px;
     cursor: pointer;

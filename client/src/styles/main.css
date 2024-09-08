@@ -45,3 +45,8 @@ input::-webkit-slider-thumb {
 }
 
 touch-ripple { cursor: pointer; }
+
+.transition {
+    transition-property: background-color, color, fill !important;
+    transition-duration: 2s !important;
+}
