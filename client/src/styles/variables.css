@@ -6,7 +6,7 @@
     --primary-hover: rgb(91, 255, 173);
     --background: rgb(255, 255, 255);
     --rearground: rgb(240, 241, 244);
-    --rearground-border: rgb(200, 202, 204);
+    --rearground-border: rgb(190, 192, 194);
     --foreground: black;
     --foreground2: rgb(50, 50, 50);
     --foreground3: rgb(100, 100, 100);
@@ -28,9 +28,9 @@
 
 .dark {
     --primary2: rgb(0, 140, 255);
-    --background: rgb(8, 10, 12);
-    --rearground: rgb(26, 29, 32);
-    --rearground-border: rgb(60, 62, 64);
+    --background: rgb(6, 8, 10);
+    --rearground: rgb(26, 28, 30);
+    --rearground-border: rgb(70, 72, 74);
     --foreground: white;
     --foreground2: rgb(200, 200, 200);
     --foreground3: rgb(170, 170, 170);
