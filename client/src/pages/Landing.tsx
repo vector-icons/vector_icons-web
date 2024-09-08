@@ -27,7 +27,7 @@ export function LandingPage() {
                 >
                     <Logo width="100px" />
                     <Column align="center">
-                        <h1>Vector Icons</h1>
+                        <h1>Quark Icons</h1>
                         <span>This is just icon template that is modern and simply design.</span>
                     </Column>
                     <Button.Primary text="Get started" onTap={() => setLocation("/search")} />
