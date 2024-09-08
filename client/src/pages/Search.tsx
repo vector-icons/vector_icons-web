@@ -99,7 +99,7 @@ export namespace SideBar {
                         <Box marginLeft="15px"><Logo width="24px" /></Box>
                     </AnimatedFoldable.Horizontal>
                     <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" transition={{opacity: true}}>
-                        <Text.h1 fontSize="22px" padding="0px var(--padding-df)">VECTOR ICONS</Text.h1>
+                        <Text.h1 fontSize="22px" padding="0px var(--padding-df)">QUARK ICONS</Text.h1>
                     </AnimatedFoldable.Horizontal>
                 </Row>
                 <Box paddingLeft="3px">
@@ -284,44 +284,64 @@ function SearchBodyContent({icons, controller}: {
         const iconSize = controller.iconSize;
 
         return (
-            <Box
-                display="flex"
-                flexWrap="wrap"
-                alignContent="start"
-                alignItems="start"
-                flexShrink="1"
-                columnGap="5px"
-                rowGap="var(--padding-df)"
-                padding="var(--padding-df)"
-            >{
-                icons.map(icon => {
-                    return (
-                        <Column align="center" className="icon-grid_item" gap="5px">
-                            <Column gap="5px">
-                                {Object.entries(icon.content).map(innerHTML => {
-                                    return (
-                                        <TouchRipple onTap={() => {}}>
-                                            <Box
-                                                padding="var(--padding-df)"
-                                                backgroundColor="var(--rearground)"
-                                                borderRadius="15px"
-                                            >
-                                                <RenderIcon size={`${iconSize}px`} innerHTML={innerHTML[1]} />
-                                            </Box>
-                                        </TouchRipple>
-                                    )
-                                })}
+            <Column gap="var(--padding-df)" padding="var(--padding-df)">
+                <Text.span>Results is {icons.length} amount</Text.span>
+                <Box
+                    display="flex"
+                    flexWrap="wrap"
+                    alignContent="start"
+                    alignItems="start"
+                    flexShrink="1"
+                    columnGap="5px"
+                    rowGap="var(--padding-df)"
+                >{
+                    icons.map(icon => {
+                        return (
+                            <Column align="center" className="icon-grid_item" gap="5px">
+                                <Column gap="5px">
+                                    {Object.entries(icon.content).map(([key, innerHTML]) => {
+                                        const blob = new Blob([innerHTML], {type: "image/svg+xml"});
+                                        const bUrl = URL.createObjectURL(blob);
+
+                                        const handleDownload = () => {
+                                            const iconName = key == "normal"
+                                                ? icon.name
+                                                : icon.name + "-" + key;
+
+                                            const temp = document.createElement('a');
+                                            temp.href = bUrl;
+                                            temp.download = iconName;
+
+                                            document.body.appendChild(temp), temp.click();
+                                            document.body.removeChild(temp);
+
+                                            URL.revokeObjectURL(bUrl);
+                                        };
+
+                                        return (
+                                            <TouchRipple onTap={handleDownload}>
+                                                <Box
+                                                    padding="var(--padding-df)"
+                                                    backgroundColor="var(--rearground)"
+                                                    borderRadius="15px"
+                                                >
+                                                    <RenderIcon size={`${iconSize}px`} innerHTML={innerHTML} />
+                                                </Box>
+                                            </TouchRipple>
+                                        )
+                                    })}
+                                </Column>
+                                <Text.span
+                                    fontSize="12px"
+                                    maxWidth={`${iconSize + 15}px`}
+                                    textOverflow="ellipsis"
+                                    children={icon.name}
+                                />
                             </Column>
-                            <Text.span
-                                fontSize="12px"
-                                maxWidth={`${iconSize + 15}px`}
-                                textOverflow="ellipsis"
-                                children={icon.name}
-                            />
-                        </Column>
-                    )
-                })
-            }</Box>
+                        )
+                    })
+                }</Box>
+            </Column>
         )
     } else {
         return (
