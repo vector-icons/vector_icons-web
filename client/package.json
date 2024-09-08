@@ -4,12 +4,15 @@
     "build:dev": "cross-env BUILD_TYPE=deveopment webpack",
     "watch": "cross-env BUILD_TYPE=production webpack --watch",
     "watch:dev": "cross-env BUILD_TYPE=deveopment webpack --watch",
-    "serve": "cross-env BUILD_TYPE=development webpack-dev-server --hot"
+    "serve": "cross-env BUILD_TYPE=development webpack-dev-server --hot",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
     "css-loader": "^7.1.2",
     "css-mangle-webpack-plugin": "^1.0.0-alpha17",
+    "gh-pages": "^6.1.1",
     "html-inline-webpack-plugin": "^1.0.0",
     "mini-css-extract-plugin": "^2.9.0",
     "preact-svg-loader": "^0.2.1",
