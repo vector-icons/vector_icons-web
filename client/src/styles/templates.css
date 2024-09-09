@@ -28,3 +28,8 @@ button.secondary {
 .icon-grid_item:hover {
     fill: var(--foreground);
 }
+
+/* ../templates/Tooltip of Tooltip */
+overlay-layout:has(.tooltip) {
+    pointer-events: none;
+}

@@ -11,6 +11,7 @@ import { createContext } from "preact";
 import * as Fuse from "fuse.js";
 import { Button } from "../templates/Button";
 import { SettingsBinding } from "../settings/settings_binding";
+import { Tooltip } from "../templates/Tooltip";
 
 const PreviewControllerContext = createContext<PreviewController>(null);
 
@@ -379,11 +380,11 @@ function SearchBodyContent({icons, controller}: {
                                         const blob = new Blob([innerHTML], {type: "image/svg+xml"});
                                         const bUrl = URL.createObjectURL(blob);
 
-                                        const handleDownload = () => {
-                                            const iconName = key == "normal"
-                                                ? icon.name
-                                                : icon.name + "-" + key;
+                                        const iconName = key == "normal"
+                                            ? icon.name
+                                            : icon.name + "-" + key;
 
+                                        const handleDownload = () => {
                                             const temp = document.createElement('a');
                                             temp.href = bUrl;
                                             temp.download = iconName;
@@ -395,15 +396,16 @@ function SearchBodyContent({icons, controller}: {
                                         };
 
                                         return (
-                                            <TouchRipple onTap={handleDownload}>
-                                                <Box
-                                                    padding="var(--padding-df)"
-                                                    backgroundColor="var(--rearground)"
-                                                    borderRadius="50%"
-                                                >
-                                                    <RenderIcon size={`${iconSize}px`} innerHTML={innerHTML} />
-                                                </Box>
-                                            </TouchRipple>
+                                            <Tooltip message={iconName + ".svg"}>
+                                                <TouchRipple onTap={handleDownload}>
+                                                    <Box
+                                                        padding="var(--padding-df)"
+                                                        backgroundColor="var(--rearground)"
+                                                        borderRadius="50%"
+                                                        children={<RenderIcon size={`${iconSize}px`} innerHTML={innerHTML} />}
+                                                    />
+                                                </TouchRipple> 
+                                            </Tooltip>
                                         )
                                     })}
                                 </Column>
