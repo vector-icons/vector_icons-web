@@ -8,3 +8,13 @@
     0%   { opacity: 1; transform-origin: top; transform: scaleY(1); }
     100% { opacity: 0; transform-origin: top; transform: scaleY(0.8); }
 }
+
+@keyframes tooltip-fadein {
+    0%   { opacity: 0; transform: translateY(-10%); }
+    100% { opacity: 1; transform: translateY(0%); }
+}
+
+@keyframes tooltip-fadeout {
+    0%   { opacity: 1; transform: translateY(0%); }
+    100% { opacity: 0; transform: translateY(-10%); }
+}
