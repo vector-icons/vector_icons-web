@@ -1,5 +1,8 @@
+import { render } from "preact";
 import { useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
-import { Box } from "react-widgets";
+import { Box, Column, Text } from "react-widgets";
+import { Overlay, OverlayAlignment, OverlayDirection, OverlayElement } from "web-overlay-layout";
+import { TouchRipple } from "web-touch-ripple/jsx";
 
 export namespace Input {
     export function Range({current, min, max, interval = 1, onChange}: {
@@ -82,6 +85,98 @@ export namespace Input {
                     />
                 }
             />
+        )
+    }
+
+    export type SelectChangeCallback = (newIndex: number) => void;
+
+    export interface SelectItem {
+        title: string;
+        details: string;
+    }
+
+    export function Select({selected, itemList, onChange}: {
+        selected: number,
+        itemList: SelectItem[],
+        onChange: SelectChangeCallback
+    }) {
+        const targetRef = useRef<HTMLDivElement>(null);
+        
+        // This value defines an overlay element added to the current DOM.
+        let activeOverlay: OverlayElement = null;
+
+        const onTap = () => {
+            if (activeOverlay) {
+                activeOverlay.detach();
+                activeOverlay = null;
+                return;
+            }
+
+            const overlay = document.createElement("div");
+            const overlayCallback = (newIndex: number) => {
+                activeOverlay?.detach();
+                activeOverlay = null;
+
+                // Notifys a new updated index into a given callback.
+                onChange(newIndex);
+            }
+
+            // Renders a JSX components into document to an overlay element attaching.
+            render(<SelectOverlay selected={selected} itemList={itemList} onChange={overlayCallback} />, overlay);
+
+            activeOverlay = Overlay.attach({
+                element: overlay,
+                target: targetRef.current,
+                parent: document.body,
+                behavior: {
+                    direction: OverlayDirection.BOTTOM_CENTER,
+                    alignment: OverlayAlignment.ALL,
+                    animation: {
+                        fadein: "input-select-fadein 0.2s",
+                        fadeout: "input-select-fadeout 0.2s"
+                    },
+                    targetGap: 15,
+                    viewportPadding: 15
+                }
+            });
+        }
+
+        return (
+            <TouchRipple onTap={onTap}>
+                <Box
+                    refer={targetRef}
+                    padding="10px 15px"
+                    border="2px solid var(--foreground4)"
+                    borderRadius="10px"
+                    children={itemList[selected].title}
+                />
+            </TouchRipple>
+        )
+    }
+
+    function SelectOverlay({selected, itemList, onChange}: {
+        selected: number,
+        itemList: SelectItem[],
+        onChange: SelectChangeCallback;
+    }) {
+        return (
+            <Column
+                background="var(--background-overlay)"
+                boxShadow="0px 2px 5px rgb(0, 0, 0, 0.2)"
+                borderRadius="10px"
+                overflow="hidden"
+            >
+                {itemList.map((item, index) => {
+                    return (
+                        <TouchRipple onTap={() => onChange(index)}>
+                            <Column gap="3px" padding="var(--padding-df)">
+                                <Text fontWeight={selected == index ? "bold" : "normal"}>{item.title}</Text>
+                                <Text.span fontSize="14px">{item.details}</Text.span>
+                            </Column>
+                        </TouchRipple>
+                    )
+                })}
+            </Column>
         )
     }
 }

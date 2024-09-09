@@ -16,13 +16,21 @@ const PreviewControllerContext = createContext<PreviewController>(null);
 
 type PreviewControllerListener = (id: number) => void;
 
+enum PreviewIconType {
+    all,
+    normal,
+    filled,
+}
+
 class PreviewController {
     _iconSize: number;
     _iconName: string;
+    _iconType: PreviewIconType;
 
-    constructor(iconSize: number, iconName: string) {
+    constructor(iconSize: number, iconName: string, iconType: PreviewIconType) {
         this._iconSize = iconSize;
         this._iconName = iconName;
+        this._iconType = iconType;
     };
 
     count: number = 0;
@@ -44,6 +52,14 @@ class PreviewController {
         }
     }
 
+    get iconType() { return this._iconType; }
+    set iconType(newValue: PreviewIconType) {
+        if (this._iconType != newValue) {
+            this._iconType = newValue;
+            this.notifyListeners();
+        }
+    }
+
     addListener(listener: PreviewControllerListener) {
         this.listeners.push(listener);
     }
@@ -54,7 +70,7 @@ class PreviewController {
 }
 
 export function SearchPage() {
-    const [controller, _] = useState(new PreviewController(32, ""));
+    const [controller, _] = useState(new PreviewController(32, "", PreviewIconType.all));
 
     return (
        <PreviewControllerContext.Provider value={controller}>
@@ -303,7 +319,7 @@ function SearchBody() {
                     </Column>
                     <Row gap="var(--padding-df)">
                         <TouchRipple onTap={() => {}}>
-                            <Container>
+                            <Container expanded={true}>
                                 <Column gap="5px">
                                     <Text.p fontSize="18px">Style Guide</Text.p>
                                     <Text.span fontSize="14px">This open-source project aims to create and maintain icons with a consistent design! Therefore, please refer to the guide to ensure a cohesive icon style.</Text.span>
@@ -311,7 +327,7 @@ function SearchBody() {
                             </Container>
                         </TouchRipple>
                         <TouchRipple wait={true} onTap={() => window.open("https://github.com/vector-icons/vector_icons")}>
-                            <Container>
+                            <Container expanded={true}>
                                 <Column gap="5px">
                                     <Text.p fontSize="18px">Github</Text.p>
                                     <Text.span fontSize="14px">To complete the icon creation and officially integrate it into the project, you will need to use GitHub!</Text.span>
@@ -332,6 +348,7 @@ function SearchBodyContent({icons, controller}: {
 }) {
     if (icons.length != 0) {
         const iconSize = controller.iconSize;
+        const iconType = controller.iconType;
 
         return (
             <Column gap="var(--padding-df)" padding="var(--padding-df)">
@@ -346,10 +363,19 @@ function SearchBodyContent({icons, controller}: {
                     rowGap="var(--padding-df)"
                 >{
                     icons.map(icon => {
+                        const noneNormal = icon.content.normal == null;
+                        const noneFilled = icon.content.filled == null;
+
+                        if (iconType == PreviewIconType.normal && noneNormal) return <></>;
+                        if (iconType == PreviewIconType.filled && noneFilled) return <></>;
+
                         return (
                             <Column align="center" className="icon-grid_item" gap="5px">
                                 <Column gap="5px">
                                     {Object.entries(icon.content).map(([key, innerHTML]) => {
+                                        if (iconType == PreviewIconType.normal && key != "normal") return;
+                                        if (iconType == PreviewIconType.filled && key != "filled") return;
+
                                         const blob = new Blob([innerHTML], {type: "image/svg+xml"});
                                         const bUrl = URL.createObjectURL(blob);
 
@@ -373,7 +399,7 @@ function SearchBodyContent({icons, controller}: {
                                                 <Box
                                                     padding="var(--padding-df)"
                                                     backgroundColor="var(--rearground)"
-                                                    borderRadius="15px"
+                                                    borderRadius="50%"
                                                 >
                                                     <RenderIcon size={`${iconSize}px`} innerHTML={innerHTML} />
                                                 </Box>
@@ -411,6 +437,7 @@ function SearchBodySideBar() {
     const countState = useState(0);
     const controller = useContext(PreviewControllerContext);
     const iconSize = controller.iconSize;
+    const iconType = controller.iconType;
 
     useEffect(() => {
         controller.addListener(countState[1]);
@@ -419,13 +446,33 @@ function SearchBodySideBar() {
     return (
         <Box flexShrink="0" borderLeft="1px solid var(--rearground-border)">
             <Scrollable.Vertical>
-                <Box padding="var(--padding-df)">
-                    <Row align="centerLeft" gap="5px">
-                        <RenderIcon.Name name="control" size="18px" />
-                        <Text.h4 fontWeight="normal">Icon Size ({iconSize}px)</Text.h4>
-                    </Row>
-                    <Input.Range current={iconSize} min={12} max={48} onChange={v => controller.iconSize = Math.round(v)} />
-                </Box>
+                <Column padding="var(--padding-df)" gap="var(--padding-df)">
+                    <Column>
+                        <Row gap="var(--padding-sm)">
+                            <RenderIcon.Name name="control" size="18px" />
+                            <Column gap="3px">
+                                <Text.h4 fontWeight="normal">Icon Size ({iconSize}px)</Text.h4>
+                                <Text.span fontSize="12px" fontWeight="normal">Controls an icon sizes</Text.span>
+                            </Column>
+                        </Row>
+                        <Input.Range current={iconSize} min={12} max={48} onChange={v => controller.iconSize = Math.round(v)} />
+                    </Column>
+                    <Box width="100%" height="1px" backgroundColor="var(--rearground-border)" />
+                    <Column gap="var(--padding-sm)">
+                        <Row gap="var(--padding-sm)">
+                            <RenderIcon.Name name="control" size="18px" />
+                            <Column gap="3px">
+                                <Text.h4 fontWeight="normal">View Icon Type</Text.h4>
+                                <Text.span fontSize="12px" fontWeight="normal">Settings view an icon types</Text.span>
+                            </Column>
+                        </Row>
+                        <Input.Select selected={iconType} onChange={v => controller.iconType = v} itemList={[
+                            {title: "All", details: "View icon types all"},
+                            {title: "Only Normal", details: "View only line style icons"},
+                            {title: "Only Filled", details: "View only fill style icons"}
+                        ]} />
+                    </Column>
+                </Column>
             </Scrollable.Vertical>
         </Box>
     )

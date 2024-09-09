@@ -4,8 +4,9 @@
     --primary-half: rgb(0, 100, 255, 0.3);
     --background: white;
     --background-shadow: var(--background);
+    --background-overlay: rgb(230, 231, 234);
     --rearground: rgb(240, 241, 244);
-    --rearground-border: rgb(190, 192, 194);
+    --rearground-border: rgb(180, 182, 184);
     --foreground: black;
     --foreground2: rgb(50, 50, 50);
     --foreground3: rgb(100, 100, 100);
@@ -29,8 +30,9 @@
     --primary: rgb(0, 140, 255);
     --background: rgb(6, 8, 10);
     --background-shadow: black;
-    --rearground: rgb(26, 28, 30);
-    --rearground-border: rgb(70, 72, 74);
+    --background-overlay: rgb(32, 34, 36);
+    --rearground: rgb(28, 30, 32);
+    --rearground-border: rgb(80, 82, 84);
     --foreground: white;
     --foreground2: rgb(200, 200, 200);
     --foreground3: rgb(170, 170, 170);
@@ -38,5 +40,5 @@
 
     /* About web-touch-ripple */
     --ripple: rgb(255, 255, 255, 0.15);
-    --ripple-hover: rgb(255, 255, 255, 0.03);
+    --ripple-hover: rgb(255, 255, 255, 0.05);
 }
