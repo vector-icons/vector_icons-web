@@ -31,7 +31,7 @@
     "preact": "^10.23.2",
     "react-transition-group": "^4.4.5",
     "react-widgets": "file:../packages/react-widgets",
-    "web-overlay-layout": "^1.0.0-beta2",
+    "web-overlay-layout": "^1.0.0-beta3",
     "web-touch-ripple": "^1.2.0",
     "wouter": "^3.3.1"
   }

@@ -1,4 +1,14 @@
 
+@keyframes page-fadein {
+    0%   { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes page-fadeout {
+    0%   { opacity: 1; }
+    100% { opacity: 0; }
+}
+
 @keyframes input-select-fadein {
     0%   { opacity: 0; transform-origin: top; transform: scaleY(0.8); }
     100% { opacity: 1; transform-origin: top; transform: scaleY(1); }
