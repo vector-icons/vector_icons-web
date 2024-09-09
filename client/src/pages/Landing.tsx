@@ -1,4 +1,4 @@
-import { AnimatedFoldable, Box, Column } from "react-widgets";
+import { AnimatedFoldable, Box, Column, Scrollable } from "react-widgets";
 import { TouchRipple } from "web-touch-ripple/jsx";
 import { Button } from "../templates/Button";
 import { ReactNode, useState } from "preact/compat";
@@ -10,63 +10,65 @@ export function LandingPage() {
     const [_, setLocation] = useLocation();
 
     return (
-        <>
-            <Box
-                position="relative"
-                display="flex"
-                width="100%"
-                height="100vh"
-                justifyContent="center"
-                flexDirection="column"
-            >
-                <Column
-                    align="center"
-                    margin="auto"
-                    gap="15px"
-                    padding="15px"
-                >
-                    <Logo width="100px" />
-                    <Column align="center">
-                        <h1>QUARK ICONS</h1>
-                        <span>You needs to use this icons template that is modern and simply design.</span>
-                    </Column>
-                    <Button.Primary text="GET STARTED" onTap={() => setLocation("/search")} />
-                </Column>
-                <Box position="absolute" size="100%" zIndex="-1">
-                    {/** @ts-ignore */}
-                    <landing-background />
-                </Box>
-                <Box 
-                    position="absolute"
+        <Scrollable.Vertical>
+            <Column>
+                <Box
+                    position="relative"
+                    display="flex"
                     width="100%"
-                    height="100%"
-                    zIndex="-1"
-                    background="linear-gradient(0deg, var(--background) 20%, transparent)"
-                />
-            </Box>
-            <Column gap="15px" padding="15px">
-                <Footer
-                    title="What is it?"
-                    description="This is a curated library of high-quality vector icons designed to enhance your web and mobile applications. Whether you're building a sleek website or a sophisticated app, our icons provide a professional and consistent look."
+                    height="100vh"
+                    justifyContent="center"
+                    flexDirection="column"
                 >
-                    <FooterBlockquote title="Why use it?">
-                        <ul style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            marginTop: "10px",
-                            gap: "5px",
-                            color: "var(--foreground3)"
-                        }}>
-                            <li>Save time: No need to design icons from scratch. Our ready-to-use icons save you valuable development time.</li>
-                            <li>Enhance your design: Our icons are carefully crafted to complement various design styles, adding a touch of elegance to your projects.</li>
-                        </ul>
-                    </FooterBlockquote>
-                    <FooterBlockquote title="About Contributing">
-                        <span>We welcome contributions from the community. Whether you want to fix a bug, add a new icon, or improve the documentation, your help is appreciated.</span>
-                    </FooterBlockquote>
-                </Footer>
+                    <Column
+                        align="center"
+                        margin="auto"
+                        gap="15px"
+                        padding="15px"
+                    >
+                        <Logo width="100px" />
+                        <Column align="center">
+                            <h1>QUARK ICONS</h1>
+                            <span>You needs to use this icons template that is modern and simply design.</span>
+                        </Column>
+                        <Button.Primary text="GET STARTED" onTap={() => setLocation("/search")} />
+                    </Column>
+                    <Box position="absolute" size="100%" zIndex="-1">
+                        {/** @ts-ignore */}
+                        <landing-background />
+                    </Box>
+                    <Box 
+                        position="absolute"
+                        width="100%"
+                        height="100%"
+                        zIndex="-1"
+                        background="linear-gradient(0deg, var(--background-shadow) 20%, transparent)"
+                    />
+                </Box>
+                <Column gap="15px" padding="15px">
+                    <Footer
+                        title="What is it?"
+                        description="This is a curated library of high-quality vector icons designed to enhance your web and mobile applications. Whether you're building a sleek website or a sophisticated app, our icons provide a professional and consistent look."
+                    >
+                        <FooterBlockquote title="Why use it?">
+                            <ul style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                marginTop: "10px",
+                                gap: "5px",
+                                color: "var(--foreground3)"
+                            }}>
+                                <li>Save time: No need to design icons from scratch. Our ready-to-use icons save you valuable development time.</li>
+                                <li>Enhance your design: Our icons are carefully crafted to complement various design styles, adding a touch of elegance to your projects.</li>
+                            </ul>
+                        </FooterBlockquote>
+                        <FooterBlockquote title="About Contributing">
+                            <span>We welcome contributions from the community. Whether you want to fix a bug, add a new icon, or improve the documentation, your help is appreciated.</span>
+                        </FooterBlockquote>
+                    </Footer>
+                </Column>
             </Column>
-        </>
+        </Scrollable.Vertical>
     )
 }
 

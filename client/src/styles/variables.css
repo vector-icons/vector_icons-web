@@ -2,7 +2,8 @@
 :root {
     --primary: rgb(0, 100, 255);
     --primary-half: rgb(0, 100, 255, 0.3);
-    --background: rgb(255, 255, 255);
+    --background: white;
+    --background-shadow: var(--background);
     --rearground: rgb(240, 241, 244);
     --rearground-border: rgb(190, 192, 194);
     --foreground: black;
@@ -27,6 +28,7 @@
 .dark {
     --primary: rgb(0, 140, 255);
     --background: rgb(6, 8, 10);
+    --background-shadow: black;
     --rearground: rgb(26, 28, 30);
     --rearground-border: rgb(70, 72, 74);
     --foreground: white;
