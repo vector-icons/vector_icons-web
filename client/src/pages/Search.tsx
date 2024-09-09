@@ -10,6 +10,7 @@ import { Input } from "../templates/Input";
 import { createContext } from "preact";
 import * as Fuse from "fuse.js";
 import { Button } from "../templates/Button";
+import { SettingsBinding } from "../settings/settings_binding";
 
 const PreviewControllerContext = createContext<PreviewController>(null);
 
@@ -208,17 +209,26 @@ function SearchHeader() {
 }
 
 function SearchHeaderThemeSwitch() {
-    const [isDark, setTheme] = useState(document.body.className == "dark");
+    const [theme, setTheme] = useState(document.body.className == "dark" ? "dark" : "light");
+    const isDark = theme == "dark";
 
     useEffect(() => {
         const body = document.body;
         body.className = isDark ? "dark" : "";
         body.style.transitionProperty = "background-color, color, fill";
         body.style.transitionDuration = "0.3s";
-    }, [isDark]);
+        body.ontransitionend = () => {
+            body.removeAttribute("style"); // Clears style all into body.
+        }
+    }, [theme]);
 
     return (
-        <TouchRipple onTap={() => setTheme(!isDark)}>
+        <TouchRipple onTap={() => {
+            SettingsBinding.setValue("theme", isDark ? "light" : "dark");
+
+            // Needs to update this components state.
+            setTheme(isDark ? "light" : "dark");
+        }}>
             <Box position="relative" borderRadius="50%">
                 <Box
                     padding="var(--padding-df)"
