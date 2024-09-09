@@ -1,9 +1,7 @@
 
 :root {
-    --primary: rgb(43, 224, 134);
-    --primary2: rgb(0, 100, 255);
-    --primary2-half: rgb(0, 100, 255, 0.3);
-    --primary-hover: rgb(91, 255, 173);
+    --primary: rgb(0, 100, 255);
+    --primary-half: rgb(0, 100, 255, 0.3);
     --background: rgb(255, 255, 255);
     --rearground: rgb(240, 241, 244);
     --rearground-border: rgb(190, 192, 194);
@@ -27,7 +25,7 @@
 }
 
 .dark {
-    --primary2: rgb(0, 140, 255);
+    --primary: rgb(0, 140, 255);
     --background: rgb(6, 8, 10);
     --rearground: rgb(26, 28, 30);
     --rearground-border: rgb(70, 72, 74);

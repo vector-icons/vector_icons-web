@@ -1,7 +1,7 @@
 
 /* ../templates/Button.tsx of Primary */
 button.primary {
-    background-color: var(--primary2);
+    background-color: var(--primary);
     color: white;
     padding: 10px 15px;
     font-size: 16px;

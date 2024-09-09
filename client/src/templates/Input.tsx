@@ -61,7 +61,7 @@ export namespace Input {
                         width="200px"
                         height="5px"
                         borderRadius="1e10px"
-                        background={`linear-gradient(to right, var(--primary2) ${percent100}, var(--primary2-half) ${percent100})`}
+                        background={`linear-gradient(to right, var(--primary) ${percent100}, var(--primary-half) ${percent100})`}
                         margin="15px 0px"
                         children={
                             <Box
@@ -74,7 +74,7 @@ export namespace Input {
                                 width="20px"
                                 height="20px"
                                 borderRadius="50%"
-                                backgroundColor="var(--primary2)"
+                                backgroundColor="var(--primary)"
                                 transitionProperty="transform, scale"
                                 transitionDuration="0.15s"
                             />
