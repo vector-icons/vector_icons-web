@@ -132,14 +132,14 @@ export namespace SideBar {
                         duration="0.3s"
                         style={{borderRadius: "1e10px", backgroundColor: "var(--foreground2)", width: "50%"}}
                     >
-                        <Item closed={close} selected={index == 0} onTap={() => setIndex(0)} iconName="home" title="Home" />
-                        <Item closed={close} selected={index == 1} onTap={() => setIndex(1)} iconName="community" title="Community" />
-                        <Item closed={close} selected={index == 2} onTap={() => setIndex(2)} iconName="storage" title="Storage" />
-                        <Item closed={close} selected={index == 3} onTap={() => setIndex(3)} iconName="settings" title="Settings" />
+                        <Box><Item closed={close} selected={index == 0} onTap={() => setIndex(0)} iconName="home" title="Home" /></Box>
+                        <Box><Item closed={close} selected={index == 1} onTap={() => setIndex(1)} iconName="community" title="Community" /></Box>
+                        <Box><Item closed={close} selected={index == 2} onTap={() => setIndex(2)} iconName="storage" title="Storage" /></Box>
+                        <Box><Item closed={close} selected={index == 3} onTap={() => setIndex(3)} iconName="settings" title="Settings" /></Box>
                     </TabNavigation.Vertical>
                 </Scrollable.Vertical>
                 <Column marginTop="auto">
-                    <Button close={close} text="Close" iconName="arrow_left" onTap={() => {closeUserRef.current = !close; setClose(!close)}} />
+                    <Button close={close} text="Close" iconName={close ? "arrow_right" : "arrow_left"} onTap={() => {closeUserRef.current = !close; setClose(!close)}} />
                 </Column>
             </Column>
         )

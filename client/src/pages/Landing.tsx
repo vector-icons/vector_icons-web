@@ -26,7 +26,7 @@ export function LandingPage() {
                         gap="15px"
                         padding="15px"
                     >
-                        <Logo width="100px" />
+                        <Logo width="90px" />
                         <Column align="center">
                             <h1>QUARK ICONS</h1>
                             <span>You needs to use this icons template that is modern and simply design.</span>
