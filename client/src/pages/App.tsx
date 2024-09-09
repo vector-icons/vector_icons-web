@@ -1,6 +1,7 @@
 import { Route, Switch } from "wouter";
 import { LandingPage } from "./Landing";
 import { SearchPage } from "./Search";
+import { AnimatedSwitch } from "../templates/AnimatedSwitch";
 
 export type IconType = {
     name: string;
@@ -12,9 +13,9 @@ export const Icons: IconType[] = require("../../../assets/icons-dist.json");
 
 export function App() {
     return (
-        <Switch>
+        <AnimatedSwitch>
             <Route path="/" component={LandingPage} />
             <Route path="/search" component={SearchPage} />
-        </Switch>
+        </AnimatedSwitch>
     )
 }

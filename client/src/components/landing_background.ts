@@ -44,7 +44,7 @@ class Net {
 
     constructor(duration: number) {
         this.x = new Animation(duration, null, randomRange(0, 1));
-        this.y = new Animation(duration, null, randomRange(0, 1));
+        this.y = new Animation(duration, null, randomRange(0.75, 1));
         this.rotate = new Animation(duration, null, randomRange(0, Math.PI * 2));
         this.fade = new Animation(1000, Curve.Ease);
         this.size = randomRange(0.75, 1.25);
@@ -54,7 +54,7 @@ class Net {
 
     start() {
         this.x.animateTo(randomRange(0, 1));
-        this.y.animateTo(randomRange(0, 1));
+        this.y.animateTo(randomRange(0.25, 0));
         this.fade.animateTo(1);
         return this;
     }
@@ -102,7 +102,7 @@ class Net {
                 ctx.beginPath();
                 ctx.moveTo(other.x.value * width, other.y.value * height);
                 ctx.lineTo(x * width, y * height);
-                ctx.lineWidth = 2;
+                ctx.lineWidth = 1;
 
                 // 투명도 계산 (0.1 이하일 때 1, 0.1 이상일 때 0으로 변함)
                 const opacity = Math.max(0, 1 - (distance * 10));
@@ -175,7 +175,7 @@ export class LandingBackgroundElement extends HTMLElement {
         }
 
         const attachNet = () => {
-            const duration = randomRange(10000, 50000);
+            const duration = randomRange(10000, 30000);
             const net = new Net(duration);
             setTimeout(() => {
                 net.end(() => {this.controller.detach(net); attachNet()});
@@ -184,7 +184,7 @@ export class LandingBackgroundElement extends HTMLElement {
             this.controller.attach(net);
         }
 
-        attachNets(100);
+        attachNets(75);
         this.controller.start();
     }
 

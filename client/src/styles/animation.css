@@ -1,0 +1,21 @@
+
+.page-transition-enter {
+    opacity: 0;
+}
+.page-transition-enter-active {
+    position: absolute;
+    top: 0px;
+    opacity: 1;
+    transition-property: opacity;
+    transition-duration: 0.3s;
+}
+.page-transition-exit {
+    opacity: 1;
+}
+.page-transition-exit-active {
+    position: absolute;
+    top: 0px;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.3s;
+}

@@ -27,10 +27,10 @@ export function LandingPage() {
                 >
                     <Logo width="100px" />
                     <Column align="center">
-                        <h1>Quark Icons</h1>
-                        <span>This is just icon template that is modern and simply design.</span>
+                        <h1>QUARK ICONS</h1>
+                        <span>You needs to use this icons template that is modern and simply design.</span>
                     </Column>
-                    <Button.Primary text="Get started" onTap={() => setLocation("/search")} />
+                    <Button.Primary text="GET STARTED" onTap={() => setLocation("/search")} />
                 </Column>
                 <Box position="absolute" size="100%" zIndex="-1">
                     {/** @ts-ignore */}
