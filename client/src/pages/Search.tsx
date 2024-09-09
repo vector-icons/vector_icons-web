@@ -10,6 +10,7 @@ import { Input } from "../templates/Input";
 import { createContext } from "preact";
 import * as Fuse from "fuse.js";
 import { Button } from "../templates/Button";
+import { SettingsBinding } from "../settings/settings_binding";
 
 const PreviewControllerContext = createContext<PreviewController>(null);
 
@@ -29,14 +30,18 @@ class PreviewController {
 
     get iconSize() { return this._iconSize; }
     set iconSize(newValue: number) {
-        this._iconSize = newValue;
-        this.notifyListeners();
+        if (this._iconSize != newValue) {
+            this._iconSize = newValue;
+            this.notifyListeners();
+        }
     }
 
     get iconName() { return this._iconName; }
     set iconName(newValue: string) {
-        this._iconName = newValue;
-        this.notifyListeners();
+        if (this._iconName != newValue) {
+            this._iconName = newValue;
+            this.notifyListeners();
+        }
     }
 
     addListener(listener: PreviewControllerListener) {
@@ -196,9 +201,54 @@ export namespace SideBar {
 
 function SearchHeader() {
     return (
-        <Row padding="var(--padding-df)" borderBottom="1px solid var(--rearground-border)">
+        <Row align="center" padding="var(--padding-df)" borderBottom="1px solid var(--rearground-border)">
             <SearchBar />
+            <SearchHeaderThemeSwitch />
         </Row>
+    )
+}
+
+function SearchHeaderThemeSwitch() {
+    const [theme, setTheme] = useState(document.body.className == "dark" ? "dark" : "light");
+    const isDark = theme == "dark";
+
+    useEffect(() => {
+        const body = document.body;
+        body.className = isDark ? "dark" : "";
+        body.style.transitionProperty = "background-color, color, fill";
+        body.style.transitionDuration = "0.3s";
+        body.ontransitionend = () => {
+            body.removeAttribute("style"); // Clears style all into body.
+        }
+    }, [theme]);
+
+    return (
+        <TouchRipple onTap={() => {
+            SettingsBinding.setValue("theme", isDark ? "light" : "dark");
+
+            // Needs to update this components state.
+            setTheme(isDark ? "light" : "dark");
+        }}>
+            <Box position="relative" borderRadius="50%">
+                <Box
+                    padding="var(--padding-df)"
+                    opacity={isDark ? "0" : "1"}
+                    transform={isDark ? "translate(0px, -100%)" : undefined}
+                    transitionProperty="transform, opacity"
+                    transitionDuration="0.3s"
+                    children={<RenderIcon.Name name="sun" size="24px" />}
+                />
+                <Box
+                    position="absolute"
+                    padding="var(--padding-df)"
+                    opacity={isDark ? "1" : "0"}
+                    transform={isDark ? "translate(0px, -100%)" : undefined}
+                    transitionProperty="transform, opacity"
+                    transitionDuration="0.3s"
+                    children={<RenderIcon.Name name="moon" size="24px" />}
+                />
+            </Box>
+        </TouchRipple>
     )
 }
 
@@ -285,7 +335,7 @@ function SearchBodyContent({icons, controller}: {
 
         return (
             <Column gap="var(--padding-df)" padding="var(--padding-df)">
-                <Text.span>Results is {icons.length} amount</Text.span>
+                <Text.span>Results are {icons.length} amount</Text.span>
                 <Box
                     display="flex"
                     flexWrap="wrap"

@@ -1,5 +1,6 @@
 import { render } from "preact";
 import { App } from "./pages/App";
+import { SettingsBinding } from "./settings/settings_binding";
 
 import "./styles/main";
 import "./styles/font";
@@ -12,8 +13,12 @@ import "./components/landing_background";
 import "web-touch-ripple";
 
 // Insert className dark theme into body element when a user is dark mode.
-if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-    document.body.className = "dark";
+if (SettingsBinding.getValue("theme") == null) {
+    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        document.body.className = "dark";
+    }
+} else {
+    document.body.className = SettingsBinding.getValue("theme");
 }
 
 addEventListener("load", () => {render(<App />, document.body)});
