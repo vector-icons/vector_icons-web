@@ -7,6 +7,7 @@ import "./styles/font";
 import "./styles/variables";
 import "./styles/templates";
 import "./styles/keyframes";
+import "./styles/animation";
 
 import "./components/landing_background";
 

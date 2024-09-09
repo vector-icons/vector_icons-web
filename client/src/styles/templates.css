@@ -1,11 +1,11 @@
 
 /* ../templates/Button.tsx of Primary */
 button.primary {
-    background-color: var(--primary);
-    color: black;
+    background-color: var(--primary2);
+    color: white;
     padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 5px;
+    font-size: 16px;
+    border-radius: 1e10px;
 
     --ripple: rgb(255, 255, 255, 0.6);
     --ripple-hover: rgb(255, 255, 255, 0.3);
@@ -17,7 +17,6 @@ button.secondary {
     color: var(--foreground2);
     padding: var(--padding-sm) var(--padding-df);
     border-radius: 1e10px;
-    cursor: pointer;
 }
 
 /* ../pages/Search.tsx of SearchPage */
