@@ -24,6 +24,10 @@
     --padding-md: 15px; /* medium */
     --padding-lg: 30px; /* large */
     --padding-df: var(--padding-md); /* default = medium */
+
+    /* About react-widgets-router */
+    --router-fadein-keyframe: "page-fadein";
+    --router-fadeout-keyframe: "page-fadeout";
 }
 
 .dark {
