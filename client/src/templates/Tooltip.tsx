@@ -4,11 +4,11 @@ import { Box } from "react-widgets";
 import { Overlay, OverlayAlignment, OverlayDirection, OverlayElement } from "web-overlay-layout";
 
 export function Tooltip({message, children}: {
-    message: string;
+    message?: string;
     children: ReactNode;
 }) {
     const wrapperRef = useRef<HTMLDivElement>(null);
-    
+
     // This value defines an overlay element added to the current DOM.
     let activeOverlay: OverlayElement = null;
     let delayTimerIds: NodeJS.Timeout;
@@ -16,10 +16,17 @@ export function Tooltip({message, children}: {
     useLayoutEffect(() => {
         const wrapper = wrapperRef.current;
 
+        if (message == null) {
+            wrapper.onmouseleave = null;
+            wrapper.onmouseenter = null;
+            return;
+        }
+
         wrapper.onmouseleave = () => {
             delayTimerIds && clearTimeout(delayTimerIds);
             activeOverlay?.detach();
         }
+
         wrapper.onmouseenter = () => {
             delayTimerIds = setTimeout(() => {
                 const overlay = document.createElement("div");
@@ -44,7 +51,7 @@ export function Tooltip({message, children}: {
                 });
             }, 200); // delay 0.2s
         }
-    });
+    }, [message]);
 
     return (
         <Box refer={wrapperRef} children={children} />

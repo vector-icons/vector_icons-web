@@ -4,3 +4,6 @@
 [submodule "packages/react-widgets"]
 	path = packages/react-widgets
 	url = https://github.com/react-widgets/react_widgets
+[submodule "packages/react-widgets-router"]
+	path = packages/react-widgets-router
+	url = https://github.com/react-widgets/react_widgets-router

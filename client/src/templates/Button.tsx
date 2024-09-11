@@ -1,15 +1,12 @@
 import { TouchRipple } from "web-touch-ripple/jsx"
 
 export namespace Button {
-    export function Primary({text, wait = false, onTap}: {
+    export function Primary({text, onTap}: {
         text: string,
-        wait?: boolean,
         onTap: VoidFunction
     }) {
         return (
-            <TouchRipple onTap={onTap} wait={wait}>
-                <button className="primary">{text}</button>
-            </TouchRipple>
+            <button className="primary" onClick={onTap}>{text}</button>
         )
     }
 

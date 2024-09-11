@@ -1,17 +1,15 @@
-import Logo from "../assets/icons/logo.svg";
-
-import { AnimatedFoldable, Box, Column, Expanded, Row, Scrollable, TabNavigation, Text } from "react-widgets";
-import { RenderIcon } from "../templates/RenderIcon";
-import { Icons, IconType } from "./App";
+import { Box, Column, Expanded, Row, Scrollable, Text } from "react-widgets";
+import { RenderIcon } from "../../templates/RenderIcon";
+import { Icons, IconType } from "../App";
 import { TouchRipple } from "web-touch-ripple/jsx";
-import { Container } from "../templates/Container";
+import { Container } from "../../templates/Container";
 import { useContext, useEffect, useRef, useState } from "preact/hooks";
-import { Input } from "../templates/Input";
+import { Input } from "../../templates/Input";
 import { createContext } from "preact";
 import * as Fuse from "fuse.js";
-import { Button } from "../templates/Button";
-import { SettingsBinding } from "../settings/settings_binding";
-import { Tooltip } from "../templates/Tooltip";
+import { Button } from "../../templates/Button";
+import { SettingsBinding } from "../../settings/settings_binding";
+import { Tooltip } from "../../templates/Tooltip";
 
 const PreviewControllerContext = createContext<PreviewController>(null);
 
@@ -74,146 +72,18 @@ export function SearchPage() {
     const [controller, _] = useState(new PreviewController(32, "", PreviewIconType.all));
 
     return (
-       <PreviewControllerContext.Provider value={controller}>
-             <Row size="100%">
-                <SideBar.Body />
-                <Column size="100%" flexShrink="1">
-                    <SearchHeader />
-                    <Expanded direction="vertical">
-                        <Row size="100%">
-                            <SearchBody />
-                            <SearchBodySideBar />
-                        </Row>
-                    </Expanded>
-                </Column>
-            </Row>
-       </PreviewControllerContext.Provider>
-    )
-}
-
-export namespace SideBar {
-    export function Body() {
-        const [index, setIndex] = useState(0); // temp
-        const [close, setClose] = useState(window.innerWidth < 1400);
-        const closeUserRef = useRef(false);
-
-        useEffect(() => {
-            let callback = null;
-            window.addEventListener("resize", callback = () => {
-                if (!closeUserRef.current) {
-                    setClose(window.innerWidth < 1400);
-                }
-            });
-
-            return () => window.removeEventListener("resize", callback);
-        }, []);
-
-        return (
-            <Column
-                flexShrink="0"
-                gap="var(--padding-df)"
-                padding="var(--padding-df)"
-                backgroundColor="var(--rearground)"
-                borderRight="1px solid var(--rearground-border)"
-            >
-                <Row>
-                    <AnimatedFoldable.Horizontal visible={close} duration="0.3s" transition={{opacity: true}} overflow="visible">
-                        <Box marginLeft="15px"><Logo width="24px" /></Box>
-                    </AnimatedFoldable.Horizontal>
-                    <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" transition={{opacity: true}}>
-                        <Text.h1 fontSize="22px" padding="0px var(--padding-df)">QUARK ICONS</Text.h1>
-                    </AnimatedFoldable.Horizontal>
-                </Row>
-                <Box paddingLeft="3px">
-                    <PrimaryButton close={close} text="Download All" iconName="import" onTap={() => {}} />
-                </Box>
-                <Scrollable.Vertical>
-                    <TabNavigation.Vertical
-                        index={index}
-                        duration="0.3s"
-                        style={{borderRadius: "1e10px", backgroundColor: "var(--foreground2)", width: "50%"}}
-                    >
-                        <Box><Item closed={close} selected={index == 0} onTap={() => setIndex(0)} iconName="home" title="Home" /></Box>
-                        <Box><Item closed={close} selected={index == 1} onTap={() => setIndex(1)} iconName="community" title="Community" /></Box>
-                        <Box><Item closed={close} selected={index == 2} onTap={() => setIndex(2)} iconName="storage" title="Storage" /></Box>
-                        <Box><Item closed={close} selected={index == 3} onTap={() => setIndex(3)} iconName="settings" title="Settings" /></Box>
-                    </TabNavigation.Vertical>
-                </Scrollable.Vertical>
-                <Column marginTop="auto">
-                    <Button close={close} text="Close" iconName={close ? "arrow_right" : "arrow_left"} onTap={() => {closeUserRef.current = !close; setClose(!close)}} />
-                </Column>
-            </Column>
-        )
-    }
-
-    export function Item({selected, closed, iconName, title, onTap}: {
-        selected: boolean;
-        iconName: string;
-        closed: boolean;
-        title: string;
-        onTap: VoidFunction;
-    }) {
-        return (
-            <TouchRipple onTap={onTap}>
-                <Row align="centerLeft" padding="var(--padding-df)" borderRadius="10px">
-                    <RenderIcon.Name filled={selected} size="18px" name={iconName} />
-                    <AnimatedFoldable.Horizontal visible={!closed} duration="0.3s" transition={{opacity: true}} overflow="visible">
-                        <Box
-                            marginLeft="var(--padding-df)"
-                            color={selected ? "var(--foreground)" : "var(--foreground3)"}
-                            transitionProperty="color"
-                            transitionDuration="0.3s"
-                            children={title}
-                        />
-                    </AnimatedFoldable.Horizontal>
-                </Row>
-            </TouchRipple>
-        )
-    }
-
-    export function Button({text, close, iconName, onTap}: {
-        text: string;
-        close: boolean;
-        iconName: string;
-        onTap: VoidFunction;
-    }) {
-        return (
-            <TouchRipple onTap={onTap}>
-                <Row padding="var(--padding-sm) var(--padding-df)" borderRadius="1e10px">
-                    <RenderIcon.Name name={iconName} size="18px" />
-                    <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" transition={{opacity: true}} overflow="visible">
-                        <Box paddingLeft="var(--padding-df)">{text}</Box>
-                    </AnimatedFoldable.Horizontal>
-                </Row>
-            </TouchRipple>
-        )
-    }
-
-    export function PrimaryButton({text, close, iconName, onTap}: {
-        text: string;
-        close: boolean;
-        iconName: string;
-        onTap: VoidFunction;
-    }) {
-        return (
-            <Box maxWidth="max-content">
-                <TouchRipple onTap={onTap}>
-                    <Row
-                        backgroundColor="var(--primary)"
-                        color="white"
-                        fill="white"
-                        padding="var(--padding-sm) var(--padding-df)"
-                        borderRadius="1e10px"
-                    >
-                        <RenderIcon.Name name={iconName} size="18px" />
-                        <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" transition={{opacity: true}} overflow="visible">
-                            <Box paddingLeft="10px">{text}</Box>
-                        </AnimatedFoldable.Horizontal>
+        <PreviewControllerContext.Provider value={controller}>
+            <Column size="100%" flexShrink="1">
+                <SearchHeader />
+                <Expanded direction="vertical">
+                    <Row size="100%">
+                        <SearchBody />
+                        <SearchBodySideBar />
                     </Row>
-                </TouchRipple>
-            </Box>
-        )
-    }
+                </Expanded>
+            </Column>
+        </PreviewControllerContext.Provider>
+    )
 }
 
 function SearchHeader() {
@@ -293,9 +163,7 @@ function SearchBody() {
     const countState = useState(0);
     const controller = useContext(PreviewControllerContext);
 
-    useEffect(() => {
-        controller.addListener(countState[1]);
-    }, []);
+    useEffect(() => controller.addListener(countState[1]), []);
 
     const iconSearchName = controller.iconName;
     const iconSearch = new Fuse.default(Icons, {
