@@ -1,7 +1,6 @@
-import { Route, Switch } from "wouter";
+import * as home from "./home/Switch";
 import { LandingPage } from "./Landing";
-import { SearchPage } from "./Search";
-import { AnimatedSwitch } from "../templates/AnimatedSwitch";
+import { Route, Router } from "react-widgets-router";
 
 export type IconType = {
     name: string;
@@ -13,9 +12,9 @@ export const Icons: IconType[] = require("../../../assets/icons-dist.json");
 
 export function App() {
     return (
-        <AnimatedSwitch>
+        <Router>
             <Route path="/" component={LandingPage} />
-            <Route path="/search" component={SearchPage} />
-        </AnimatedSwitch>
+            <Route path="/app" component={home.SwitchPage} />
+        </Router>
     )
 }

@@ -1,14 +1,12 @@
+import Logo from "../assets/favicon.svg";
+
 import { AnimatedFoldable, Box, Column, Scrollable } from "react-widgets";
 import { TouchRipple } from "web-touch-ripple/jsx";
 import { Button } from "../templates/Button";
 import { ReactNode, useState } from "preact/compat";
-import { useLocation } from "wouter";
-
-import Logo from "../assets/favicon.svg";
+import { RouterBinding } from "react-widgets-router";
 
 export function LandingPage() {
-    const [_, setLocation] = useLocation();
-
     return (
         <Scrollable.Vertical>
             <Column>
@@ -31,7 +29,7 @@ export function LandingPage() {
                             <h1>QUARK ICONS</h1>
                             <span>You needs to use this icons template that is modern and simply design.</span>
                         </Column>
-                        <Button.Primary text="GET STARTED" onTap={() => setLocation("/search")} />
+                        <Button.Primary text="GET STARTED" onTap={() => RouterBinding.instance.push("/app")} />
                     </Column>
                     <Box position="absolute" size="100%" zIndex="-1">
                         {/** @ts-ignore */}
