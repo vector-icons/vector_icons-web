@@ -8,6 +8,7 @@ import { RenderIcon } from "../../templates/RenderIcon";
 import { TouchRipple } from "web-touch-ripple/jsx";
 import { Route, Router, RouterBinding, useLocation } from "react-widgets-router";
 import { SettingsPage } from "./Settings";
+import { l10n } from "../../localization/localization";
 
 export function SwitchPage() {
     return (
@@ -62,7 +63,7 @@ export namespace SideBar {
                 <Box paddingLeft="3px">
                     <PrimaryButton
                         close={close}
-                        text="Download All"
+                        text={l10n["app_download"]}
                         iconName="import"
                         onTap={() => window.open("https://github.com/vector-icons/vector_icons-assets")}
                     />
@@ -73,22 +74,25 @@ export namespace SideBar {
                         duration="0.3s"
                         style={{borderRadius: "1e10px", backgroundColor: "var(--foreground2)", width: "50%"}}
                     >
-                        <Tooltip message={close ? "Home" : null}>
-                            <Item closed={close} selected={index == 0} onTap={() => {}} iconName="home" title="Home" />
+                        <Tooltip message={close ? l10n["app_home"] : null}>
+                            <Item closed={close} selected={index == 0} onTap={() => {}} iconName="home" title={l10n["app_home"]} />
                         </Tooltip>
-                        <Tooltip message={close ? "Community" : null}>
-                            <Item closed={close} selected={false} onTap={() => {}} iconName="community" title="Community" />
+                        <Tooltip message={close ? l10n["app_request"] : null}>
+                            <Item closed={close} selected={false} onTap={() => {}} iconName="add_circle" title={l10n["app_request"]} />
                         </Tooltip>
-                        <Tooltip message={close ? "Storage" : null}>
-                            <Item closed={close} selected={false} onTap={() => {}} iconName="storage" title="Storage" />
+                        <Tooltip message={close ? l10n["app_community"] : null}>
+                            <Item closed={close} selected={false} onTap={() => {}} iconName="community" title={l10n["app_community"]} />
                         </Tooltip>
-                        <Tooltip message={close ? "Settings" : null}>
-                            <Item closed={close} selected={index == 3} onTap={() => {}} iconName="settings" title="Settings" />
+                        <Tooltip message={close ? l10n["app_storage"] : null}>
+                            <Item closed={close} selected={false} onTap={() => {}} iconName="storage" title={l10n["app_storage"]} />
+                        </Tooltip>
+                        <Tooltip message={close ? l10n["app_settings"] : null}>
+                            <Item closed={close} selected={index == 3} onTap={() => {}} iconName="settings" title={l10n["app_settings"]} />
                         </Tooltip>
                     </TabNavigation.Vertical>
                 </Scrollable.Vertical>
                 <Column marginTop="auto">
-                    <Button close={close} text="Close" iconName={close ? "arrow_right" : "arrow_left"} onTap={() => {closeUserRef.current = !close; setClose(!close)}} />
+                    <Button close={close} text={l10n["close"]} iconName={close ? "arrow_right" : "arrow_left"} onTap={() => {closeUserRef.current = !close; setClose(!close)}} />
                 </Column>
             </Column>
         )

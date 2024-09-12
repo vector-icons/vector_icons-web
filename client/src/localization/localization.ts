@@ -6,4 +6,6 @@ const _l10n: {[key: string]: any} = {
 
 /** This proxy provides localization assets corresponds to a user language. */
 // export const l10n = _l10n[navigator.language] ?? _l10n["en-US"];
-export const l10n = _l10n["en-US"];
+export const l10n = navigator.language == "ko-KR"
+    ? _l10n["ko-KR"]
+    : _l10n["en-US"];

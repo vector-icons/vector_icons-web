@@ -63,9 +63,9 @@ export namespace Input {
                         position="relative"
                         width="200px"
                         height="5px"
+                        margin="15px 0px"
                         borderRadius="1e10px"
                         background={`linear-gradient(to right, var(--primary) ${percent100}, var(--primary-half) ${percent100})`}
-                        margin="15px 0px"
                         children={
                             <Box
                                 refer={wcircleRef}
@@ -79,7 +79,7 @@ export namespace Input {
                                 borderRadius="50%"
                                 backgroundColor="var(--primary)"
                                 transitionProperty="transform, scale"
-                                transitionDuration="0.15s"
+                                transitionDuration="0.2s, 0.2s"
                             />
                         }
                     />
@@ -132,8 +132,8 @@ export namespace Input {
                     direction: OverlayDirection.BOTTOM_CENTER,
                     alignment: OverlayAlignment.ALL,
                     animation: {
-                        fadein: "input-select-fadein 0.2s",
-                        fadeout: "input-select-fadeout 0.2s"
+                        fadein: "input-select-fadein 0.15s",
+                        fadeout: "input-select-fadeout 0.15s"
                     },
                     targetGap: 15,
                     viewportPadding: 15

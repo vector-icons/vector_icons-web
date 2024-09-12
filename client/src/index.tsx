@@ -29,4 +29,5 @@ addEventListener("DOMContentLoaded", () => {
 
 addEventListener("beforeunload", () => {
     document.body.style.animation = "page-fadeout 0.3s";
+    document.body.style.animationFillMode = "backward";
 });

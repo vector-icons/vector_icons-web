@@ -1,4 +1,4 @@
-import { Box, Column, Expanded, Row, Scrollable, Text } from "react-widgets";
+import { AnimatedFoldable, Box, Column, Constraint, ConstraintBuilder, Expanded, Row, Scrollable, Text } from "react-widgets";
 import { RenderIcon } from "../../templates/RenderIcon";
 import { Icons, IconType } from "../App";
 import { TouchRipple } from "web-touch-ripple/jsx";
@@ -10,6 +10,7 @@ import * as Fuse from "fuse.js";
 import { Button } from "../../templates/Button";
 import { SettingsBinding } from "../../settings/settings_binding";
 import { Tooltip } from "../../templates/Tooltip";
+import { l10n } from "../../localization/localization";
 
 const PreviewControllerContext = createContext<PreviewController>(null);
 
@@ -100,13 +101,7 @@ function SearchHeaderThemeSwitch() {
     const isDark = theme == "dark";
 
     useEffect(() => {
-        const body = document.body;
-        body.className = isDark ? "dark" : "";
-        body.style.transitionProperty = "background-color, color, fill";
-        body.style.transitionDuration = "0.3s";
-        body.ontransitionend = () => {
-            body.removeAttribute("style"); // Clears style all into body.
-        }
+        document.body.className = isDark ? "dark" : "";
     }, [theme]);
 
     return (
@@ -147,7 +142,7 @@ function SearchBar() {
         <input
             ref={wrapperRef}
             type="text"
-            placeholder="Enter a name of icons and keywords or alias"
+            placeholder={l10n["app_search_placeholder"]}
             onChange={() => controller.iconName = wrapperRef.current.value}
             style={{
                 width: "100%",
@@ -183,23 +178,23 @@ function SearchBody() {
             <Column>
                 <Column padding="30px" gap="var(--padding-df)" borderBottom="1px solid var(--rearground-border)">
                     <Column gap="5px">
-                        <Text.p fontSize="24px">Get Started</Text.p>
-                        <Text.span>Try a contributing, would you like to contribute to icon creation? Detailed guidelines are provided below!</Text.span>
+                        <Text.p fontSize="24px">{l10n["app_contributing_title"]}</Text.p>
+                        <Text.span>{l10n["app_contributing_description"]}</Text.span>
                     </Column>
                     <Row gap="var(--padding-df)">
                         <TouchRipple onTap={() => {}}>
                             <Container expanded={true}>
                                 <Column gap="5px">
-                                    <Text.p fontSize="18px">Style Guide</Text.p>
-                                    <Text.span fontSize="14px">This open-source project aims to create and maintain icons with a consistent design! Therefore, please refer to the guide to ensure a cohesive icon style.</Text.span>
+                                    <Text.p fontSize="18px">{l10n["app_contributing_style_guide_title"]}</Text.p>
+                                    <Text.span fontSize="14px">{l10n["app_contributing_style_guide_description"]}</Text.span>
                                 </Column>
                             </Container>
                         </TouchRipple>
                         <TouchRipple wait={true} onTap={() => window.open("https://github.com/vector-icons/vector_icons")}>
                             <Container expanded={true}>
                                 <Column gap="5px">
-                                    <Text.p fontSize="18px">Github</Text.p>
-                                    <Text.span fontSize="14px">To complete the icon creation and officially integrate it into the project, you will need to use GitHub!</Text.span>
+                                    <Text.p fontSize="18px">{l10n["app_contributing_github_title"]}</Text.p>
+                                    <Text.span fontSize="14px">{l10n["app_contributing_github_description"]}</Text.span>
                                 </Column>
                             </Container>
                         </TouchRipple>
@@ -221,7 +216,7 @@ function SearchBodyContent({icons, controller}: {
 
         return (
             <Column gap="var(--padding-df)" padding="var(--padding-df)">
-                <Text.span>Results are {icons.length} amount</Text.span>
+                <Text.span>{(l10n["app_search_results"] as string).replace("{0}", icons.length.toString())}</Text.span>
                 <Box
                     display="flex"
                     flexWrap="wrap"
@@ -313,36 +308,46 @@ function SearchBodySideBar() {
     }, []);
 
     return (
-        <Box flexShrink="0" borderLeft="1px solid var(--rearground-border)">
-            <Scrollable.Vertical>
-                <Column padding="var(--padding-df)" gap="var(--padding-df)">
-                    <Column>
-                        <Row gap="var(--padding-sm)">
-                            <RenderIcon.Name name="control" size="18px" />
-                            <Column gap="3px">
-                                <Text.h4 fontWeight="normal">Icon Size ({iconSize}px)</Text.h4>
-                                <Text.span fontSize="12px" fontWeight="normal">Controls an icon sizes</Text.span>
+        <ConstraintBuilder<boolean>
+            constraints={[
+                new Constraint(1000, Infinity, true),
+                new Constraint(-Infinity, 1000, false)
+            ]}
+            builder={isExpanded => 
+                <Box flexShrink="0" borderLeft="1px solid var(--rearground-border)">
+                    <Scrollable.Vertical>
+                        <AnimatedFoldable.Horizontal visible={isExpanded} duration="0.3s">
+                            <Column padding="var(--padding-df)" gap="var(--padding-df)">
+                                <Column>
+                                    <Row gap="var(--padding-sm)">
+                                        <RenderIcon.Name name="control" size="18px" />
+                                        <Column gap="3px">
+                                            <Text.h4 fontWeight="normal">{l10n["app_controls_icon_size_title"]} ({iconSize}px)</Text.h4>
+                                            <Text.span fontSize="12px" fontWeight="normal">{l10n["app_controls_icon_size_description"]}</Text.span>
+                                        </Column>
+                                    </Row>
+                                    <Input.Range current={iconSize} min={12} max={48} onChange={v => controller.iconSize = Math.round(v)} />
+                                </Column>
+                                <Box width="100%" height="1px" backgroundColor="var(--rearground-border)" />
+                                <Column gap="var(--padding-sm)">
+                                    <Row gap="var(--padding-sm)">
+                                        <RenderIcon.Name name="control" size="18px" />
+                                        <Column gap="3px">
+                                            <Text.h4 fontWeight="normal">{l10n["app_controls_icon_type_title"]}</Text.h4>
+                                            <Text.span fontSize="12px" fontWeight="normal">{l10n["app_controls_icon_type_description"]}</Text.span>
+                                        </Column>
+                                    </Row>
+                                    <Input.Select selected={iconType} onChange={v => controller.iconType = v} itemList={[
+                                        {title: l10n["app_controls_icon_type_all_title"], details: l10n["app_controls_icon_type_all_description"]},
+                                        {title: l10n["app_controls_icon_type_normal_title"], details: l10n["app_controls_icon_type_normal_description"]},
+                                        {title: l10n["app_controls_icon_type_filled_title"], details: l10n["app_controls_icon_type_filled_description"]}
+                                    ]} />
+                                </Column>
                             </Column>
-                        </Row>
-                        <Input.Range current={iconSize} min={12} max={48} onChange={v => controller.iconSize = Math.round(v)} />
-                    </Column>
-                    <Box width="100%" height="1px" backgroundColor="var(--rearground-border)" />
-                    <Column gap="var(--padding-sm)">
-                        <Row gap="var(--padding-sm)">
-                            <RenderIcon.Name name="control" size="18px" />
-                            <Column gap="3px">
-                                <Text.h4 fontWeight="normal">View Icon Type</Text.h4>
-                                <Text.span fontSize="12px" fontWeight="normal">Settings view an icon types</Text.span>
-                            </Column>
-                        </Row>
-                        <Input.Select selected={iconType} onChange={v => controller.iconType = v} itemList={[
-                            {title: "All", details: "View icon types all"},
-                            {title: "Only Normal", details: "View only line style icons"},
-                            {title: "Only Filled", details: "View only fill style icons"}
-                        ]} />
-                    </Column>
-                </Column>
-            </Scrollable.Vertical>
-        </Box>
+                        </AnimatedFoldable.Horizontal>
+                    </Scrollable.Vertical>
+                </Box>
+            }
+        />
     )
 }
