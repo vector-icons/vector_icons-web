@@ -60,7 +60,12 @@ export namespace SideBar {
                     </AnimatedFoldable.Horizontal>
                 </Row>
                 <Box paddingLeft="3px">
-                    <PrimaryButton close={close} text="Download All" iconName="import" onTap={() => {}} />
+                    <PrimaryButton
+                        close={close}
+                        text="Download All"
+                        iconName="import"
+                        onTap={() => window.open("https://github.com/vector-icons/vector_icons-assets")}
+                    />
                 </Box>
                 <Scrollable.Vertical>
                     <TabNavigation.Vertical
