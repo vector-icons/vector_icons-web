@@ -1,11 +1,13 @@
 
 /* ../templates/Button.tsx of Primary */
 button.primary {
+    display: flex;
     background-color: var(--primary);
     color: white;
     padding: 10px 15px;
     font-size: 16px;
     border-radius: 1e10px;
+    column-gap: 5px;
 
     --ripple: rgb(255, 255, 255, 0.6);
     --ripple-hover: rgb(255, 255, 255, 0.3);

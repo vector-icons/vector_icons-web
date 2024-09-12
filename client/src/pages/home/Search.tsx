@@ -245,14 +245,13 @@ function SearchBodyContent({icons, controller}: {
                                         if (iconType == PreviewIconType.normal && key != "normal") return;
                                         if (iconType == PreviewIconType.filled && key != "filled") return;
 
-                                        const blob = new Blob([innerHTML], {type: "image/svg+xml"});
-                                        const bUrl = URL.createObjectURL(blob);
-
                                         const iconName = key == "normal"
                                             ? icon.name
                                             : icon.name + "-" + key;
 
                                         const handleDownload = () => {
+                                            const blob = new Blob([innerHTML], {type: "image/svg+xml"});
+                                            const bUrl = URL.createObjectURL(blob);
                                             const temp = document.createElement('a');
                                             temp.href = bUrl;
                                             temp.download = iconName;

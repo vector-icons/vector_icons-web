@@ -1,12 +1,17 @@
 import { TouchRipple } from "web-touch-ripple/jsx"
+import { RenderIcon } from "./RenderIcon"
 
 export namespace Button {
-    export function Primary({text, onTap}: {
+    export function Primary({text, icon, onTap}: {
         text: string,
+        icon?: string,
         onTap: VoidFunction
     }) {
         return (
-            <button className="primary" onClick={onTap}>{text}</button>
+            <button className="primary" onClick={onTap}>
+                {icon ? <RenderIcon.Name size="18px" name={icon} /> : <></>}
+                {text}
+            </button>
         )
     }
 

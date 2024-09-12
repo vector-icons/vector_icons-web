@@ -6,7 +6,8 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import { Tooltip } from "../../templates/Tooltip";
 import { RenderIcon } from "../../templates/RenderIcon";
 import { TouchRipple } from "web-touch-ripple/jsx";
-import { Route, Router } from "react-widgets-router";
+import { Route, Router, RouterBinding, useLocation } from "react-widgets-router";
+import { SettingsPage } from "./Settings";
 
 export function SwitchPage() {
     return (
@@ -15,6 +16,7 @@ export function SwitchPage() {
             <Column size="100%" flexShrink="1">
                 <Router>
                     <Route path="/" component={SearchPage} />
+                    <Route path="/settings" component={SettingsPage} />
                 </Router>
             </Column>
         </Row>
@@ -23,9 +25,12 @@ export function SwitchPage() {
 
 export namespace SideBar {
     export function Body() {
-        const [index, setIndex] = useState(0); // temp
         const [close, setClose] = useState(window.innerWidth < 1400);
         const closeUserRef = useRef(false);
+        const location = useLocation();
+        const index = location.relPath == "/" ? 0
+                    : location.relPath == "/settings" ? 3
+                    : 0;
 
         useEffect(() => {
             let callback = null;
@@ -64,16 +69,16 @@ export namespace SideBar {
                         style={{borderRadius: "1e10px", backgroundColor: "var(--foreground2)", width: "50%"}}
                     >
                         <Tooltip message={close ? "Home" : null}>
-                            <Item closed={close} selected={index == 0} onTap={() => setIndex(0)} iconName="home" title="Home" />
+                            <Item closed={close} selected={index == 0} onTap={() => {}} iconName="home" title="Home" />
                         </Tooltip>
-                        <Tooltip message="It's still under preparation">
-                            <Item closed={close} selected={index == 1} onTap={() => {}} iconName="community" title="Community" />
+                        <Tooltip message={close ? "Community" : null}>
+                            <Item closed={close} selected={false} onTap={() => {}} iconName="community" title="Community" />
                         </Tooltip>
-                        <Tooltip message="It's still under preparation">
-                            <Item closed={close} selected={index == 2} onTap={() => {}} iconName="storage" title="Storage" />
+                        <Tooltip message={close ? "Storage" : null}>
+                            <Item closed={close} selected={false} onTap={() => {}} iconName="storage" title="Storage" />
                         </Tooltip>
                         <Tooltip message={close ? "Settings" : null}>
-                            <Item closed={close} selected={index == 3} onTap={() => setIndex(3)} iconName="settings" title="Settings" />
+                            <Item closed={close} selected={index == 3} onTap={() => {}} iconName="settings" title="Settings" />
                         </Tooltip>
                     </TabNavigation.Vertical>
                 </Scrollable.Vertical>

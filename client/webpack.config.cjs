@@ -40,13 +40,17 @@ module.exports = {
                 test: /\.svg$/,
                 use: ["preact-svg-loader"],
             },
-            { // To export the font assets files from `src/` to `dist/`.
+            { // To export font assets files from `src/` to `dist/`.
                 test: /\.(woff|woff2|eot|ttf|otf)$/i,
                 type: "asset/resource",
                 generator: {
-                    filename: 'fonts/[name][ext]'
+                    filename: "fonts/[name][ext]"
                 }
             },
+            { // To inset localization assets files to bundle files.
+                test: /(?<=localization).+.json$/,
+                type: "asset/source"
+            }
         ]
     },
     resolve: {

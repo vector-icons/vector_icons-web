@@ -5,6 +5,7 @@ import { TouchRipple } from "web-touch-ripple/jsx";
 import { Button } from "../templates/Button";
 import { ReactNode, useState } from "preact/compat";
 import { RouterBinding } from "react-widgets-router";
+import { l10n } from "../localization/localization";
 
 export function LandingPage() {
     return (
@@ -26,10 +27,10 @@ export function LandingPage() {
                     >
                         <Logo width="100px" />
                         <Column align="center">
-                            <h1>QUARK ICONS</h1>
-                            <span>You needs to use this icons template that is modern and simply design.</span>
+                            <h1>{l10n["landing_title"]}</h1>
+                            <span>{l10n["landing_introduction"]}</span>
                         </Column>
-                        <Button.Primary text="GET STARTED" onTap={() => RouterBinding.instance.push("/app")} />
+                        <Button.Primary text={l10n["landing_get_started"]} onTap={() => RouterBinding.instance.push("/app")} />
                     </Column>
                     <Box position="absolute" size="100%" zIndex="-1">
                         {/** @ts-ignore */}
