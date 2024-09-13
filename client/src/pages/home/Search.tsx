@@ -332,6 +332,20 @@ function SearchTag({text, details, iconCount}: {
 }
 
 function SearchBodySideBar() {
+    return (
+        <ConstraintBuilder<boolean>
+            constraints={[
+                new Constraint(1000, Infinity, true),
+                new Constraint(-Infinity, 1000, false)
+            ]}
+            builder={isExpanded => 
+                <SearchBodySideBarInner expanded={isExpanded} />
+            }
+        />
+    )
+}
+
+function SearchBodySideBarInner({expanded}: {expanded: boolean}) {
     const countState = useState(0);
     const controller = useContext(PreviewControllerContext);
     const iconSize = controller.iconSize;
@@ -342,46 +356,38 @@ function SearchBodySideBar() {
     }, []);
 
     return (
-        <ConstraintBuilder<boolean>
-            constraints={[
-                new Constraint(1000, Infinity, true),
-                new Constraint(-Infinity, 1000, false)
-            ]}
-            builder={isExpanded => 
-                <Box flexShrink="0" borderLeft="1px solid var(--rearground-border)">
-                    <Scrollable.Vertical>
-                        <AnimatedFoldable.Horizontal visible={isExpanded} duration="0.3s">
-                            <Column padding="var(--padding-df)" gap="var(--padding-df)">
-                                <Column>
-                                    <Row gap="var(--padding-sm)">
-                                        <RenderIcon.Name name="control" size="18px" />
-                                        <Column gap="3px">
-                                            <Text.h4 fontWeight="normal">{l10n["app_controls_icon_size_title"]} ({iconSize}px)</Text.h4>
-                                            <Text.span fontSize="12px" fontWeight="normal">{l10n["app_controls_icon_size_description"]}</Text.span>
-                                        </Column>
-                                    </Row>
-                                    <Input.Range current={iconSize} min={12} max={48} onChange={v => controller.iconSize = Math.round(v)} />
+        <Box flexShrink="0" borderLeft="1px solid var(--rearground-border)">
+            <Scrollable.Vertical>
+                <AnimatedFoldable.Horizontal visible={expanded} duration="0.3s">
+                    <Column padding="var(--padding-df)" gap="var(--padding-df)">
+                        <Column>
+                            <Row gap="var(--padding-sm)">
+                                <RenderIcon.Name name="control" size="18px" />
+                                <Column gap="3px">
+                                    <Text.h4 fontWeight="normal">{l10n["app_controls_icon_size_title"]} ({iconSize}px)</Text.h4>
+                                    <Text.span fontSize="12px" fontWeight="normal">{l10n["app_controls_icon_size_description"]}</Text.span>
                                 </Column>
-                                <Box width="100%" height="1px" backgroundColor="var(--rearground-border)" />
-                                <Column gap="var(--padding-sm)">
-                                    <Row gap="var(--padding-sm)">
-                                        <RenderIcon.Name name="control" size="18px" />
-                                        <Column gap="3px">
-                                            <Text.h4 fontWeight="normal">{l10n["app_controls_icon_type_title"]}</Text.h4>
-                                            <Text.span fontSize="12px" fontWeight="normal">{l10n["app_controls_icon_type_description"]}</Text.span>
-                                        </Column>
-                                    </Row>
-                                    <Input.Select selected={iconType} onChange={v => controller.iconType = v} itemList={[
-                                        {title: l10n["app_controls_icon_type_all_title"], details: l10n["app_controls_icon_type_all_description"]},
-                                        {title: l10n["app_controls_icon_type_normal_title"], details: l10n["app_controls_icon_type_normal_description"]},
-                                        {title: l10n["app_controls_icon_type_filled_title"], details: l10n["app_controls_icon_type_filled_description"]}
-                                    ]} />
+                            </Row>
+                            <Input.Range current={iconSize} min={12} max={48} onChange={v => controller.iconSize = Math.round(v)} />
+                        </Column>
+                        <Box width="100%" height="1px" backgroundColor="var(--rearground-border)" />
+                        <Column gap="var(--padding-sm)">
+                            <Row gap="var(--padding-sm)">
+                                <RenderIcon.Name name="control" size="18px" />
+                                <Column gap="3px">
+                                    <Text.h4 fontWeight="normal">{l10n["app_controls_icon_type_title"]}</Text.h4>
+                                    <Text.span fontSize="12px" fontWeight="normal">{l10n["app_controls_icon_type_description"]}</Text.span>
                                 </Column>
-                            </Column>
-                        </AnimatedFoldable.Horizontal>
-                    </Scrollable.Vertical>
-                </Box>
-            }
-        />
+                            </Row>
+                            <Input.Select selected={iconType} onChange={v => controller.iconType = v} itemList={[
+                                {title: l10n["app_controls_icon_type_all_title"], details: l10n["app_controls_icon_type_all_description"]},
+                                {title: l10n["app_controls_icon_type_normal_title"], details: l10n["app_controls_icon_type_normal_description"]},
+                                {title: l10n["app_controls_icon_type_filled_title"], details: l10n["app_controls_icon_type_filled_description"]}
+                            ]} />
+                        </Column>
+                    </Column>
+                </AnimatedFoldable.Horizontal>
+            </Scrollable.Vertical>
+        </Box>
     )
 }
