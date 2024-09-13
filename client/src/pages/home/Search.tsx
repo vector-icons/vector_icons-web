@@ -105,32 +105,34 @@ function SearchHeaderThemeSwitch() {
     }, [theme]);
 
     return (
-        <TouchRipple onTap={() => {
-            SettingsBinding.setValue("theme", isDark ? "light" : "dark");
+        <Tooltip message={isDark ? l10n["app_setting_to_light"] : l10n["app_setting_to_dark"]}>
+            <TouchRipple onTap={() => {
+                SettingsBinding.setValue("theme", isDark ? "light" : "dark");
 
-            // Needs to update this components state.
-            setTheme(isDark ? "light" : "dark");
-        }}>
-            <Box position="relative" borderRadius="50%">
-                <Box
-                    padding="var(--padding-df)"
-                    opacity={isDark ? "0" : "1"}
-                    transform={isDark ? "translate(0px, -100%)" : undefined}
-                    transitionProperty="transform, opacity"
-                    transitionDuration="0.3s"
-                    children={<RenderIcon.Name name="sun" size="24px" />}
-                />
-                <Box
-                    position="absolute"
-                    padding="var(--padding-df)"
-                    opacity={isDark ? "1" : "0"}
-                    transform={isDark ? "translate(0px, -100%)" : undefined}
-                    transitionProperty="transform, opacity"
-                    transitionDuration="0.3s"
-                    children={<RenderIcon.Name name="moon" size="24px" />}
-                />
-            </Box>
-        </TouchRipple>
+                // Needs to update this components state.
+                setTheme(isDark ? "light" : "dark");
+            }}>
+                <Box position="relative" borderRadius="50%">
+                    <Box
+                        padding="var(--padding-df)"
+                        opacity={isDark ? "0" : "1"}
+                        transform={isDark ? "translate(0px, -100%)" : undefined}
+                        transitionProperty="transform, opacity"
+                        transitionDuration="0.3s"
+                        children={<RenderIcon.Name name="sun" size="24px" />}
+                    />
+                    <Box
+                        position="absolute"
+                        padding="var(--padding-df)"
+                        opacity={isDark ? "1" : "0"}
+                        transform={isDark ? "translate(0px, -100%)" : undefined}
+                        transitionProperty="transform, opacity"
+                        transitionDuration="0.3s"
+                        children={<RenderIcon.Name name="moon" size="24px" />}
+                    />
+                </Box>
+            </TouchRipple>
+        </Tooltip>
     )
 }
 
@@ -217,6 +219,15 @@ function SearchBodyContent({icons, controller}: {
         return (
             <Column gap="var(--padding-df)" padding="var(--padding-df)">
                 <Text.span>{(l10n["app_search_results"] as string).replace("{0}", icons.length.toString())}</Text.span>
+                <Scrollable.Horizontal>
+                    <Row gap="var(--padding-sm)">
+                        <SearchTag text="Users" details="" iconCount={12} />
+                        <SearchTag text="Sounds" details="" iconCount={20} />
+                        <SearchTag text="Navigations" details="" iconCount={32} />
+                        <SearchTag text="Messages" details="" iconCount={42} />
+                        <SearchTag text="Applications" details="" iconCount={14} />
+                    </Row>
+                </Scrollable.Horizontal>
                 <Box
                     display="flex"
                     flexWrap="wrap"
@@ -288,13 +299,36 @@ function SearchBodyContent({icons, controller}: {
             <Column align="center" gap="var(--padding-df)" padding="30px">
                 <RenderIcon.Name name="search" size="50px" color="var(--foreground2)" />
                 <Column align="center">
-                    <Text.h3>None Result</Text.h3>
-                    <Text.span>An icon with a given name does not exist.</Text.span>
+                    <Text.h3>{l10n["app_search_results_none_title"]}</Text.h3>
+                    <Text.span>{l10n["app_search_results_none_description"]}</Text.span>
                 </Column>
-                <Button.Secondary text="Reset All" wait={true} onTap={() => controller.iconName = ""} />
+                <Button.Secondary text={l10n["app_search_results_reset"]} wait={true} onTap={() => controller.iconName = ""} />
             </Column>
         )
     }
+}
+
+function SearchTag({text, details, iconCount}: {
+    text: string;
+    details: string;
+    iconCount: number;
+}) {
+    return (
+        <Tooltip message={l10n["not_support_yet"]}>
+            <TouchRipple onTap={() => {}}>
+                <Row
+                    padding="10px var(--padding-df)"
+                    border="2px dashed var(--rearground-border)"
+                    borderRadius="10px"
+                    color="var(--foreground2)"
+                    gap="5px"
+                >
+                    {"#" + text}
+                    <Box color="var(--foreground4)" fontSize="12px" children={`(${iconCount})`} />
+                </Row>
+            </TouchRipple>
+        </Tooltip>
+    )
 }
 
 function SearchBodySideBar() {

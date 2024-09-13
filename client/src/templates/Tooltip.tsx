@@ -8,13 +8,19 @@ export function Tooltip({message, children}: {
     children: ReactNode;
 }) {
     const wrapperRef = useRef<HTMLDivElement>(null);
+    const overlayRef = useRef<OverlayElement>(null);
+    const delayTimerRef = useRef<NodeJS.Timeout>(null);
 
-    // This value defines an overlay element added to the current DOM.
-    let activeOverlay: OverlayElement = null;
-    let delayTimerIds: NodeJS.Timeout;
+    if (overlayRef.current) {
+        overlayRef.current.detach();
+    }
 
     useLayoutEffect(() => {
         const wrapper = wrapperRef.current;
+
+        // This value defines an overlay element added to the current DOM.
+        const activeOverlay = () => overlayRef.current;
+        const delayTimerIds = () => delayTimerRef.current;
 
         if (message == null) {
             wrapper.onmouseleave = null;
@@ -23,18 +29,18 @@ export function Tooltip({message, children}: {
         }
 
         wrapper.onmouseleave = () => {
-            delayTimerIds && clearTimeout(delayTimerIds);
-            activeOverlay?.detach();
+            delayTimerIds() && clearTimeout(delayTimerIds());
+            activeOverlay()?.detach();
         }
 
         wrapper.onmouseenter = () => {
-            delayTimerIds = setTimeout(() => {
+            delayTimerRef.current = setTimeout(() => {
                 const overlay = document.createElement("div");
 
                 // Renders a JSX components into document to an overlay element attaching.
                 render(<TooltipOverlay message={message} />, overlay);
 
-                activeOverlay = Overlay.attach({
+                overlayRef.current = Overlay.attach({
                     element: overlay,
                     target: wrapper,
                     parent: document.body,
@@ -51,6 +57,8 @@ export function Tooltip({message, children}: {
                 });
             }, 200); // delay 0.2s
         }
+
+        return () => activeOverlay()?.fadeout();
     }, [message]);
 
     return (

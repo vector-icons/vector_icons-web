@@ -52,14 +52,16 @@ export namespace SideBar {
                 backgroundColor="var(--rearground)"
                 borderRight="1px solid var(--rearground-border)"
             >
-                <Row>
-                    <AnimatedFoldable.Horizontal visible={close} duration="0.3s" transition={{opacity: true}} overflow="visible">
-                        <Box marginLeft="15px"><Logo width="24px" /></Box>
-                    </AnimatedFoldable.Horizontal>
-                    <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" transition={{opacity: true}}>
-                        <Text.h1 fontSize="22px" padding="0px var(--padding-df)">QUARK ICONS</Text.h1>
-                    </AnimatedFoldable.Horizontal>
-                </Row>
+                <div onClick={() => RouterBinding.instance.push("/")}>
+                    <Row cursor="pointer" userSelect="none">
+                        <AnimatedFoldable.Horizontal visible={close} duration="0.3s" transition={{opacity: true}} overflow="visible">
+                            <Box marginLeft="15px"><Logo width="24px" /></Box>
+                        </AnimatedFoldable.Horizontal>
+                        <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" transition={{opacity: true}}>
+                            <Text.h1 fontSize="22px" padding="0px var(--padding-df)">QUARK ICONS</Text.h1>
+                        </AnimatedFoldable.Horizontal>
+                    </Row>
+                </div>
                 <Box paddingLeft="3px">
                     <PrimaryButton
                         close={close}

@@ -1,5 +1,7 @@
 {
     "close": "Close",
+    "not_support": "Not support",
+    "not_support_yet": "Not support yet",
     "landing_title": "QUARK ICONS",
     "landing_introduction": "You needs to use this icons template that is modern and simply design.",
     "landing_get_started": "GET STARTED",
@@ -17,6 +19,9 @@
     "app_contributing_github_description": "To complete the icon creation and officially integrate it into the project, you will need to use GitHub!",
     "app_search_placeholder": "Enter a name of icons and keywords or alias",
     "app_search_results": "Results are {0} amount",
+    "app_search_results_none_title": "None Results",
+    "app_search_results_none_description": "An icon with a given name does not exist.",
+    "app_search_results_reset": "Reset All",
     "app_controls_icon_size_title": "Icon Size",
     "app_controls_icon_size_description": "Controls the icon sizes",
     "app_controls_icon_type_title": "View Icon Type",

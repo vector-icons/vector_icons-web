@@ -74,8 +74,9 @@ class Net {
     }
 
     drawAt(ctx: CanvasRenderingContext2D, x: number, y: number) {
-        const dw = this.image.width * this.size;
-        const dh = this.image.height * this.size;
+        const dpi = window.devicePixelRatio;
+        const dw = (this.image.width * dpi) * this.size;
+        const dh = (this.image.height * dpi) * this.size;
         const dx = x - dw / 2;
         const dy = y - dh / 2;
 
@@ -102,7 +103,7 @@ class Net {
                 ctx.beginPath();
                 ctx.moveTo(other.x.value * width, other.y.value * height);
                 ctx.lineTo(x * width, y * height);
-                ctx.lineWidth = 1;
+                ctx.lineWidth = 1 * window.devicePixelRatio;
 
                 // 투명도 계산 (0.1 이하일 때 1, 0.1 이상일 때 0으로 변함)
                 const opacity = Math.max(0, 1 - (distance * 10));
