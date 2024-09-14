@@ -1,11 +1,12 @@
 import Logo from "../assets/favicon.svg";
 
-import { AnimatedFoldable, Box, Column, Scrollable } from "react-widgets";
+import { AnimatedFoldable, Box, Column, Row, Scrollable } from "react-widgets";
 import { TouchRipple } from "web-touch-ripple/jsx";
 import { Button } from "../templates/Button";
 import { ReactNode, useState } from "preact/compat";
 import { RouterBinding } from "react-widgets-router";
 import { l10n } from "../localization/localization";
+import { RenderIcon } from "../templates/RenderIcon";
 
 export function LandingPage() {
     return (
@@ -117,5 +118,20 @@ function FooterBlockquote({title, children}: {
         >
             <h3>{title}</h3> {children}
         </Column>
+    )
+}
+
+function SearchInput() {
+    return (
+        <Row
+            align="center"
+            backgroundColor="var(--rearground)"
+            borderRadius="1e10px"
+            border="2px solid var(--rearground-border)"
+            paddingLeft="var(--padding-df)"
+        >
+            <RenderIcon.Name name="search" size="16px" />
+            <input placeholder={l10n["landing_search_placeholder"]} style={{width: "300px", padding: "var(--padding-df)"}} />
+        </Row>
     )
 }

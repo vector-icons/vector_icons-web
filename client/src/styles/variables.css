@@ -32,7 +32,7 @@
 
 .dark {
     --primary: rgb(0, 140, 255);
-    --background: rgb(6, 8, 10);
+    --background: rgb(8, 10, 12);
     --background-shadow: black;
     --background-overlay: rgb(38, 41, 44);
     --rearground: rgb(28, 31, 34);

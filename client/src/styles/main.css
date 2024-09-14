@@ -37,6 +37,7 @@ input {
     color: var(--foreground);
     outline: none;
     border: none;
+    font-family: "Pretendard";
 }
 
 input::-webkit-slider-runnable-track,

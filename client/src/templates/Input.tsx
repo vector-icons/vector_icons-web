@@ -29,6 +29,17 @@ export namespace Input {
             wrapper.onpointerenter  = () => wcircle.style.transform = "translate(-50%, -50%) scale(1.2)";
             wrapper.onpointerleave  = () => wcircle.style.transform = "translate(-50%, -50%)";
 
+            wrapper.onclick = event => {
+                const progressRect = wrapper.getBoundingClientRect();
+                const progressSize = progressRect.width;
+                const offsetX = event.pageX - progressRect.left;
+                const current = offsetX / progressSize;
+
+                if (onChange) {
+                    onChange(min + ((max - min) * current));
+                }
+            }
+
             addEventListener("pointermove", callback = (event: PointerEvent) => {
                 if (isActive) {
                     const progressRect = wrapper.getBoundingClientRect();
@@ -55,9 +66,9 @@ export namespace Input {
 
         return (
             <Box
+                ref={wrapperRef}
                 display="flex"
                 cursor="pointer"
-                refer={wrapperRef}
                 children={
                     <Box
                         position="relative"
@@ -68,7 +79,7 @@ export namespace Input {
                         background={`linear-gradient(to right, var(--primary) ${percent100}, var(--primary-half) ${percent100})`}
                         children={
                             <Box
-                                refer={wcircleRef}
+                                ref={wcircleRef}
                                 position="absolute"
                                 top="50%"
                                 left={percent100}
@@ -144,7 +155,7 @@ export namespace Input {
         return (
             <TouchRipple onTap={onTap}>
                 <Box
-                    refer={targetRef}
+                    ref={targetRef}
                     padding="10px 15px"
                     border="2px solid var(--foreground4)"
                     borderRadius="10px"

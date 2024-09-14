@@ -1,4 +1,4 @@
-import { AnimatedFoldable, Box, Column, Constraint, ConstraintBuilder, Expanded, Row, Scrollable, Text } from "react-widgets";
+import { AnimatedFoldable, Box, Column, ConditionalRender, Constraint, ConstraintBuilder, Expanded, Row, Scrollable, Text } from "react-widgets";
 import { RenderIcon } from "../../templates/RenderIcon";
 import { Icons, IconType } from "../App";
 import { TouchRipple } from "web-touch-ripple/jsx";
@@ -14,7 +14,12 @@ import { l10n } from "../../localization/localization";
 
 const PreviewControllerContext = createContext<PreviewController>(null);
 
-type PreviewControllerListener = (id: number) => void;
+type PreviewControllerListener = (id: number, type: PreviewControllerEvent) => void;
+enum PreviewControllerEvent {
+    iconSize,
+    iconName,
+    iconType
+}
 
 enum PreviewIconType {
     all,
@@ -40,7 +45,7 @@ class PreviewController {
     set iconSize(newValue: number) {
         if (this._iconSize != newValue) {
             this._iconSize = newValue;
-            this.notifyListeners();
+            this.notifyListeners(PreviewControllerEvent.iconSize);
         }
     }
 
@@ -48,7 +53,7 @@ class PreviewController {
     set iconName(newValue: string) {
         if (this._iconName != newValue) {
             this._iconName = newValue;
-            this.notifyListeners();
+            this.notifyListeners(PreviewControllerEvent.iconName);
         }
     }
 
@@ -56,7 +61,7 @@ class PreviewController {
     set iconType(newValue: PreviewIconType) {
         if (this._iconType != newValue) {
             this._iconType = newValue;
-            this.notifyListeners();
+            this.notifyListeners(PreviewControllerEvent.iconType);
         }
     }
 
@@ -64,8 +69,8 @@ class PreviewController {
         this.listeners.push(listener);
     }
 
-    notifyListeners() {
-        this.listeners.forEach(listener => listener(this.count += 1));
+    notifyListeners(event: PreviewControllerEvent) {
+        this.listeners.forEach(listener => listener(this.count += 1, event));
     }
 }
 
@@ -160,7 +165,11 @@ function SearchBody() {
     const countState = useState(0);
     const controller = useContext(PreviewControllerContext);
 
-    useEffect(() => controller.addListener(countState[1]), []);
+    useEffect(() => {
+        controller.addListener((id, event) => {
+            if (event == PreviewControllerEvent.iconName) countState[1](id);
+        })
+    }, []);
 
     const iconSearchName = controller.iconName;
     const iconSearch = new Fuse.default(Icons, {
@@ -202,20 +211,16 @@ function SearchBody() {
                         </TouchRipple>
                     </Row>
                 </Column>
-                <SearchBodyContent icons={icons} controller={controller} />
+                <SearchBodyContent icons={icons} />
             </Column>
         </Scrollable.Vertical>
     )
 }
 
-function SearchBodyContent({icons, controller}: {
-    icons: IconType[];
-    controller: PreviewController;
-}) {
-    if (icons.length != 0) {
-        const iconSize = controller.iconSize;
-        const iconType = controller.iconType;
+function SearchBodyContent({icons}: {icons: IconType[]}) {
+    const controller = useContext(PreviewControllerContext);
 
+    if (icons.length != 0) {
         return (
             <Column gap="var(--padding-df)" padding="var(--padding-df)">
                 <Text.span>{(l10n["app_search_results"] as string).replace("{0}", icons.length.toString())}</Text.span>
@@ -236,62 +241,8 @@ function SearchBodyContent({icons, controller}: {
                     flexShrink="1"
                     columnGap="5px"
                     rowGap="var(--padding-df)"
-                >{
-                    icons.map(icon => {
-                        const noneNormal = icon.content.normal == null;
-                        const noneFilled = icon.content.filled == null;
-
-                        if (iconType == PreviewIconType.normal && noneNormal) return <></>;
-                        if (iconType == PreviewIconType.filled && noneFilled) return <></>;
-
-                        return (
-                            <Column align="center" className="icon-grid_item" gap="5px">
-                                <Column gap="5px">
-                                    {Object.entries(icon.content).map(([key, innerHTML]) => {
-                                        if (iconType == PreviewIconType.normal && key != "normal") return;
-                                        if (iconType == PreviewIconType.filled && key != "filled") return;
-
-                                        const iconName = key == "normal"
-                                            ? icon.name
-                                            : icon.name + "-" + key;
-
-                                        const handleDownload = () => {
-                                            const blob = new Blob([innerHTML], {type: "image/svg+xml"});
-                                            const bUrl = URL.createObjectURL(blob);
-                                            const temp = document.createElement('a');
-                                            temp.href = bUrl;
-                                            temp.download = iconName;
-
-                                            document.body.appendChild(temp), temp.click();
-                                            document.body.removeChild(temp);
-
-                                            URL.revokeObjectURL(bUrl);
-                                        };
-
-                                        return (
-                                            <Tooltip message={iconName + ".svg"}>
-                                                <TouchRipple onTap={handleDownload}>
-                                                    <Box
-                                                        padding="var(--padding-df)"
-                                                        backgroundColor="var(--rearground)"
-                                                        borderRadius="50%"
-                                                        children={<RenderIcon size={`${iconSize}px`} innerHTML={innerHTML} />}
-                                                    />
-                                                </TouchRipple> 
-                                            </Tooltip>
-                                        )
-                                    })}
-                                </Column>
-                                <Text.span
-                                    fontSize="12px"
-                                    maxWidth={`${iconSize + 15}px`}
-                                    textOverflow="ellipsis"
-                                    children={icon.name}
-                                />
-                            </Column>
-                        )
-                    })
-                }</Box>
+                    children={icons.map(icon => <SearchBodyContentItem icon={icon} />)}
+                />
             </Column>
         )
     } else {
@@ -306,6 +257,75 @@ function SearchBodyContent({icons, controller}: {
             </Column>
         )
     }
+}
+
+function SearchBodyContentItem({icon}: {icon: IconType}) {
+    const controller = useContext(PreviewControllerContext);
+    const countState = useState(0);
+    const iconType = controller.iconType;
+    const iconSize = controller.iconSize;
+
+    const noneNormal = icon.content.normal == null;
+    const noneFilled = icon.content.filled == null;
+
+    if (iconType == PreviewIconType.normal && noneNormal) return <></>;
+    if (iconType == PreviewIconType.filled && noneFilled) return <></>;
+    
+    useEffect(() => {
+        controller.addListener((id, event) => {
+            if (event == PreviewControllerEvent.iconType
+             || event == PreviewControllerEvent.iconSize) countState[1](id);
+        });
+    });
+
+    return (
+        <Column align="center" className="icon-grid_item" gap="5px">
+            <Column gap="5px">
+                {Object.entries(icon.content).map(([key, innerHTML]) => {
+                    if (iconType == PreviewIconType.normal && key != "normal") return;
+                    if (iconType == PreviewIconType.filled && key != "filled") return;
+
+                    const iconName = key == "normal"
+                        ? icon.name
+                        : icon.name + "-" + key;
+
+                    const handleDownload = () => {
+                        const blob = new Blob([innerHTML], {type: "image/svg+xml"});
+                        const bUrl = URL.createObjectURL(blob);
+                        const temp = document.createElement('a');
+                        temp.href = bUrl;
+                        temp.download = iconName;
+
+                        document.body.appendChild(temp), temp.click();
+                        document.body.removeChild(temp);
+
+                        URL.revokeObjectURL(bUrl);
+                    };
+
+                    return (
+                        <Box className="inner" position="relative">
+                            <Tooltip message={iconName + ".svg"}>
+                                <TouchRipple onTap={handleDownload}>
+                                    <Box
+                                        className="icon"
+                                        padding="var(--padding-df)"
+                                        backgroundColor="var(--rearground)"
+                                        children={<RenderIcon size={`${iconSize}px`} innerHTML={innerHTML} />}
+                                    />
+                                </TouchRipple>
+                            </Tooltip>
+                        </Box>
+                    )
+                })}
+            </Column>
+            <Text.span
+                fontSize="12px"
+                maxWidth={`${iconSize + 15}px`}
+                textOverflow="ellipsis"
+                children={icon.name}
+            />
+        </Column>
+    )
 }
 
 function SearchTag({text, details, iconCount}: {
@@ -368,7 +388,7 @@ function SearchBodySideBarInner({expanded}: {expanded: boolean}) {
                                     <Text.span fontSize="12px" fontWeight="normal">{l10n["app_controls_icon_size_description"]}</Text.span>
                                 </Column>
                             </Row>
-                            <Input.Range current={iconSize} min={12} max={48} onChange={v => controller.iconSize = Math.round(v)} />
+                            <Input.Range current={iconSize} min={16} max={48} onChange={v => controller.iconSize = Math.round(v)} />
                         </Column>
                         <Box width="100%" height="1px" backgroundColor="var(--rearground-border)" />
                         <Column gap="var(--padding-sm)">

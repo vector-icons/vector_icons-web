@@ -62,7 +62,7 @@ export function Tooltip({message, children}: {
     }, [message]);
 
     return (
-        <Box refer={wrapperRef} children={children} />
+        <Box ref={wrapperRef} children={children} />
     )
 }
 
