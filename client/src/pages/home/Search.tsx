@@ -11,6 +11,7 @@ import { Button } from "../../templates/Button";
 import { SettingsBinding } from "../../settings/settings_binding";
 import { Tooltip } from "../../templates/Tooltip";
 import { l10n } from "../../localization/localization";
+import { PopupPage } from "../../components/popup_page";
 
 const PreviewControllerContext = createContext<PreviewController>(null);
 

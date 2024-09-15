@@ -1,4 +1,3 @@
-import { useLayoutEffect, useRef } from "preact/hooks";
 import { Icons } from "../pages/App";
 import { Box } from "react-widgets";
 
