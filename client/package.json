@@ -32,6 +32,6 @@
     "react-widgets": "file:../packages/react-widgets",
     "react-widgets-router": "file:../packages/react-widgets-router",
     "web-overlay-layout": "^1.0.0-beta3",
-    "web-touch-ripple": "^1.2.30"
+    "web-touch-ripple": "^1.2.31"
   }
 }
