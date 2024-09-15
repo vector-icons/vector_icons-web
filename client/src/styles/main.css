@@ -46,7 +46,9 @@ input::-webkit-slider-thumb {
     -webkit-appearance: none;
 }
 
-touch-ripple { cursor: pointer; }
+touch-ripple {
+    cursor: pointer;
+}
 
 .transition {
     transition-property: background-color, color, fill !important;
