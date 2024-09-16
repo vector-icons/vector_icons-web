@@ -310,22 +310,20 @@ function SearchBodyContentItem({icon}: {icon: IconType}) {
                     };
 
                     return (
-                        <Box className="inner" position="relative">
-                            <Tooltip message={iconName + ".svg"}>
-                                <TouchRipple onTap={handleDownload}>
-                                    <Box
-                                        className="icon"
-                                        padding="var(--padding-df)"
-                                        backgroundColor="var(--rearground)"
-                                        children={
-                                            <Invisible size={`${iconSize}px`}>
-                                                <RenderIcon size={`${iconSize}px`} innerHTML={innerHTML} />
-                                            </Invisible>
-                                        }
-                                    />
-                                </TouchRipple>
-                            </Tooltip>
-                        </Box>
+                        <Invisible size={`calc(${iconSize}px + var(--padding-df) * 2)`}>
+                            <Box className="inner" position="relative">
+                                <Tooltip message={iconName + ".svg"}>
+                                    <TouchRipple onTap={handleDownload}>
+                                        <Box
+                                            className="icon"
+                                            padding="var(--padding-df)"
+                                            backgroundColor="var(--rearground)"
+                                            children={<RenderIcon size={`${iconSize}px`} innerHTML={innerHTML} />}
+                                        />
+                                    </TouchRipple>
+                                </Tooltip>
+                            </Box>
+                        </Invisible>
                     )
                 })}
             </Column>
