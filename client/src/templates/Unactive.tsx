@@ -1,5 +1,5 @@
 import { ReactNode } from "preact/compat";
-import { Box } from "react-widgets";
+import { Box } from "@web-package/react-widgets";
 
 export function Unactive({children}: {children: ReactNode}) {
     return (

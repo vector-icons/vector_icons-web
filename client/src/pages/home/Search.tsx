@@ -1,4 +1,4 @@
-import { AnimatedFoldable, AnimatedTransition, Box, Column, Constraint, ConstraintBuilder, Expanded, Row, Scrollable, Text } from "react-widgets";
+import { AnimatedFoldable, AnimatedTransition, Box, Column, Constraint, ConstraintBuilder, Expanded, Row, Scrollable, Text, Invisible } from "@web-package/react-widgets";
 import { RenderIcon } from "../../templates/RenderIcon";
 import { AppContext, Icons, IconType } from "../App";
 import { TouchRipple } from "web-touch-ripple/jsx";
@@ -227,14 +227,6 @@ function SearchBody() {
 function SearchBodyContent({icons}: {icons: IconType[]}) {
     const controller = useContext(PreviewControllerContext);
 
-    /**
-     * <AnimatedTransition style={{width: "100%", height: "100%", flexShrink: 1}} animation={{
-     *     duration: "0.3s",
-     *     fadeIn:  {from: {opacity: 0}, to: {opacity: 1}},
-     *     fadeOut: {from: {opacity: 1}, to: {opacity: 0}},
-     * }}>
-     */
-
     if (icons.length != 0) {
         return (
             <Column gap="var(--padding-df)" padding="var(--padding-df)">
@@ -325,7 +317,11 @@ function SearchBodyContentItem({icon}: {icon: IconType}) {
                                         className="icon"
                                         padding="var(--padding-df)"
                                         backgroundColor="var(--rearground)"
-                                        children={<RenderIcon size={`${iconSize}px`} innerHTML={innerHTML} />}
+                                        children={
+                                            <Invisible size={`${iconSize}px`}>
+                                                <RenderIcon size={`${iconSize}px`} innerHTML={innerHTML} />
+                                            </Invisible>
+                                        }
                                     />
                                 </TouchRipple>
                             </Tooltip>

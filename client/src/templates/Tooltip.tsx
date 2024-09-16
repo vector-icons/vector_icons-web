@@ -1,6 +1,6 @@
 import { render } from "preact";
 import { ReactNode, useLayoutEffect, useRef } from "preact/compat";
-import { Box } from "react-widgets";
+import { Box } from "@web-package/react-widgets";
 import { Overlay, OverlayAlignment, OverlayDirection, OverlayElement } from "web-overlay-layout";
 
 export function Tooltip({message, children}: {

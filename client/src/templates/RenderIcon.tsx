@@ -1,13 +1,21 @@
+import { useRef } from "preact/hooks";
 import { Icons } from "../pages/App";
-import { Box } from "react-widgets";
+import { Box } from "@web-package/react-widgets";
 
 export function RenderIcon({size, color, innerHTML}: {
     size: string,
     color?: string,
     innerHTML: string
 }) {
+    const wrapperRef = useRef<HTMLDivElement>(null);
+
+    useRef(() => {
+        console.log(wrapperRef.current);
+    });
+
     return (
         <Box
+            ref={wrapperRef}
             display="flex"
             width={size}
             height={size}

@@ -1,7 +1,7 @@
 import Logo from "../../assets/icons/logo.svg";
 
 import { SearchPage } from "./Search";
-import { AnimatedFoldable, Box, Column, Row, Scrollable, TabNavigation, Text } from "react-widgets";
+import { AnimatedFoldable, Box, Column, Row, Scrollable, TabNavigation, Text } from "@web-package/react-widgets";
 import { useEffect, useRef, useState } from "preact/hooks";
 import { Tooltip } from "../../templates/Tooltip";
 import { RenderIcon } from "../../templates/RenderIcon";
@@ -175,7 +175,7 @@ export namespace SideBar {
                         borderRadius="1e10px"
                     >
                         <RenderIcon.Name name={iconName} size="18px" />
-                        <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" transition={{opacity: true}} overflow="visible">
+                        <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" transition={{opacity: true}}>
                             <Box paddingLeft="10px">{text}</Box>
                         </AnimatedFoldable.Horizontal>
                     </Row>

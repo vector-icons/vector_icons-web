@@ -1,6 +1,6 @@
 import Logo from "../assets/favicon.svg";
 
-import { AnimatedFoldable, Box, Column, Row, Scrollable } from "react-widgets";
+import { AnimatedFoldable, Box, Column, Row, Scrollable } from "@web-package/react-widgets";
 import { TouchRipple } from "web-touch-ripple/jsx";
 import { Button } from "../templates/Button";
 import { ReactNode, useState } from "preact/compat";

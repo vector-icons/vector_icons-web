@@ -1,6 +1,6 @@
 import { render } from "preact";
 import { useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
-import { Box, Column, Text } from "react-widgets";
+import { Box, Column, Text } from "@web-package/react-widgets";
 import { Overlay, OverlayAlignment, OverlayDirection, OverlayElement } from "web-overlay-layout";
 import { TouchRipple } from "web-touch-ripple/jsx";
 

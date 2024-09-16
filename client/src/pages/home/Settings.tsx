@@ -1,4 +1,4 @@
-import { Box, Column, Row, Scrollable, Text } from "react-widgets";
+import { Box, Column, Row, Scrollable, Text } from "@web-package/react-widgets";
 import { TouchRipple } from "web-touch-ripple/jsx";
 import { RenderIcon } from "../../templates/RenderIcon";
 import { Tooltip } from "../../templates/Tooltip";
