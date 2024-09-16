@@ -9,6 +9,7 @@ import { TouchRipple } from "web-touch-ripple/jsx";
 import { Route, Router, RouterBinding, useLocation } from "react-widgets-router";
 import { SettingsPage } from "./Settings";
 import { l10n } from "../../localization/localization";
+import { Unactive } from "../../templates/Unactive";
 
 export function SwitchPage() {
     return (
@@ -30,7 +31,7 @@ export namespace SideBar {
         const closeUserRef = useRef(false);
         const location = useLocation();
         const index = location.relPath == "/" ? 0
-                    : location.relPath == "/settings" ? 3
+                    : location.relPath == "/settings" ? 4
                     : 0;
 
         useEffect(() => {
@@ -43,6 +44,14 @@ export namespace SideBar {
 
             return () => window.removeEventListener("resize", callback);
         }, []);
+
+        const homeTapCallback = () => {
+            if (index != 0) RouterBinding.instance.move("/app");
+        }
+
+        const settingsTapCallback = () => {
+            if (index != 4) RouterBinding.instance.move("/app/settings");
+        }
 
         return (
             <Column
@@ -77,19 +86,25 @@ export namespace SideBar {
                         style={{borderRadius: "1e10px", backgroundColor: "var(--foreground2)", width: "50%"}}
                     >
                         <Tooltip message={close ? l10n["app_home"] : null}>
-                            <Item closed={close} selected={index == 0} onTap={() => {}} iconName="home" title={l10n["app_home"]} />
+                            <Item closed={close} selected={index == 0} onTap={homeTapCallback} iconName="home" title={l10n["app_home"]} />
                         </Tooltip>
-                        <Tooltip message={close ? l10n["app_request"] : null}>
-                            <Item closed={close} selected={false} onTap={() => {}} iconName="add_circle" title={l10n["app_request"]} />
-                        </Tooltip>
-                        <Tooltip message={close ? l10n["app_community"] : null}>
-                            <Item closed={close} selected={false} onTap={() => {}} iconName="community" title={l10n["app_community"]} />
-                        </Tooltip>
-                        <Tooltip message={close ? l10n["app_storage"] : null}>
-                            <Item closed={close} selected={false} onTap={() => {}} iconName="storage" title={l10n["app_storage"]} />
-                        </Tooltip>
+                        <Unactive>
+                            <Tooltip message={close ? l10n["app_request"] : null}>
+                                <Item closed={close} selected={false} onTap={() => {}} iconName="add_circle" title={l10n["app_request"]} />
+                            </Tooltip>
+                        </Unactive>
+                        <Unactive>
+                            <Tooltip message={close ? l10n["app_community"] : null}>
+                                <Item closed={close} selected={false} onTap={() => {}} iconName="community" title={l10n["app_community"]} />
+                            </Tooltip>
+                        </Unactive>
+                        <Unactive>
+                            <Tooltip message={close ? l10n["app_storage"] : null}>
+                                <Item closed={close} selected={false} onTap={() => {}} iconName="storage" title={l10n["app_storage"]} />
+                            </Tooltip>
+                        </Unactive>
                         <Tooltip message={close ? l10n["app_settings"] : null}>
-                            <Item closed={close} selected={index == 3} onTap={() => {}} iconName="settings" title={l10n["app_settings"]} />
+                            <Item closed={close} selected={index == 4} onTap={settingsTapCallback} iconName="settings" title={l10n["app_settings"]} />
                         </Tooltip>
                     </TabNavigation.Vertical>
                 </Scrollable.Vertical>

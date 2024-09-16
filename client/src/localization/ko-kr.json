@@ -36,5 +36,7 @@
     "app_controls_icon_type_normal_title": "일반 표시",
     "app_controls_icon_type_normal_description": "일반 유형의 아이콘만을 표시합니다.",
     "app_controls_icon_type_filled_title": "채움 표시",
-    "app_controls_icon_type_filled_description": "채움 유형의 아이콘만을 표시합니다."
+    "app_controls_icon_type_filled_description": "채움 유형의 아이콘만을 표시합니다.",
+    "app_settings_title": "설정",
+    "app_settings_description": "이 웹사이트의 전반적인 기능 및 설정을 설정합니다."
 }

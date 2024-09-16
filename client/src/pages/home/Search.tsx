@@ -1,6 +1,6 @@
 import { AnimatedFoldable, AnimatedTransition, Box, Column, Constraint, ConstraintBuilder, Expanded, Row, Scrollable, Text } from "react-widgets";
 import { RenderIcon } from "../../templates/RenderIcon";
-import { Icons, IconType } from "../App";
+import { AppContext, Icons, IconType } from "../App";
 import { TouchRipple } from "web-touch-ripple/jsx";
 import { Container } from "../../templates/Container";
 import { useContext, useEffect, useRef, useState } from "preact/hooks";
@@ -102,20 +102,19 @@ function SearchHeader() {
 }
 
 function SearchHeaderThemeSwitch() {
-    const [theme, setTheme] = useState(document.body.className == "dark" ? "dark" : "light");
-    const isDark = theme == "dark";
-
-    useEffect(() => {
-        document.body.className = isDark ? "dark" : "";
-    }, [theme]);
+    const setApp = useContext(AppContext);
+    const isDark = document.body.className == "dark" ? true : false;
 
     return (
         <Tooltip message={isDark ? l10n["app_setting_to_light"] : l10n["app_setting_to_dark"]}>
             <TouchRipple onTap={() => {
-                SettingsBinding.setValue("theme", isDark ? "light" : "dark");
-
-                // Needs to update this components state.
-                setTheme(isDark ? "light" : "dark");
+                if (isDark) {
+                    SettingsBinding.setValue("theme", "light");
+                    setApp("Update theme to light");
+                } else {
+                    SettingsBinding.setValue("theme", "dark");
+                    setApp("Update theme to dark");
+                }
             }}>
                 <Box position="relative" borderRadius="50%">
                     <Box

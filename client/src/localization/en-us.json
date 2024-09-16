@@ -34,5 +34,7 @@
     "app_controls_icon_type_normal_title": "Only Normal",
     "app_controls_icon_type_normal_description": "View only line style icons",
     "app_controls_icon_type_filled_title": "Only Filled",
-    "app_controls_icon_type_filled_description": "View only fill style icons"
+    "app_controls_icon_type_filled_description": "View only fill style icons",
+    "app_settings_title": "Settings",
+    "app_settings_description": "Set the overall functionality and options of this website."
 }
