@@ -1,4 +1,4 @@
-import { AnimatedFoldable, Box, Column, ConditionalRender, Constraint, ConstraintBuilder, Expanded, Row, Scrollable, Text } from "react-widgets";
+import { AnimatedFoldable, AnimatedTransition, Box, Column, Constraint, ConstraintBuilder, Expanded, Row, Scrollable, Text } from "react-widgets";
 import { RenderIcon } from "../../templates/RenderIcon";
 import { Icons, IconType } from "../App";
 import { TouchRipple } from "web-touch-ripple/jsx";
@@ -11,7 +11,6 @@ import { Button } from "../../templates/Button";
 import { SettingsBinding } from "../../settings/settings_binding";
 import { Tooltip } from "../../templates/Tooltip";
 import { l10n } from "../../localization/localization";
-import { PopupPage } from "../../components/popup_page";
 
 const PreviewControllerContext = createContext<PreviewController>(null);
 
@@ -212,7 +211,15 @@ function SearchBody() {
                         </TouchRipple>
                     </Row>
                 </Column>
-                <SearchBodyContent icons={icons} />
+                <AnimatedTransition
+                    value={icons.length == 0}
+                    animation={{
+                        duration: "0.3s",
+                        fadeIn:  {from: {opacity: 0}, to: {opacity: 1}},
+                        fadeOut: {from: {opacity: 1}, to: {opacity: 0}},
+                    }}
+                    children={<SearchBodyContent icons={icons} />}
+                />
             </Column>
         </Scrollable.Vertical>
     )
@@ -220,6 +227,14 @@ function SearchBody() {
 
 function SearchBodyContent({icons}: {icons: IconType[]}) {
     const controller = useContext(PreviewControllerContext);
+
+    /**
+     * <AnimatedTransition style={{width: "100%", height: "100%", flexShrink: 1}} animation={{
+     *     duration: "0.3s",
+     *     fadeIn:  {from: {opacity: 0}, to: {opacity: 1}},
+     *     fadeOut: {from: {opacity: 1}, to: {opacity: 0}},
+     * }}>
+     */
 
     if (icons.length != 0) {
         return (
