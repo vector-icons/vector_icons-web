@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import { Tooltip } from "../../templates/Tooltip";
 import { RenderIcon } from "../../templates/RenderIcon";
 import { TouchRipple } from "web-touch-ripple/jsx";
-import { Route, Router, RouterBinding, useLocation } from "react-widgets-router";
+import { Route, Router, RouterBinding, useLocation } from "@web-package/react-widgets-router";
 import { SettingsPage } from "./Settings";
 import { l10n } from "../../localization/localization";
 import { Unactive } from "../../templates/Unactive";

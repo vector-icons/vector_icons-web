@@ -4,7 +4,7 @@ import { AnimatedFoldable, Box, Column, Row, Scrollable } from "@web-package/rea
 import { TouchRipple } from "web-touch-ripple/jsx";
 import { Button } from "../templates/Button";
 import { ReactNode, useState } from "preact/compat";
-import { RouterBinding } from "react-widgets-router";
+import { RouterBinding } from "@web-package/react-widgets-router";
 import { l10n } from "../localization/localization";
 import { RenderIcon } from "../templates/RenderIcon";
 

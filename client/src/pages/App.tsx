@@ -1,7 +1,7 @@
-import { Dispatch, StateUpdater, useLayoutEffect, useState } from "preact/hooks";
+import { Dispatch, StateUpdater, useState } from "preact/hooks";
 import * as home from "./home/Switch";
 import { LandingPage } from "./Landing";
-import { Route, Router } from "react-widgets-router";
+import { Route, Router } from "@web-package/react-widgets-router";
 import { createContext } from "preact";
 import { SettingsBinding } from "../settings/settings_binding";
 
