@@ -13,7 +13,7 @@ export namespace PopupPage {
         wrapper.style.transitionProperty = "opacity";
         wrapper.style.transitionDuration = "0.5s";
         document.body.appendChild(wrapper);
-        
+
         requestAnimationFrame(() => {
             wrapper.style.opacity = "1";
             wrapper.onclick = event => {

@@ -138,7 +138,7 @@ export namespace Input {
             activeOverlay = Overlay.attach({
                 element: overlay,
                 target: targetRef.current,
-                parent: document.body,
+                parent: targetRef.current.closest("route-sliver"),
                 behavior: {
                     direction: OverlayDirection.BOTTOM_CENTER,
                     alignment: OverlayAlignment.ALL,

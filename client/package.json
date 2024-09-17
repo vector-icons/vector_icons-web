@@ -31,7 +31,7 @@
     "fuse.js": "^7.0.0",
     "preact": "^10.23.2",
     "react-widgets-router": "file:../packages/react-widgets-router",
-    "web-overlay-layout": "^1.0.0-beta3",
+    "web-overlay-layout": "^1.0.30",
     "web-touch-ripple": "^1.3.10"
   }
 }

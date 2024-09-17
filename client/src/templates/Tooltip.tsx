@@ -43,7 +43,7 @@ export function Tooltip({message, children}: {
                 overlayRef.current = Overlay.attach({
                     element: overlay,
                     target: wrapper,
-                    parent: document.body,
+                    parent: wrapper.closest("route-sliver"),
                     behavior: {
                         direction: OverlayDirection.BOTTOM_CENTER,
                         alignment: OverlayAlignment.ALL,
