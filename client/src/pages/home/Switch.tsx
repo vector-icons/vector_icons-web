@@ -1,7 +1,7 @@
 import Logo from "../../assets/icons/logo.svg";
 
 import { SearchPage } from "./Search";
-import { AnimatedFoldable, Box, Column, Row, Scrollable, TabNavigation, Text } from "@web-package/react-widgets";
+import { AnimatedFoldable, AnimatedTransition, Box, Column, Row, Scrollable, TabNavigation, Text } from "@web-package/react-widgets";
 import { useEffect, useRef, useState } from "preact/hooks";
 import { Tooltip } from "../../templates/Tooltip";
 import { RenderIcon } from "../../templates/RenderIcon";
@@ -125,7 +125,13 @@ export namespace SideBar {
         return (
             <TouchRipple onTap={onTap}>
                 <Row align="centerLeft" padding="var(--padding-df)" borderRadius="10px">
-                    <RenderIcon.Name filled={selected} size="18px" name={iconName} />
+                    <AnimatedTransition value={selected} animation={{
+                        duration: "0.3s",
+                        fadeIn: {from: {opacity: 0}, to: {opacity: 1}},
+                        fadeOut: {from: {opacity: 1}, to: {opacity: 0}}
+                    }}>
+                        <RenderIcon.Name filled={selected} size="18px" name={iconName} />
+                    </AnimatedTransition>
                     <AnimatedFoldable.Horizontal visible={!closed} duration="0.3s" transition={{opacity: true}} overflow="visible">
                         <Box
                             marginLeft="var(--padding-df)"

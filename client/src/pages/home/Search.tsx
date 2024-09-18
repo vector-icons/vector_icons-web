@@ -231,13 +231,13 @@ function SearchBodyContent({icons}: {icons: IconType[]}) {
         return (
             <Column gap="var(--padding-df)" padding="var(--padding-df)">
                 <Text.span>{(l10n["app_search_results"] as string).replace("{0}", icons.length.toString())}</Text.span>
-                <Scrollable.Horizontal>
+                <Scrollable.Horizontal scrollbar={false}>
                     <Row gap="var(--padding-sm)">
-                        <SearchTag text="Users" details="" iconCount={12} />
-                        <SearchTag text="Sounds" details="" iconCount={20} />
-                        <SearchTag text="Navigations" details="" iconCount={32} />
-                        <SearchTag text="Messages" details="" iconCount={42} />
-                        <SearchTag text="Applications" details="" iconCount={14} />
+                        <SearchTag text="Users" icon="user" details="" iconCount={12} />
+                        <SearchTag text="Sounds" icon="headphone" details="" iconCount={20} />
+                        <SearchTag text="Navigations" icon="navigation" details="" iconCount={32} />
+                        <SearchTag text="Messages" icon="chat2_line" details="" iconCount={42} />
+                        <SearchTag text="Applications" icon="application" details="" iconCount={14} />
                     </Row>
                 </Scrollable.Horizontal>
                 <Box
@@ -337,8 +337,9 @@ function SearchBodyContentItem({icon}: {icon: IconType}) {
     )
 }
 
-function SearchTag({text, details, iconCount}: {
+function SearchTag({text, icon, details, iconCount}: {
     text: string;
+    icon: string;
     details: string;
     iconCount: number;
 }) {
@@ -346,13 +347,15 @@ function SearchTag({text, details, iconCount}: {
         <Tooltip message={l10n["not_support_yet"]}>
             <TouchRipple onTap={() => {}}>
                 <Row
+                    align="center"
                     padding="10px var(--padding-df)"
                     border="2px dashed var(--rearground-border)"
                     borderRadius="10px"
                     color="var(--foreground2)"
                     gap="5px"
                 >
-                    {"#" + text}
+                    <RenderIcon.Name name={icon} size="16px" />
+                    {text}
                     <Box color="var(--foreground4)" fontSize="12px" children={`(${iconCount})`} />
                 </Row>
             </TouchRipple>
