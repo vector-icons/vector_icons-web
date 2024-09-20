@@ -12,7 +12,7 @@ import "./components/landing_background";
 
 import "web-touch-ripple";
 
-addEventListener("load", () => {render(<App />, document.body)});
+addEventListener("load", () => render(<App />, document.body));
 addEventListener("DOMContentLoaded", () => {
     document.body.style.animation = "page-fadein 0.3s";
 });
