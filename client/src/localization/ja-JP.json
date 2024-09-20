@@ -10,6 +10,7 @@
     "app_request": "リクエスト",
     "app_community": "コミュニティー",
     "app_storage": "ストレージ",
+    "app_credits": "Credits",
     "app_settings": "設定",
     "app_download": "すべてをダウンロード",
     "app_contributing_title": "始める",
@@ -36,5 +37,7 @@
     "app_controls_icon_type_filled_title": "塗りつぶしのみ",
     "app_controls_icon_type_filled_description": "塗りつぶしのアイコンのみを表示",
     "app_settings_title": "設定",
-    "app_settings_description": "このウェブサイトの全体的な機能とオプションを設定します"
+    "app_settings_description": "このウェブサイトの全体的な機能とオプションを設定します",
+    "app_credits_title": "Contributors",
+    "app_credits_description": "A big thank you to all the contributors who have made the Quark Icons open source project possible! The following information details the contributions and provides further project-related information."
 }

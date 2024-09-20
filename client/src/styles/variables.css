@@ -10,7 +10,7 @@
     --foreground: black;
     --foreground2: rgb(50, 50, 50);
     --foreground3: rgb(100, 100, 100);
-    --foreground4: rgb(150, 150, 150);
+    --foreground4: rgb(140, 140, 140);
     
     /* About web-touch-ripple */
     --ripple: rgba(0, 0, 0, 0.15);
@@ -39,7 +39,7 @@
     --rearground-border: rgb(80, 82, 84);
     --foreground: white;
     --foreground2: rgb(200, 200, 200);
-    --foreground3: rgb(170, 170, 170);
+    --foreground3: rgb(160, 160, 160);
     --foreground4: rgb(100, 100, 100);
 
     /* About web-touch-ripple */
