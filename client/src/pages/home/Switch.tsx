@@ -174,6 +174,7 @@ export namespace SideBar {
             <Box maxWidth="max-content">
                 <TouchRipple onTap={onTap}>
                     <Row
+                        align="center"
                         backgroundColor="var(--primary)"
                         color="white"
                         fill="white"

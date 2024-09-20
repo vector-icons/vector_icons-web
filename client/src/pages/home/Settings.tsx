@@ -31,7 +31,8 @@ export function SettingsPage() {
     const language = SettingsBinding.getValue("language") ?? "system";
     const languageIndex = language == "system" ? 0
                         : language == "en-US" ? 1
-                        : language == "ko-KR" ? 2 : undefined;
+                        : language == "ko-KR" ? 2
+                        : language == "ja-JP" ? 3 : undefined;
 
     const languageCallback = (index: number) => {
         if (index == 0) {
@@ -43,6 +44,9 @@ export function SettingsPage() {
         } else if (index == 2) {
             SettingsBinding.setValue("language", "ko-KR");
             setApp("Update language to ko-KR");
+        } else if (index == 3) {
+            SettingsBinding.setValue("language", "ja-JP");
+            setApp("Update language to ja-JP");
         }
     }
 
@@ -74,7 +78,7 @@ export function SettingsPage() {
                             {text: "System", details: "Apply the current browser language."},
                             {text: "English"},
                             {text: "Korean"},
-                            {text: "Japanese", details: l10n["not_support_yet"]}
+                            {text: "Japanese"}
                         ]} />
                     </Column>
                 </Column>
