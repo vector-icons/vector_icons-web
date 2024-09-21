@@ -67,7 +67,7 @@ module.exports = {
         new MiniCssExtractPlugin(),
         new CSSManglePlugin({
             mangle: !isDebug,
-            minify: false, // This feature not support about stable yet.
+            minify: !isDebug,
         }),
         new HtmlInlinePlugin({
             template: "./src/index.html",
