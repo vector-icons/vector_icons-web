@@ -1,7 +1,6 @@
 import { Box, Column, Row, Scrollable, Text } from "@web-package/react-widgets";
 import { RenderIcon } from "../../templates/RenderIcon";
 import { TouchRipple } from "web-touch-ripple/jsx";
-import { Button } from "../../templates/Button";
 import { l10n } from "../../localization/localization";
 
 export function CreditsPage() {
@@ -14,12 +13,14 @@ export function CreditsPage() {
                 padding="var(--padding-lg)"
                 maxWidth="1000px"
             >
-                <Column align="center" gap="var(--padding-df)">
-                    <RenderIcon.Name name="face_smile" size="120px" color="var(--foreground2)" />
-                    <Column gap="5px" align="center">
-                        <Text.h2>{l10n["app_credits_title"]}</Text.h2>
-                        <Text.span alignment="center">{l10n["app_credits_description"]}</Text.span>
-                        <Row align="center" gap="5px" padding="5px" borderRadius="5px">
+                <Column gap="var(--padding-df)">
+                    <Column gap="var(--padding-df)">
+                        <Row gap="var(--padding-df)">
+                            <RenderIcon.Name name="education" size="24px" filled={true} />
+                            <Text.h2>{l10n["app_credits_title"]}</Text.h2>
+                        </Row>
+                        <Text.span>{l10n["app_credits_description"]}</Text.span>
+                        <Row gap="5px" padding="5px" borderRadius="5px">
                             <RenderIcon.Name name="mail" size="14px" filled={true} color="var(--foreground4)" />
                             <Text.span fontSize="14px" color="var(--foreground4)">ttankkeo112@gmail.com</Text.span>
                         </Row>

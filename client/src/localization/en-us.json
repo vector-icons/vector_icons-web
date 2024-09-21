@@ -20,6 +20,7 @@
     "app_contributing_github_title": "Github",
     "app_contributing_github_description": "To complete the icon creation and officially integrate it into the project, you will need to use GitHub!",
     "app_search_placeholder": "Enter a name of icons and keywords or alias",
+    "app_search_reset": "Reset Input",
     "app_search_results": "Results are {0} amount",
     "app_search_results_none_title": "None Results",
     "app_search_results_none_description": "An icon with a given name does not exist.",

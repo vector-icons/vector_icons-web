@@ -22,6 +22,7 @@
     "app_contributing_github_title": "깃허브",
     "app_contributing_github_description": "아이콘 생성을 최종적으로 완료하고 이러한 에셋 파일들을 이 프로젝트에 이를 공식적으로 병합하려면 깃허브를 이용해야 합니다!",
     "app_search_placeholder": "원하는 아이콘의 이름 또는 키워드와 별칭을 입력하세요",
+    "app_search_reset": "입력 초기화",
     "app_search_results": "아이콘 검색 결과 {0}개",
     "app_search_results_none_title": "검색 결과 없음",
     "app_search_results_none_description": "주어진 이름에 해당하는 아이콘이 존재하지 않습니다.",

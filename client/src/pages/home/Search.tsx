@@ -3,7 +3,7 @@ import { RenderIcon } from "../../templates/RenderIcon";
 import { AppContext, Icons, IconType } from "../App";
 import { TouchRipple } from "web-touch-ripple/jsx";
 import { Container } from "../../templates/Container";
-import { useContext, useEffect, useRef, useState } from "preact/hooks";
+import { useContext, useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
 import { Input } from "../../templates/Input";
 import { createContext } from "preact";
 import * as Fuse from "fuse.js";
@@ -141,22 +141,51 @@ function SearchHeaderThemeSwitch() {
 }
 
 function SearchBar() {
+    const countState = useState(0);
     const wrapperRef = useRef<HTMLInputElement>(null);
     const controller = useContext(PreviewControllerContext);
 
+    useLayoutEffect(() => {
+        controller.addListener((id, type) => {
+            if (type == PreviewControllerEvent.iconName) {
+                if (controller.iconName == "") {
+                    wrapperRef.current.value = "";
+                }
+
+                countState[1](id);
+            }
+        });
+    });
+
     return (
-        <input
-            ref={wrapperRef}
-            type="text"
-            placeholder={l10n["app_search_placeholder"]}
-            onChange={() => controller.iconName = wrapperRef.current.value}
-            style={{
-                width: "100%",
-                padding: "15px",
-                fontSize: "16px",
-                fontFamily: "Pretendard"
-            }}
-        />
+        <Row align="centerLeft" width="100%">
+            <input
+                ref={wrapperRef}
+                type="text"
+                placeholder={l10n["app_search_placeholder"]}
+                onChange={() => controller.iconName = wrapperRef.current.value}
+                style={{
+                    width: "100%",
+                    padding: "15px",
+                    fontSize: "16px",
+                    fontFamily: "Pretendard"
+                }}
+            />
+            <Box pointerEvents={controller.iconName ? undefined : "none"}>
+                <Tooltip message={l10n["app_search_reset"]}>
+                    <TouchRipple onTap={() => controller.iconName = ""}>
+                        <Box
+                            padding="var(--padding-df)"
+                            borderRadius="50%"
+                            opacity={controller.iconName ? "1" : "0"}
+                            transitionProperty="opacity"
+                            transitionDuration="0.3s"
+                            children={<RenderIcon.Name name="close" size="16px" />}
+                        />
+                    </TouchRipple>
+                </Tooltip>
+            </Box>
+        </Row>
     )
 }
 

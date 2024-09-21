@@ -20,6 +20,7 @@
     "app_contributing_github_title": "Github",
     "app_contributing_github_description": "アイコンの作成を完了し、正式にプロジェクトに統合するには、GitHubを使用する必要があります。",
     "app_search_placeholder": "アイコンの名前とキーワード、またはエイリアスを入力",
+    "app_search_reset": "Reset Input",
     "app_search_results": "{0}個見つかりました",
     "app_search_results_none_title": "結果なし",
     "app_search_results_none_description": "指定された名前のアイコンが存在しません",
