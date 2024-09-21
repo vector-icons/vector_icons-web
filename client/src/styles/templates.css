@@ -31,12 +31,12 @@ button.secondary {
     fill: var(--foreground);
 }
 .icon-grid_item .icon {
-    border-radius: 40%;
+    border-radius: 50%;
     transition-property: border-radius;
     transition-duration: 0.3s;
 }
 .icon-grid_item .icon:hover {
-    border-radius: 30%;
+    border-radius: 35%;
 }
 
 /* ../templates/Tooltip of Tooltip */
