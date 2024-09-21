@@ -10,6 +10,7 @@
     "app_request": "요청",
     "app_community": "커뮤니티",
     "app_storage": "보관함",
+    "app_credits": "기여자",
     "app_settings": "설정",
     "app_download": "모두 다운로드",
     "app_setting_to_dark": "다크 모드로 변경",
@@ -38,5 +39,7 @@
     "app_controls_icon_type_filled_title": "채움 표시",
     "app_controls_icon_type_filled_description": "채움 유형의 아이콘만을 표시합니다.",
     "app_settings_title": "설정",
-    "app_settings_description": "이 웹사이트의 전반적인 기능 및 설정을 설정합니다."
+    "app_settings_description": "이 웹사이트의 전반적인 기능 및 설정을 설정합니다.",
+    "app_credits_title": "기여자",
+    "app_credits_description": "Quark Icons 오픈 소스 프로젝트에서 도움을 주신 모든 기여자들에게 큰 감사를 표합니다! 아래 정보는 기여자에 대한 자세한 정보 및 내용과 프로젝트 관련 추가 정보를 제공합니다."
 }

@@ -10,6 +10,7 @@
     "app_request": "Request",
     "app_community": "Community",
     "app_storage": "Storage",
+    "app_credits": "Credits",
     "app_settings": "Settings",
     "app_download": "Download All",
     "app_contributing_title": "Get Started",
@@ -36,5 +37,7 @@
     "app_controls_icon_type_filled_title": "Only Filled",
     "app_controls_icon_type_filled_description": "View only fill style icons",
     "app_settings_title": "Settings",
-    "app_settings_description": "Set the overall functionality and options of this website."
+    "app_settings_description": "Set the overall functionality and options of this website.",
+    "app_credits_title": "Contributors",
+    "app_credits_description": "A big thank you to all the contributors who have made the Quark Icons open source project possible! The following information details the contributions and provides further project-related information."
 }
