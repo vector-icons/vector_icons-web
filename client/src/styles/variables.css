@@ -32,15 +32,15 @@
 
 .dark {
     --primary: rgb(0, 140, 255);
-    --background: rgb(8, 10, 12);
+    --background: rgb(10, 12, 14);
     --background-shadow: black;
     --background-overlay: rgb(38, 41, 44);
     --rearground: rgb(28, 31, 34);
     --rearground-border: rgb(80, 82, 84);
     --foreground: white;
     --foreground2: rgb(200, 200, 200);
-    --foreground3: rgb(160, 160, 160);
-    --foreground4: rgb(100, 100, 100);
+    --foreground3: rgb(170, 170, 170);
+    --foreground4: rgb(120, 120, 120);
 
     /* About web-touch-ripple */
     --ripple: rgb(255, 255, 255, 0.15);

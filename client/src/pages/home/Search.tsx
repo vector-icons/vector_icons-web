@@ -159,6 +159,9 @@ function SearchBar() {
 
     return (
         <Row align="centerLeft" width="100%">
+            <Box marginLeft="var(--padding-df)">
+                <RenderIcon.Name name="search" size="16px" color="var(--foreground3)" />
+            </Box>
             <input
                 ref={wrapperRef}
                 type="text"
@@ -215,7 +218,35 @@ function SearchBody() {
     return (
         <Scrollable.Vertical>
             <Column>
-                <Column padding="30px" gap="var(--padding-df)" borderBottom="1px solid var(--rearground-border)">
+                <SearchBodyHeader />
+                <AnimatedTransition
+                    value={icons.length == 0}
+                    animation={{
+                        duration: "0.3s",
+                        fadeIn:  {from: {opacity: 0}, to: {opacity: 1}},
+                        fadeOut: {from: {opacity: 1}, to: {opacity: 0}},
+                    }}
+                    children={<SearchBodyContent icons={icons} />}
+                />
+            </Column>
+        </Scrollable.Vertical>
+    )
+}
+
+function SearchBodyHeader() {
+    const [close, setClose] = useState(
+        SettingsBinding.getValue("app_home_header_close") ?? false
+    );
+
+    const onClose = () => {
+        SettingsBinding.setValue("app_home_header_close", !close ? "true" : null);
+        setClose(!close);
+    }
+
+    return (
+        <Column borderBottom="1px solid var(--rearground-border)">
+            <AnimatedFoldable.Vertical visible={!close} duration="0.3s">
+                <Column padding="30px 30px 15px 30px" gap="var(--padding-df)">
                     <Column gap="5px">
                         <Text.p fontSize="24px">{l10n["app_contributing_title"]}</Text.p>
                         <Text.span>{l10n["app_contributing_description"]}</Text.span>
@@ -239,17 +270,21 @@ function SearchBody() {
                         </TouchRipple>
                     </Row>
                 </Column>
-                <AnimatedTransition
-                    value={icons.length == 0}
-                    animation={{
-                        duration: "0.3s",
-                        fadeIn:  {from: {opacity: 0}, to: {opacity: 1}},
-                        fadeOut: {from: {opacity: 1}, to: {opacity: 0}},
-                    }}
-                    children={<SearchBodyContent icons={icons} />}
-                />
-            </Column>
-        </Scrollable.Vertical>
+            </AnimatedFoldable.Vertical>
+            <TouchRipple onTap={onClose}>
+                <Row align="center" paddingAndGap="var(--padding-sm)">
+                    <Box
+                        transform={close ? "rotate(0.5turn)" : undefined}
+                        transitionProperty="transform"
+                        transitionDuration="0.3s"
+                        children={<RenderIcon.Name name="arrow_top" size="16px" color="var(--foreground3)" />}
+                    />
+                    <Text.span color="var(--foreground3)">
+                        {l10n["app_contributing_title"]}
+                    </Text.span>
+                </Row>
+            </TouchRipple>
+        </Column>
     )
 }
 

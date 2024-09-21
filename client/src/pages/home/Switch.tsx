@@ -119,7 +119,7 @@ export namespace SideBar {
                     </TabNavigation.Vertical>
                 </Scrollable.Vertical>
                 <Column marginTop="auto">
-                    <Button close={close} text={l10n["close"]} iconName={close ? "arrow_right" : "arrow_left"} onTap={() => {closeUserRef.current = !close; setClose(!close)}} />
+                    <Button close={close} reverse={close} text={l10n["close"]} iconName={"arrow_left"} onTap={() => {closeUserRef.current = !close; setClose(!close)}} />
                 </Column>
             </Column>
         )
@@ -156,16 +156,22 @@ export namespace SideBar {
         )
     }
 
-    export function Button({text, close, iconName, onTap}: {
+    export function Button({text, close, iconName, reverse, onTap}: {
         text: string;
         close: boolean;
         iconName: string;
+        reverse: boolean;
         onTap: VoidFunction;
     }) {
         return (
             <TouchRipple onTap={onTap}>
                 <Row padding="var(--padding-sm) var(--padding-df)" borderRadius="1e10px">
-                    <RenderIcon.Name name={iconName} size="18px" />
+                    <Box
+                        transform={reverse ? "rotate(0.5turn)" : undefined}
+                        transitionProperty="transform"
+                        transitionDuration="0.3s"
+                        children={<RenderIcon.Name name={iconName} size="18px" />}
+                    />
                     <AnimatedFoldable.Horizontal visible={!close} duration="0.3s" transition={{opacity: true}} overflow="visible">
                         <Box paddingLeft="var(--padding-df)">{text}</Box>
                     </AnimatedFoldable.Horizontal>
