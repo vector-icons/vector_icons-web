@@ -15,10 +15,7 @@ export function CreditsPage() {
             >
                 <Column gap="var(--padding-df)">
                     <Column gap="var(--padding-df)">
-                        <Row gap="var(--padding-df)">
-                            <RenderIcon.Name name="education" size="24px" filled={true} />
-                            <Text.h2>{l10n["app_credits_title"]}</Text.h2>
-                        </Row>
+                        <Text.h2>{l10n["app_credits_title"]}</Text.h2>
                         <Text.span>{l10n["app_credits_description"]}</Text.span>
                         <Row gap="5px" padding="5px" borderRadius="5px">
                             <RenderIcon.Name name="mail" size="14px" filled={true} color="var(--foreground4)" />

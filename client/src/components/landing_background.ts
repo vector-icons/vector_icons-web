@@ -103,7 +103,7 @@ class Net {
                 ctx.beginPath();
                 ctx.moveTo(other.x.value * width, other.y.value * height);
                 ctx.lineTo(x * width, y * height);
-                ctx.lineWidth = 1 * window.devicePixelRatio;
+                ctx.lineWidth = 2 * window.devicePixelRatio;
 
                 // 투명도 계산 (0.1 이하일 때 1, 0.1 이상일 때 0으로 변함)
                 const opacity = Math.max(0, 1 - (distance * 10));
@@ -134,7 +134,7 @@ class NetController {
             canvas.setAttribute("height", `${rect.height * ppi}px`);
             this.draw();
         });
-        
+
         observer.observe(canvas);
     }
 
