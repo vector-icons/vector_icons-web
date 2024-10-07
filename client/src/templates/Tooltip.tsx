@@ -1,9 +1,10 @@
 import { render } from "preact";
 import { ReactNode, useLayoutEffect, useRef } from "preact/compat";
 import { Box } from "@web-package/react-widgets";
-import { Overlay, OverlayAlignment, OverlayDirection, OverlayElement } from "web-overlay-layout";
+import { Overlay, OverlayAlignment, OverlayDirection, OverlayElement, OverlayLayout } from "web-overlay-layout";
 
-export function Tooltip({message, children}: {
+export function Tooltip({direction = OverlayDirection.BOTTOM_CENTER, message, children}: {
+    direction?: OverlayLayout<any>
     message?: string;
     children: ReactNode;
 }) {
@@ -45,7 +46,7 @@ export function Tooltip({message, children}: {
                     target: wrapper,
                     parent: wrapper.closest("route-sliver"),
                     behavior: {
-                        direction: OverlayDirection.BOTTOM_CENTER,
+                        direction: direction,
                         alignment: OverlayAlignment.ALL,
                         animation: {
                             fadein: "tooltip-fadein 0.2s",

@@ -111,7 +111,7 @@ export namespace SideBar {
                             </Tooltip>
                         </Unactive>
                         <Tooltip message={null}>
-                            <Item closed={close} selected={index == 4} onTap={creditsTapCallback} iconName="education" title={l10n["app_credits"]} />
+                            <Item closed={close} selected={index == 4} onTap={creditsTapCallback} iconName="users" title={l10n["app_credits"]} />
                         </Tooltip>
                         <Tooltip message={close ? l10n["app_settings"] : null}>
                             <Item closed={close} selected={index == 5} onTap={settingsTapCallback} iconName="settings" title={l10n["app_settings"]} />

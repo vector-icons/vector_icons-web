@@ -11,6 +11,7 @@ import { Button } from "../../templates/Button";
 import { SettingsBinding } from "../../settings/settings_binding";
 import { Tooltip } from "../../templates/Tooltip";
 import { l10n } from "../../localization/localization";
+import { SearchAI } from "../components/SerachAI";
 
 const PreviewControllerContext = createContext<PreviewController>(null);
 
@@ -216,20 +217,28 @@ function SearchBody() {
     }
 
     return (
-        <Scrollable.Vertical>
-            <Column>
-                <SearchBodyHeader />
-                <AnimatedTransition
-                    value={icons.length == 0}
-                    animation={{
-                        duration: "0.3s",
-                        fadeIn:  {from: {opacity: 0}, to: {opacity: 1}},
-                        fadeOut: {from: {opacity: 1}, to: {opacity: 0}},
-                    }}
-                    children={<SearchBodyContent icons={icons} />}
-                />
-            </Column>
-        </Scrollable.Vertical>
+        <Box position="relative" flexShrink="1">
+            <Scrollable.Vertical>
+                <Column>
+                    <SearchBodyHeader />
+                    <AnimatedTransition
+                        value={icons.length == 0}
+                        animation={{
+                            duration: "0.3s",
+                            fadeIn:  {from: {opacity: 0}, to: {opacity: 1}},
+                            fadeOut: {from: {opacity: 1}, to: {opacity: 0}},
+                        }}
+                        children={<SearchBodyContent icons={icons} />}
+                    />
+                </Column>
+            </Scrollable.Vertical>
+            <Box
+                position="absolute"
+                bottom="var(--padding-df)"
+                right="calc(var(--padding-df) + 15px)"
+                children={<SearchAI />}
+            />
+        </Box>
     )
 }
 

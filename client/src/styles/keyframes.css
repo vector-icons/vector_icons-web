@@ -28,3 +28,10 @@
     0%   { opacity: 1; transform: translateY(0%); }
     100% { opacity: 0; transform: translateY(-10%); }
 }
+
+@keyframes bottle-shaking {
+    0%   { transform: rotate(0deg); }
+    33%  { transform: rotate(10deg); }
+    66%  { transform: rotate(-10deg); }
+    100% { transform: rotate(0deg); }
+}

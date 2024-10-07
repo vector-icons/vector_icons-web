@@ -11,7 +11,8 @@
     --foreground2: rgb(50, 50, 50);
     --foreground3: rgb(100, 100, 100);
     --foreground4: rgb(140, 140, 140);
-    
+    --shadow: rgb(0, 0, 0, 0.2);
+
     /* About web-touch-ripple */
     --ripple: rgba(0, 0, 0, 0.15);
     --ripple-hover: rgba(0, 0, 0, 0.075);
@@ -41,6 +42,7 @@
     --foreground2: rgb(200, 200, 200);
     --foreground3: rgb(170, 170, 170);
     --foreground4: rgb(120, 120, 120);
+    --shadow: rgb(120, 120, 120, 0.2);
 
     /* About web-touch-ripple */
     --ripple: rgb(255, 255, 255, 0.15);
