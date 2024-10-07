@@ -217,7 +217,7 @@ function SearchBody() {
     }
 
     return (
-        <Box position="relative" flexShrink="1">
+        <>
             <Scrollable.Vertical>
                 <Column>
                     <SearchBodyHeader />
@@ -238,13 +238,13 @@ function SearchBody() {
                 right="calc(var(--padding-df) + 15px)"
                 children={<SearchAI />}
             />
-        </Box>
+        </>
     )
 }
 
 function SearchBodyHeader() {
     const [close, setClose] = useState(
-        SettingsBinding.getValue("app_home_header_close") ?? false
+        Boolean(SettingsBinding.getValue("app_home_header_close")) ?? false
     );
 
     const onClose = () => {
@@ -286,9 +286,9 @@ function SearchBodyHeader() {
                         transform={close ? "rotate(0.5turn)" : undefined}
                         transitionProperty="transform"
                         transitionDuration="0.3s"
-                        children={<RenderIcon.Name name="arrow_top" size="16px" color="var(--foreground3)" />}
+                        children={<RenderIcon.Name name="arrow_top" size="14px" color="var(--foreground3)" />}
                     />
-                    <Text.span color="var(--foreground3)">
+                    <Text.span color="var(--foreground3)" fontSize="14px">
                         {l10n["app_contributing_title"]}
                     </Text.span>
                 </Row>

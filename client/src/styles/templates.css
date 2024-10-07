@@ -4,6 +4,7 @@ button.primary {
     display: flex;
     background-color: var(--primary);
     color: white;
+    fill: white;
     padding: 10px 15px;
     font-size: 16px;
     border-radius: 1e10px;
