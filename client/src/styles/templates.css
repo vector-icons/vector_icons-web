@@ -22,6 +22,18 @@ button.secondary {
     border-radius: 1e10px;
 }
 
+/* ../templates/Button.tsx of Tertiary */
+button.tertiary {
+    color: var(--foreground2);
+    border-radius: 10px;
+    padding: 10px 15px;
+    transition: color 0.3s;
+    font-weight: normal;
+}
+button.tertiary:hover {
+    color: var(--foreground);
+}
+
 /* ../pages/Search.tsx of SearchPage */
 .icon-grid_item {
     fill: var(--foreground2);

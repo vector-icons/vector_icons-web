@@ -26,4 +26,16 @@ export namespace Button {
             </TouchRipple>
         )
     }
+
+    export function Tertiary({text, wait = false, onTap}: {
+        text: string,
+        wait?: boolean,
+        onTap: VoidFunction
+    }) {
+        return (
+            <TouchRipple onTap={onTap} wait={wait}>
+                <button className="tertiary">{text}</button>
+            </TouchRipple>
+        )
+    }
 }

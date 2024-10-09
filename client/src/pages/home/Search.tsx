@@ -11,7 +11,6 @@ import { Button } from "../../templates/Button";
 import { SettingsBinding } from "../../settings/settings_binding";
 import { Tooltip } from "../../templates/Tooltip";
 import { l10n } from "../../localization/localization";
-import { SearchAI } from "../components/SerachAI";
 
 const PreviewControllerContext = createContext<PreviewController>(null);
 
@@ -217,28 +216,20 @@ function SearchBody() {
     }
 
     return (
-        <>
-            <Scrollable.Vertical>
-                <Column>
-                    <SearchBodyHeader />
-                    <AnimatedTransition
-                        value={icons.length == 0}
-                        animation={{
-                            duration: "0.3s",
-                            fadeIn:  {from: {opacity: 0}, to: {opacity: 1}},
-                            fadeOut: {from: {opacity: 1}, to: {opacity: 0}},
-                        }}
-                        children={<SearchBodyContent icons={icons} />}
-                    />
-                </Column>
-            </Scrollable.Vertical>
-            <Box
-                position="absolute"
-                bottom="var(--padding-df)"
-                right="calc(var(--padding-df) + 15px)"
-                children={<SearchAI />}
-            />
-        </>
+        <Scrollable.Vertical>
+            <Column>
+                <SearchBodyHeader />
+                <AnimatedTransition
+                    value={icons.length == 0}
+                    animation={{
+                        duration: "0.3s",
+                        fadeIn:  {from: {opacity: 0}, to: {opacity: 1}},
+                        fadeOut: {from: {opacity: 1}, to: {opacity: 0}},
+                    }}
+                    children={<SearchBodyContent icons={icons} />}
+                />
+            </Column>
+        </Scrollable.Vertical>
     )
 }
 
@@ -464,8 +455,15 @@ function SearchBodySideBarInner({expanded}: {expanded: boolean}) {
         <Box flexShrink="0" borderLeft="1px solid var(--rearground-border)">
             <Scrollable.Vertical>
                 <AnimatedFoldable.Horizontal visible={expanded} duration="0.3s">
-                    <Column padding="var(--padding-df)" gap="var(--padding-df)">
-                        <Column>
+                    <Column>
+                        <Row align="centerSpaceBetween" paddingAndGap="var(--padding-df)" borderBottom="1px solid var(--rearground-border)">
+                            <Text.h4 fontWeight="normal">{l10n["app_controls_title"]}</Text.h4>
+                            <Button.Tertiary text={l10n["reset"]} onTap={() => {
+                                controller.iconSize = 32;
+                                controller.iconType = PreviewIconType.all;
+                            }} />
+                        </Row>
+                        <Column padding="var(--padding-df)">
                             <Row gap="var(--padding-sm)">
                                 <RenderIcon.Name name="control" size="18px" />
                                 <Column gap="3px">
@@ -476,7 +474,7 @@ function SearchBodySideBarInner({expanded}: {expanded: boolean}) {
                             <Input.Range current={iconSize} min={16} max={48} onChange={v => controller.iconSize = Math.round(v)} />
                         </Column>
                         <Box width="100%" height="1px" backgroundColor="var(--rearground-border)" />
-                        <Column gap="var(--padding-sm)">
+                        <Column padding="var(--padding-df)" gap="var(--padding-sm)">
                             <Row gap="var(--padding-sm)">
                                 <RenderIcon.Name name="control" size="18px" />
                                 <Column gap="3px">

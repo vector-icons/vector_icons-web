@@ -1,6 +1,7 @@
 {
     "close": "닫기",
     "open": "열기",
+    "reset": "초기화",
     "not_support": "지원되지 않음",
     "not_support_yet": "아직 지원되지 않음",
     "landing_title": "QUARK ICONS",
@@ -30,6 +31,7 @@
     "app_search_results_reset": "이전으로 초기화",
     "app_search_bookmark_add": "즐겨찾기 추가",
     "app_search_bookmark_remove": "즐겨찾기 제거",
+    "app_controls_title": "보기 설정",
     "app_controls_icon_size_title": "아이콘 크기",
     "app_controls_icon_size_description": "아이콘의 크기를 조정합니다.",
     "app_controls_icon_type_title": "아이콘 표시 유형",

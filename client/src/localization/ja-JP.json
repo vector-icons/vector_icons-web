@@ -1,6 +1,7 @@
 {
     "close": "閉じる",
     "open": "Open",
+    "reset": "Reset",
     "not_support": "非対応",
     "not_support_yet": "未対応",
     "landing_title": "QUARK ICONS",
@@ -28,6 +29,7 @@
     "app_search_results_reset": "リセット",
     "app_search_bookmark_add": "ブックマークを追加する",
     "app_search_bookmark_remove": "ブックマークを削除する",
+    "app_controls_title": "View Settings",
     "app_controls_icon_size_title": "アイコンの大きさ",
     "app_controls_icon_size_description": "アイコンの大きさを変える",
     "app_controls_icon_type_title": "アイコンの種類",

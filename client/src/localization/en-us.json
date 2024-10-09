@@ -1,6 +1,7 @@
 {
     "close": "Close",
     "open": "Open",
+    "reset": "Reset",
     "not_support": "Not support",
     "not_support_yet": "Not support yet",
     "landing_title": "QUARK ICONS",
@@ -28,6 +29,7 @@
     "app_search_results_reset": "Reset All",
     "app_search_bookmark_add": "Add Bookmark",
     "app_search_bookmark_remove": "Remove Bookmark",
+    "app_controls_title": "View Settings",
     "app_controls_icon_size_title": "Icon Size",
     "app_controls_icon_size_description": "Controls the icon sizes",
     "app_controls_icon_type_title": "View Icon Type",
