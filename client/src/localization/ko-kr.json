@@ -31,6 +31,8 @@
     "app_search_results_reset": "이전으로 초기화",
     "app_search_bookmark_add": "즐겨찾기 추가",
     "app_search_bookmark_remove": "즐겨찾기 제거",
+    "app_search_popup_copy_code": "코드 복사",
+    "app_search_popup_file_size": "파일 크기",
     "app_controls_title": "보기 설정",
     "app_controls_icon_size_title": "아이콘 크기",
     "app_controls_icon_size_description": "아이콘의 크기를 조정합니다.",

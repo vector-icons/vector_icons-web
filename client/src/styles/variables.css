@@ -12,6 +12,8 @@
     --foreground3: rgb(100, 100, 100);
     --foreground4: rgb(140, 140, 140);
     --shadow: rgb(0, 0, 0, 0.2);
+    --popup-background: white;
+    --popup-rearground: rgb(230, 232, 236);
 
     /* About web-touch-ripple */
     --ripple: rgba(0, 0, 0, 0.15);
@@ -43,6 +45,8 @@
     --foreground3: rgb(170, 170, 170);
     --foreground4: rgb(120, 120, 120);
     --shadow: rgb(120, 120, 120, 0.2);
+    --popup-background: rgb(40, 42, 46);
+    --popup-rearground: rgb(50, 52, 56);
 
     /* About web-touch-ripple */
     --ripple: rgb(255, 255, 255, 0.15);

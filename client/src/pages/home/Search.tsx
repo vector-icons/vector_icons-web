@@ -11,6 +11,8 @@ import { Button } from "../../templates/Button";
 import { SettingsBinding } from "../../settings/settings_binding";
 import { Tooltip } from "../../templates/Tooltip";
 import { l10n } from "../../localization/localization";
+import { PopupPage } from "../../components/popup_page";
+import { IconPopup } from "./Search-popup";
 
 const PreviewControllerContext = createContext<PreviewController>(null);
 
@@ -356,28 +358,17 @@ function SearchBodyContentItem({icon}: {icon: IconType}) {
                     if (iconType == PreviewIconType.normal && key != "normal") return;
                     if (iconType == PreviewIconType.filled && key != "filled") return;
 
-                    const iconName = key == "normal"
+                    const isNormal = key == "normal";
+                    const isFilled = key == "filled";
+                    const iconName = isNormal
                         ? icon.name
                         : icon.name + "-" + key;
-
-                    const handleDownload = () => {
-                        const blob = new Blob([innerHTML], {type: "image/svg+xml"});
-                        const bUrl = URL.createObjectURL(blob);
-                        const temp = document.createElement('a');
-                        temp.href = bUrl;
-                        temp.download = iconName;
-
-                        document.body.appendChild(temp), temp.click();
-                        document.body.removeChild(temp);
-
-                        URL.revokeObjectURL(bUrl);
-                    };
 
                     return (
                         <Invisible size={`calc(${iconSize}px + var(--padding-df) * 2)`}>
                             <Box className="inner" position="relative">
                                 <Tooltip message={iconName + ".svg"}>
-                                    <TouchRipple onTap={handleDownload}>
+                                    <TouchRipple onTap={() => PopupPage.open(<IconPopup icon={icon} filled={isFilled} />)}>
                                         <Box
                                             className="icon"
                                             padding="var(--padding-df)"

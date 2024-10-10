@@ -10,8 +10,8 @@ button.primary {
     border-radius: 1e10px;
     column-gap: 5px;
 
-    --ripple: rgb(255, 255, 255, 0.6);
-    --ripple-hover: rgb(255, 255, 255, 0.3);
+    --ripple: rgb(0, 0, 0, 0.2);
+    --ripple-hover: rgb(0, 0, 0, 0.1);
 }
 
 /* ../templates/Button.tsx of Secondary */
@@ -24,6 +24,8 @@ button.secondary {
 
 /* ../templates/Button.tsx of Tertiary */
 button.tertiary {
+    display: flex;
+    column-gap: var(--padding-sm);
     color: var(--foreground2);
     border-radius: 10px;
     padding: 10px 15px;

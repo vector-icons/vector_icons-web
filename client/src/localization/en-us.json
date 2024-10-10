@@ -29,6 +29,8 @@
     "app_search_results_reset": "Reset All",
     "app_search_bookmark_add": "Add Bookmark",
     "app_search_bookmark_remove": "Remove Bookmark",
+    "app_search_popup_copy_code": "Copy Code",
+    "app_search_popup_file_size": "File Size",
     "app_controls_title": "View Settings",
     "app_controls_icon_size_title": "Icon Size",
     "app_controls_icon_size_description": "Controls the icon sizes",

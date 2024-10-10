@@ -29,6 +29,8 @@
     "app_search_results_reset": "リセット",
     "app_search_bookmark_add": "ブックマークを追加する",
     "app_search_bookmark_remove": "ブックマークを削除する",
+    "app_search_popup_copy_code": "Copy Code",
+    "app_search_popup_file_size": "File Size",
     "app_controls_title": "View Settings",
     "app_controls_icon_size_title": "アイコンの大きさ",
     "app_controls_icon_size_description": "アイコンの大きさを変える",

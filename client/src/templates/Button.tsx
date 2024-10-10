@@ -8,10 +8,12 @@ export namespace Button {
         onTap: VoidFunction
     }) {
         return (
-            <button className="primary" onClick={onTap}>
-                {icon ? <RenderIcon.Name size="18px" name={icon} /> : <></>}
-                {text}
-            </button>
+            <TouchRipple onTap={onTap}>
+                <button className="primary">
+                    {icon ? <RenderIcon.Name size="18px" name={icon} /> : <></>}
+                    {text}
+                </button>
+            </TouchRipple>
         )
     }
 
@@ -27,14 +29,18 @@ export namespace Button {
         )
     }
 
-    export function Tertiary({text, wait = false, onTap}: {
+    export function Tertiary({text, icon, wait = false, onTap}: {
         text: string,
+        icon?: string,
         wait?: boolean,
         onTap: VoidFunction
     }) {
         return (
             <TouchRipple onTap={onTap} wait={wait}>
-                <button className="tertiary">{text}</button>
+                <button className="tertiary">
+                    {icon ? <RenderIcon.Name size="18px" name={icon} /> : <></>}
+                    {text}
+                </button>
             </TouchRipple>
         )
     }
