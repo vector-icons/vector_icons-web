@@ -14,10 +14,10 @@ export function IconPopup({icon, filled}: {
     const [isFilled, setFilled] = useState(filled);
     const wrapperRef = useRef<HTMLDivElement>(null);
     const iconName = icon.name;
-    const iconHTML = filled ? icon.content.filled : icon.content.normal;
+    const iconHTML = isFilled ? icon.content.filled : icon.content.normal;
     const title = iconName.replace("_", " ").toUpperCase();
 
-    const iconFile = filled
+    const iconFile = isFilled
         ? icon.name + "-filled"
         : icon.name;
 
