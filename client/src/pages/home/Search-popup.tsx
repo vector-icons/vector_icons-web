@@ -4,12 +4,15 @@ import { Button } from "../../templates/Button";
 import { IconType } from "../App";
 import { Unactive } from "../../templates/Unactive";
 import { l10n } from "../../localization/localization";
-import { TouchRipple } from "web-touch-ripple/jsx";
+import { Input } from "../../templates/Input";
+import { useRef, useState } from "preact/hooks";
 
 export function IconPopup({icon, filled}: {
     icon: IconType;
     filled: boolean;
 }) {
+    const [isFilled, setFilled] = useState(filled);
+    const wrapperRef = useRef<HTMLDivElement>(null);
     const iconName = icon.name;
     const iconHTML = filled ? icon.content.filled : icon.content.normal;
     const title = iconName.replace("_", " ").toUpperCase();
@@ -32,28 +35,43 @@ export function IconPopup({icon, filled}: {
     };
 
     return (
-        <Column gap="var(--padding-df)">
-            <Row>
-                <Box
-                    padding="var(--padding-lg)"
-                    border="1px solid var(--rearground-border)"
-                    borderRadius="15px"
-                >
-                    <RenderIcon.Name name={iconName} filled={filled} size="64px" />
-                </Box>
-                <Column padding="var(--padding-df)">
-                    <Text.h2>{title}</Text.h2>
-                    <Text.span>{filled ? "Filled" : "Normal"}</Text.span>
-                    <Row gap="var(--padding-sm)" marginTop="var(--padding-df)">
-                        <Button.Primary text="SVG" icon="import" onTap={handleDownload} />
-                        <Unactive>
-                            <Button.Primary text="PNG" icon="import" onTap={() => {}} />
-                        </Unactive>
-                    </Row>
-                </Column>
-            </Row>
-            <CodeBlock text={iconHTML} />
-        </Column>
+        <Box ref={wrapperRef}>
+            <Column gap="var(--padding-df)">
+                <Row>
+                    <Box
+                        display="flex"
+                        alignItems="center"
+                        padding="var(--padding-lg)"
+                        border="1px solid var(--rearground-border)"
+                        borderRadius="15px"
+                    >
+                        <RenderIcon.Name name={iconName} filled={isFilled} size="64px" />
+                    </Box>
+                    <Column padding="var(--padding-df)">
+                        <Text.h2 marginBottom="5px">{title}</Text.h2>
+                        <Input.Select
+                            parentRef={wrapperRef}
+                            selected={isFilled ? 1 : 0}
+                            onChange={(value) => {
+                                if (value == 0) setFilled(false);
+                                if (value == 1) setFilled(true);
+                            }}
+                            itemList={[
+                                {title: l10n["app_search_popup_normal_title"], details: l10n["app_search_popup_normal_description"]},
+                                {title: l10n["app_search_popup_filled_title"], details: l10n["app_search_popup_filled_description"]}
+                            ]}
+                        />
+                        <Row gap="var(--padding-sm)" marginTop="var(--padding-df)">
+                            <Button.Primary text="SVG" icon="import" onTap={handleDownload} />
+                            <Unactive>
+                                <Button.Primary text="PNG" icon="import" onTap={() => {}} />
+                            </Unactive>
+                        </Row>
+                    </Column>
+                </Row>
+                <CodeBlock text={iconHTML} />
+            </Column>
+        </Box>
     )
 }
 

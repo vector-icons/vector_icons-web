@@ -1,5 +1,5 @@
-import { render } from "preact";
-import { useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
+import { Ref, render } from "preact";
+import { MutableRef, useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
 import { Box, Column, Text } from "@web-package/react-widgets";
 import { Overlay, OverlayAlignment, OverlayDirection, OverlayElement } from "web-overlay-layout";
 import { TouchRipple } from "web-touch-ripple/jsx";
@@ -106,13 +106,14 @@ export namespace Input {
         details: string;
     }
 
-    export function Select({selected, itemList, onChange}: {
-        selected: number,
-        itemList: SelectItem[],
-        onChange: SelectChangeCallback
+    export function Select({selected, itemList, onChange, parentRef}: {
+        selected: number;
+        itemList: SelectItem[];
+        onChange: SelectChangeCallback;
+        parentRef?: MutableRef<HTMLElement>;
     }) {
         const targetRef = useRef<HTMLDivElement>(null);
-        
+
         // This value defines an overlay element added to the current DOM.
         let activeOverlay: OverlayElement = null;
 
@@ -138,7 +139,7 @@ export namespace Input {
             activeOverlay = Overlay.attach({
                 element: overlay,
                 target: targetRef.current,
-                parent: targetRef.current.closest("route-sliver"),
+                parent: parentRef?.current ?? targetRef.current.closest("route-sliver"),
                 behavior: {
                     direction: OverlayDirection.BOTTOM_CENTER,
                     alignment: OverlayAlignment.ALL,
