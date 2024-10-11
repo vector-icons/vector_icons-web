@@ -1,4 +1,4 @@
-import { AnimatedTransition, Box, Column, Row, Scrollable, Text } from "@web-package/react-widgets";
+import { AnimatedSize, AnimatedTransition, Box, Column, Row, Scrollable, Text } from "@web-package/react-widgets";
 import { RenderIcon } from "../../templates/RenderIcon";
 import { Button } from "../../templates/Button";
 import { IconType } from "../App";
@@ -67,7 +67,13 @@ export function IconPopup({icon, filled}: {
                                     <RenderIcon.Name name="minus" size="16px" color="var(--foreground3)" />
                                 </Box>
                             </TouchRipple>
-                            <Text color="var(--foreground3)">{iconSize}</Text>
+                            <AnimatedTransition value={iconSize} animation={{
+                                duration: "0.3s",
+                                fadeIn : {from: {opacity: 0, transform: "translateY(100%)"}, to: {opacity: 1, transform: ""}},
+                                fadeOut: {from: {opacity: 1, transform: ""}, to: {opacity: 0, transform: "translateY(-100%)"}}
+                            }}>
+                                <Text color="var(--foreground3)">{iconSize}</Text>
+                            </AnimatedTransition>
                             <TouchRipple onTap={onPlusIconSize}>
                                 <Box padding="var(--padding-sm)" borderRadius="1e10px">
                                     <RenderIcon.Name name="plus" size="16px" color="var(--foreground3)" />
