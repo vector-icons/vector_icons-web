@@ -200,8 +200,8 @@ export namespace Input {
         return (
             <Box
                 position="relative"
-                width="40px"
-                height="20px"
+                width="34px"
+                height="17px"
                 backgroundColor={selected ? "var(--primary)" : "var(--foreground5)"}
                 borderRadius="1e10px"
                 padding="2px"
@@ -212,9 +212,9 @@ export namespace Input {
             >
                 <Box
                     position="absolute"
-                    width="20px"
-                    height="20px"
-                    left={selected ? "calc(100% - 22px)" : "2px"}
+                    width="17px"
+                    height="17px"
+                    left={selected ? "calc(100% - 17px - 2px)" : "2px"}
                     borderRadius="1e10px"
                     backgroundColor="white"
                     transitionProperty="left"
