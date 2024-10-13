@@ -1,4 +1,4 @@
-import { AnimatedSize, AnimatedTransition, Box, Column, Row, Scrollable, Text } from "@web-package/react-widgets";
+import { AnimatedTransition, Box, Column, Row, Scrollable, Text } from "@web-package/react-widgets";
 import { RenderIcon } from "../../templates/RenderIcon";
 import { Button } from "../../templates/Button";
 import { IconType } from "../App";
@@ -7,14 +7,16 @@ import { l10n } from "../../localization/localization";
 import { Input } from "../../templates/Input";
 import { useRef, useState } from "preact/hooks";
 import { TouchRipple } from "web-touch-ripple/jsx";
+import { User } from "../../components/user";
+import { Storage } from "../../components/storage";
 
 export function IconPopup({icon, filled}: {
     icon: IconType;
     filled: boolean;
 }) {
     const [isFilled, setFilled] = useState(filled);
-    const [isMarked, setMarked] = useState(false);
-    const [iconSize, setIconSize] = useState(64);
+    const [isMarked, setMarked] = useState(User.markedIcons.some(name => name == icon.name));
+    const [iconSize, setIconSize] = useState(Storage.get<number>("search_popup-icon_size") ?? 64);
     const wrapperRef = useRef<HTMLDivElement>(null);
     const iconName = icon.name;
     const iconHTML = isFilled ? icon.content.filled : icon.content.normal;
@@ -38,11 +40,27 @@ export function IconPopup({icon, filled}: {
     };
 
     const onMinusIconSize = () => {
-        if (iconSize > 14) setIconSize(iconSize - 1)
+        if (iconSize > 14) {
+            Storage.set("search_popup-icon_size", iconSize - 1);
+            setIconSize(iconSize - 1);
+        }
     }
 
     const onPlusIconSize = () => {
-        if (iconSize < 100) setIconSize(iconSize + 1);
+        if (iconSize < 100) {
+            Storage.set("search_popup-icon_size", iconSize + 1);
+            setIconSize(iconSize + 1);
+        }
+    }
+
+    const onBookMark = () => {
+        if (isMarked) { // 북마크 취소
+            User.markedIcons = User.markedIcons.filter(name => name != icon.name);
+            setMarked(false);
+        } else {
+            User.markedIcons = [...User.markedIcons, icon.name];
+            setMarked(true);
+        }
     }
 
     return (
@@ -84,7 +102,7 @@ export function IconPopup({icon, filled}: {
                     <Column padding="var(--padding-df)">
                         <Row align="centerLeft">
                             <Text.h2>{title}</Text.h2>
-                            <TouchRipple onTap={() => setMarked(!isMarked)}>
+                            <TouchRipple onTap={onBookMark}>
                                 <Box padding="var(--padding-df)" borderRadius="1e10px" marginLeft="auto">
                                     <AnimatedTransition value={isMarked} animation={{
                                         duration: "0.2s",
