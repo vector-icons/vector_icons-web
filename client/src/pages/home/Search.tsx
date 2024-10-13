@@ -13,6 +13,7 @@ import { Tooltip } from "../../templates/Tooltip";
 import { l10n } from "../../localization/localization";
 import { PopupPage } from "../../components/popup_page";
 import { IconPopup } from "./Search-popup";
+import { User } from "../../components/user";
 
 const PreviewControllerContext = createContext<PreviewController>(null);
 
@@ -20,7 +21,8 @@ type PreviewControllerListener = (id: number, type: PreviewControllerEvent) => v
 enum PreviewControllerEvent {
     iconSize,
     iconName,
-    iconType
+    iconType,
+    iconOnlyMarked,
 }
 
 enum PreviewIconType {
@@ -33,11 +35,13 @@ class PreviewController {
     _iconSize: number;
     _iconName: string;
     _iconType: PreviewIconType;
+    _iconOnlyMarked: boolean;
 
-    constructor(iconSize: number, iconName: string, iconType: PreviewIconType) {
+    constructor(iconSize: number, iconName: string, iconType: PreviewIconType, iconOnlyMarked: boolean) {
         this._iconSize = iconSize;
         this._iconName = iconName;
         this._iconType = iconType;
+        this._iconOnlyMarked = iconOnlyMarked;
     };
 
     count: number = 0;
@@ -67,6 +71,14 @@ class PreviewController {
         }
     }
 
+    get iconOnlyMarked() { return this._iconOnlyMarked; }
+    set iconOnlyMarked(newValue: boolean) {
+        if (this._iconOnlyMarked != newValue) {
+            this._iconOnlyMarked = newValue;
+            this.notifyListeners(PreviewControllerEvent.iconOnlyMarked);
+        }
+    }
+
     addListener(listener: PreviewControllerListener) {
         this.listeners.push(listener);
     }
@@ -77,7 +89,7 @@ class PreviewController {
 }
 
 export function SearchPage() {
-    const [controller, _] = useState(new PreviewController(32, "", PreviewIconType.all));
+    const [controller, _] = useState(new PreviewController(32, "", PreviewIconType.all, false));
 
     return (
         <PreviewControllerContext.Provider value={controller}>
@@ -201,6 +213,7 @@ function SearchBody() {
     useEffect(() => {
         controller.addListener((id, event) => {
             if (event == PreviewControllerEvent.iconName) countState[1](id);
+            if (event == PreviewControllerEvent.iconOnlyMarked) countState[1](id);
         })
     }, []);
 
@@ -215,6 +228,11 @@ function SearchBody() {
         icons = Icons;
     } else {
         icons = iconSearch.search(iconSearchName).map(result => result.item);
+    }
+
+    // 북마크된 아이콘만 표시
+    if (controller.iconOnlyMarked) {
+        icons = icons.filter(icon => User.markedIcons.some(name => name == icon.name));
     }
 
     return (
@@ -442,6 +460,10 @@ function SearchBodySideBarInner({expanded}: {expanded: boolean}) {
         controller.addListener(countState[1]);
     }, []);
 
+    const onBookmarkChange = () => {
+        controller.iconOnlyMarked = !controller.iconOnlyMarked
+    }
+
     return (
         <Box flexShrink="0" borderLeft="1px solid var(--rearground-border)">
             <Scrollable.Vertical>
@@ -452,6 +474,7 @@ function SearchBodySideBarInner({expanded}: {expanded: boolean}) {
                             <Button.Tertiary text={l10n["reset"]} onTap={() => {
                                 controller.iconSize = 32;
                                 controller.iconType = PreviewIconType.all;
+                                controller.iconOnlyMarked = false;
                             }} />
                         </Row>
                         <Column padding="var(--padding-df)">
@@ -479,6 +502,18 @@ function SearchBodySideBarInner({expanded}: {expanded: boolean}) {
                                 {title: l10n["app_controls_icon_type_filled_title"], details: l10n["app_controls_icon_type_filled_description"]}
                             ]} />
                         </Column>
+                        <TouchRipple onTap={onBookmarkChange}>
+                            <Column padding="var(--padding-df)" gap="var(--padding-sm)">
+                                <Row align="centerLeft" gap="var(--padding-sm)">
+                                    <RenderIcon.Name name="control" size="18px" />
+                                    <Column gap="3px">
+                                        <Text.h4 fontWeight="normal">{l10n["app_controls_icon_only_bookmarked_title"]}</Text.h4>
+                                        <Text.span fontSize="12px" fontWeight="normal">{l10n["app_controls_icon_only_bookmarked_description"]}</Text.span>
+                                    </Column>
+                                    <Input.Switch selected={controller.iconOnlyMarked} />
+                                </Row>
+                            </Column>
+                        </TouchRipple>
                     </Column>
                 </AnimatedFoldable.Horizontal>
             </Scrollable.Vertical>

@@ -72,7 +72,8 @@ export namespace Input {
                 children={
                     <Box
                         position="relative"
-                        width="200px"
+                        minWidth="200px"
+                        width="100%"
                         height="5px"
                         margin="15px 0px"
                         borderRadius="1e10px"
@@ -189,6 +190,37 @@ export namespace Input {
                     )
                 })}
             </Column>
+        )
+    }
+
+    export function Switch({selected, onChange}: {
+        selected: boolean;
+        onChange?: VoidFunction;
+    }) {
+        return (
+            <Box
+                position="relative"
+                width="40px"
+                height="20px"
+                backgroundColor={selected ? "var(--primary)" : "var(--foreground5)"}
+                borderRadius="1e10px"
+                padding="2px"
+                cursor="pointer"
+                transitionProperty="background-color"
+                transitionDuration="0.3s"
+                onClick={onChange}
+            >
+                <Box
+                    position="absolute"
+                    width="20px"
+                    height="20px"
+                    left={selected ? "calc(100% - 22px)" : "2px"}
+                    borderRadius="1e10px"
+                    backgroundColor="white"
+                    transitionProperty="left"
+                    transitionDuration="0.3s"
+                />
+            </Box>
         )
     }
 }

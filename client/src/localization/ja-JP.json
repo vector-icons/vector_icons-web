@@ -46,6 +46,8 @@
     "app_controls_icon_type_normal_description": "普通のアイコンのみを表示",
     "app_controls_icon_type_filled_title": "塗りつぶしのみ",
     "app_controls_icon_type_filled_description": "塗りつぶしのアイコンのみを表示",
+    "app_controls_icon_only_bookmarked_title": "Only Bookmark",
+    "app_controls_icon_only_bookmarked_description": "Only wiew bookmarked icons",
     "app_settings_title": "設定",
     "app_settings_description": "このウェブサイトの全体的な機能とオプションを設定します",
     "app_credits_title": "Contributors",

@@ -11,6 +11,7 @@
     --foreground2: rgb(50, 50, 50);
     --foreground3: rgb(100, 100, 100);
     --foreground4: rgb(140, 140, 140);
+    --foreground5: rgb(180, 180, 180);
     --shadow: rgb(0, 0, 0, 0.2);
     --popup-background: white;
     --popup-rearground: rgb(230, 232, 236);
@@ -44,6 +45,7 @@
     --foreground2: rgb(200, 200, 200);
     --foreground3: rgb(170, 170, 170);
     --foreground4: rgb(120, 120, 120);
+    --foreground5: rgb(80, 80, 80);
     --shadow: rgb(120, 120, 120, 0.2);
     --popup-background: rgb(40, 42, 46);
     --popup-rearground: rgb(50, 52, 56);
