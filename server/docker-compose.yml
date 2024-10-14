@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  postgres:
+    container_name: PostgreSQL
+    image: postgres:15-alpine
+    restart: always
+    volumes:
+      - ./db/postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d ${POSTGRES_DB}"]
+      interval: 1s
+      timeout: 1s
+      retries: 30 # retry 30s
+  liquibase:
+    container_name: PostgreSQL-Liquibase
+    image: liquibase/liquibase:4.28.0
+    depends_on:
+      postgres: # Loaded after related DB initialized all.
+        condition: service_healthy
+    volumes:
+      - ./liquibase/changelog:/liquibase/changelog
+    command: >
+      --changeLogFile=/changelog/changelog-config.yml
+      --url=jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      --username=${POSTGRES_USER}
+      --password=${POSTGRES_PASSWORD}
+      update
