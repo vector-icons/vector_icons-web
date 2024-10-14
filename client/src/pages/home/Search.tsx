@@ -502,10 +502,11 @@ function SearchBodySideBarInner({expanded}: {expanded: boolean}) {
                                 {title: l10n["app_controls_icon_type_filled_title"], details: l10n["app_controls_icon_type_filled_description"]}
                             ]} />
                         </Column>
+                        <Box width="100%" height="1px" backgroundColor="var(--rearground-border)" />
                         <TouchRipple onTap={onBookmarkChange}>
                             <Column padding="var(--padding-df)" gap="var(--padding-sm)">
                                 <Row align="centerLeft" gap="var(--padding-sm)">
-                                    <RenderIcon.Name name="control" size="18px" />
+                                    <RenderIcon.Name name="bookmark" size="18px" />
                                     <Column gap="3px">
                                         <Text.h4 fontWeight="normal">{l10n["app_controls_icon_only_bookmarked_title"]}</Text.h4>
                                         <Text.span fontSize="12px" fontWeight="normal">{l10n["app_controls_icon_only_bookmarked_description"]}</Text.span>

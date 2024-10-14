@@ -44,7 +44,7 @@ export function Tooltip({direction = OverlayDirection.BOTTOM_CENTER, message, ch
                 overlayRef.current = Overlay.attach({
                     element: overlay,
                     target: wrapper,
-                    parent: wrapper.closest("route-sliver"),
+                    parent: wrapper.closest("route-sliver") ?? document.body,
                     behavior: {
                         direction: direction,
                         alignment: OverlayAlignment.ALL,

@@ -15,6 +15,8 @@
     "app_credits": "Credits",
     "app_settings": "Settings",
     "app_download": "Download All",
+    "app_setting_to_dark": "Change to dark",
+    "app_setting_to_light": "Change to light",
     "app_contributing_title": "Get Started",
     "app_contributing_description": "Try a contributing, would you like to contribute to icon creation? Detailed guidelines are provided below!",
     "app_contributing_style_guide_title": "Style Guide",
