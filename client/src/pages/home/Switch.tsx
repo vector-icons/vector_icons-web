@@ -93,7 +93,7 @@ export namespace SideBar {
                         style={{borderRadius: "1e10px", backgroundColor: "var(--foreground2)", width: "50%"}}
                     >
                         <Tooltip message={close ? l10n["app_home"] : null}>
-                            <Item closed={close} selected={index == 0} onTap={homeTapCallback} iconName="home" title={l10n["app_home"]} />
+                            <Item closed={close} selected={index == 0} onTap={homeTapCallback} iconName="home1" title={l10n["app_home"]} />
                         </Tooltip>
                         <Unactive>
                             <Tooltip message={close ? l10n["app_request"] : null}>
