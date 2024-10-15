@@ -110,7 +110,7 @@ export namespace SideBar {
                                 <Item closed={close} selected={false} onTap={() => {}} iconName="storage" title={l10n["app_storage"]} />
                             </Tooltip>
                         </Unactive>
-                        <Tooltip message={null}>
+                        <Tooltip message={close ? l10n["app_credits"] : null}>
                             <Item closed={close} selected={index == 4} onTap={creditsTapCallback} iconName="users" title={l10n["app_credits"]} />
                         </Tooltip>
                         <Tooltip message={close ? l10n["app_settings"] : null}>
