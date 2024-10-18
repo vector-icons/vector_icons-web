@@ -2,6 +2,10 @@ import http from "http";
 import fs from "fs";
 import path from "path";
 import mime from "mime-types";
+import { HTTPRouter } from "./core/http_router";
+import { HTTPHandler } from "./core/http_handler";
+import { PathUtil } from "../utils/path";
+import { HTTPConnection } from "./core/http_connection";
 
 const contentTypeOf = (path: string) => {
     return mime.lookup(path) || "application/octet-stream";
@@ -44,3 +48,8 @@ const server = http.createServer((request, response) => {
 });
 
 server.listen(8080);
+
+new HTTPRouter("api", undefined, [
+    new HTTPRouter("sign-in", new HTTPHandler((request, response) => console.log("sign-in requested"))),
+    new HTTPRouter("sign-up", new HTTPHandler((request, response) => console.log("sign-up requested")))
+]);
