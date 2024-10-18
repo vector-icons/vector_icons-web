@@ -4,8 +4,6 @@ import path from "path";
 import mime from "mime-types";
 import { HTTPRouter } from "./core/http_router";
 import { HTTPHandler } from "./core/http_handler";
-import { PathUtil } from "../utils/path";
-import { HTTPConnection } from "./core/http_connection";
 
 const contentTypeOf = (path: string) => {
     return mime.lookup(path) || "application/octet-stream";
