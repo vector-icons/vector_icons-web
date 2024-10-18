@@ -14,6 +14,7 @@ import { l10n } from "../../localization/localization";
 import { PopupPage } from "../../components/popup_page";
 import { IconPopup } from "./Search-popup";
 import { User } from "../../components/user";
+import { Unactive } from "../../templates/Unactive";
 
 const PreviewControllerContext = createContext<PreviewController>(null);
 
@@ -110,8 +111,30 @@ function SearchHeader() {
     return (
         <Row align="center" padding="var(--padding-df)" borderBottom="1px solid var(--rearground-border)">
             <SearchBar />
-            <SearchHeaderThemeSwitch />
+            <Row align="center" flexShrink="0">
+                <Tooltip message={l10n["not_support_yet"]}>
+                    <Unactive>
+                        <SearchHeaderButton iconName="sign_in" toolText={l10n["sign_in"]} />
+                    </Unactive>
+                </Tooltip>
+                <SearchHeaderThemeSwitch />
+            </Row>
         </Row>
+    )
+}
+
+function SearchHeaderButton({iconName, toolText}: {
+    iconName: string;
+    toolText: string;
+}) {
+    return (
+        <Tooltip message={toolText}>
+            <TouchRipple onTap={() => {}}>
+                <Box padding="var(--padding-df)" borderRadius="1e10px">
+                    <RenderIcon.Name name={iconName} size="24px" />
+                </Box>
+            </TouchRipple>
+        </Tooltip>
     )
 }
 
