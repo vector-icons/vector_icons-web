@@ -122,9 +122,9 @@ export function IconPopup({icon, filled}: {
                                 if (value == 1) setFilled(true);
                             }}
                             itemList={[
-                                {title: l10n["app_search_popup_normal_title"], details: l10n["app_search_popup_normal_description"]},
-                                {title: l10n["app_search_popup_filled_title"], details: l10n["app_search_popup_filled_description"]}
-                            ]}
+                                icon.content.normal != null ? {title: l10n["app_search_popup_normal_title"], details: l10n["app_search_popup_normal_description"]} : undefined,
+                                icon.content.filled != null ? {title: l10n["app_search_popup_filled_title"], details: l10n["app_search_popup_filled_description"]} : undefined,
+                            ].filter(Boolean)}
                         />
                         <Row gap="var(--padding-sm)" marginTop="var(--padding-df)">
                             <Button.Primary text="SVG" icon="import" onTap={handleDownload} />

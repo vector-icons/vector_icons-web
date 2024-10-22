@@ -393,43 +393,45 @@ function SearchBodyContentItem({icon}: {icon: IconType}) {
     });
 
     return (
-        <Column align="center" className="icon-grid_item" gap="5px">
-            <Column gap="5px">
-                {Object.entries(icon.content).map(([key, innerHTML]) => {
-                    if (iconType == PreviewIconType.normal && key != "normal") return;
-                    if (iconType == PreviewIconType.filled && key != "filled") return;
+        <Invisible>
+            <Column align="center" className="icon-grid_item" gap="5px">
+                <Column gap="5px">
+                    {Object.entries(icon.content).map(([key, innerHTML]) => {
+                        if (iconType == PreviewIconType.normal && key != "normal") return;
+                        if (iconType == PreviewIconType.filled && key != "filled") return;
 
-                    const isNormal = key == "normal";
-                    const isFilled = key == "filled";
-                    const iconName = isNormal
-                        ? icon.name
-                        : icon.name + "-" + key;
+                        const isNormal = key == "normal";
+                        const isFilled = key == "filled";
+                        const iconName = isNormal
+                            ? icon.name
+                            : icon.name + "-" + key;
 
-                    return (
-                        <Invisible size={`calc(${iconSize}px + var(--padding-df) * 2)`}>
-                            <Box className="inner" position="relative">
-                                <Tooltip message={iconName + ".svg"}>
-                                    <TouchRipple onTap={() => PopupPage.open(<IconPopup icon={icon} filled={isFilled} />)}>
-                                        <Box
-                                            className="icon"
-                                            padding="var(--padding-df)"
-                                            backgroundColor="var(--rearground)"
-                                            children={<RenderIcon size={`${iconSize}px`} innerHTML={innerHTML} />}
-                                        />
-                                    </TouchRipple>
-                                </Tooltip>
-                            </Box>
-                        </Invisible>
-                    )
-                })}
+                        return (
+                            <Invisible size={`calc(${iconSize}px + var(--padding-df) * 2)`}>
+                                <Box className="inner" position="relative">
+                                    <Tooltip message={iconName + ".svg"}>
+                                        <TouchRipple onTap={() => PopupPage.open(<IconPopup icon={icon} filled={isFilled} />)}>
+                                            <Box
+                                                className="icon"
+                                                padding="var(--padding-df)"
+                                                backgroundColor="var(--rearground)"
+                                                children={<RenderIcon size={`${iconSize}px`} innerHTML={innerHTML} />}
+                                            />
+                                        </TouchRipple>
+                                    </Tooltip>
+                                </Box>
+                            </Invisible>
+                        )
+                    })}
+                </Column>
+                <Text.span
+                    fontSize="12px"
+                    maxWidth={`${iconSize + 15}px`}
+                    textOverflow="ellipsis"
+                    children={icon.name}
+                />
             </Column>
-            <Text.span
-                fontSize="12px"
-                maxWidth={`${iconSize + 15}px`}
-                textOverflow="ellipsis"
-                children={icon.name}
-            />
-        </Column>
+        </Invisible>
     )
 }
 
