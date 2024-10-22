@@ -423,11 +423,13 @@ function SearchBodyContentItem({icon}: {icon: IconType}) {
                     )
                 })}
             </Column>
-            <Invisible>
+            <Invisible width={`${iconSize + 30}px`} height="14px">
                 <Text.span
                     fontSize="12px"
+                    width="fit-content"
                     maxWidth={`${iconSize + 15}px`}
                     textOverflow="ellipsis"
+                    margin="auto"
                     children={icon.name}
                 />
             </Invisible>
