@@ -11,6 +11,7 @@ import { SettingsPage } from "./Settings";
 import { l10n } from "../../localization/localization";
 import { Unactive } from "../../templates/Unactive";
 import { CreditsPage } from "./Credits";
+import { StyleGuidePage } from "./StyleGuide";
 
 export function SwitchPage() {
     return (
@@ -19,6 +20,7 @@ export function SwitchPage() {
             <Column size="100%" flexShrink="1">
                 <Router>
                     <Route path="/" component={SearchPage} />
+                    <Route path="/style_guide" component={StyleGuidePage} />
                     <Route path="/settings" component={SettingsPage} />
                     <Route path="/credits" component={CreditsPage} />
                 </Router>
@@ -33,8 +35,9 @@ export namespace SideBar {
         const closeUserRef = useRef(false);
         const location = useLocation();
         const index = location.relPath == "/" ? 0
-                    : location.relPath == "/credits" ? 4
-                    : location.relPath == "/settings" ? 5
+                    : location.relPath == "/style_guide" ? 4
+                    : location.relPath == "/credits" ? 5
+                    : location.relPath == "/settings" ? 6
                     : 0;
 
         useEffect(() => {
@@ -52,12 +55,16 @@ export namespace SideBar {
             if (index != 0) RouterBinding.instance.move("/app");
         }
 
+        const styleGuideTapCallback = () => {
+            if (index != 4) RouterBinding.instance.move("/app/style_guide");
+        }
+
         const creditsTapCallback = () => {
-            if (index != 4) RouterBinding.instance.move("/app/credits");
+            if (index != 5) RouterBinding.instance.move("/app/credits");
         }
 
         const settingsTapCallback = () => {
-            if (index != 5) RouterBinding.instance.move("/app/settings");
+            if (index != 6) RouterBinding.instance.move("/app/settings");
         }
 
         return (
@@ -110,11 +117,14 @@ export namespace SideBar {
                                 <Item closed={close} selected={false} onTap={() => {}} iconName="storage" title={l10n["app_storage"]} />
                             </Tooltip>
                         </Unactive>
+                        <Tooltip message={close ? l10n["app_style_guide"] : null}>
+                            <Item closed={close} selected={index == 4} onTap={styleGuideTapCallback} iconName="image" title={l10n["app_style_guide"]} />
+                        </Tooltip>
                         <Tooltip message={close ? l10n["app_credits"] : null}>
-                            <Item closed={close} selected={index == 4} onTap={creditsTapCallback} iconName="users" title={l10n["app_credits"]} />
+                            <Item closed={close} selected={index == 5} onTap={creditsTapCallback} iconName="users" title={l10n["app_credits"]} />
                         </Tooltip>
                         <Tooltip message={close ? l10n["app_settings"] : null}>
-                            <Item closed={close} selected={index == 5} onTap={settingsTapCallback} iconName="settings" title={l10n["app_settings"]} />
+                            <Item closed={close} selected={index == 6} onTap={settingsTapCallback} iconName="settings" title={l10n["app_settings"]} />
                         </Tooltip>
                     </TabNavigation.Vertical>
                 </Scrollable.Vertical>

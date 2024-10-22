@@ -15,6 +15,7 @@ import { PopupPage } from "../../components/popup_page";
 import { IconPopup } from "./Search-popup";
 import { User } from "../../components/user";
 import { Unactive } from "../../templates/Unactive";
+import { RouterBinding } from "@web-package/react-widgets-router";
 
 const PreviewControllerContext = createContext<PreviewController>(null);
 
@@ -295,20 +296,26 @@ function SearchBodyHeader() {
                         <Text.span>{l10n["app_contributing_description"]}</Text.span>
                     </Column>
                     <Row gap="var(--padding-df)">
-                        <TouchRipple onTap={() => {}}>
+                        <TouchRipple wait={true} onTap={() => RouterBinding.instance.move("app/style_guide")}>
                             <Container expanded={true}>
-                                <Column gap="5px">
-                                    <Text.p fontSize="18px">{l10n["app_contributing_style_guide_title"]}</Text.p>
-                                    <Text.span fontSize="14px">{l10n["app_contributing_style_guide_description"]}</Text.span>
-                                </Column>
+                                <Row gap="var(--padding-sm)">
+                                    <RenderIcon.Name name="image" size="18px" color="var(--foreground2)" />
+                                    <Column gap="5px">
+                                        <Text.p fontSize="18px">{l10n["app_contributing_style_guide_title"]}</Text.p>
+                                        <Text.span fontSize="14px">{l10n["app_contributing_style_guide_description"]}</Text.span>
+                                    </Column>
+                                </Row>
                             </Container>
                         </TouchRipple>
                         <TouchRipple wait={true} onTap={() => window.open("https://github.com/vector-icons/vector_icons")}>
                             <Container expanded={true}>
-                                <Column gap="5px">
-                                    <Text.p fontSize="18px">{l10n["app_contributing_github_title"]}</Text.p>
-                                    <Text.span fontSize="14px">{l10n["app_contributing_github_description"]}</Text.span>
-                                </Column>
+                                <Row gap="var(--padding-sm)">
+                                    <RenderIcon.Name name="github" size="18px" color="var(--foreground2)" />
+                                    <Column gap="5px">
+                                        <Text.p fontSize="18px">{l10n["app_contributing_github_title"]}</Text.p>
+                                        <Text.span fontSize="14px">{l10n["app_contributing_github_description"]}</Text.span>
+                                    </Column>
+                                </Row>
                             </Container>
                         </TouchRipple>
                     </Row>
