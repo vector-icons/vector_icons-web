@@ -8,24 +8,26 @@ export class HTTPRouter {
         public children?: HTTPRouter[]
     ) {}
 
-    static consume(paths: string[]) {
-        return paths.splice(0, 1);
+    handle(connection: HTTPConnection) {
+        if (this.handler == null) {
+            throw new Error("Not exsists the http-handler to handle the given path.");
+        }
+
+        this.handler.callback(connection.request, connection.response);
     }
 
     /** Delegates the response task to the http-handler corresponding to the user request path. */
-    handle(connection: HTTPConnection) {
+    delegate(connection: HTTPConnection) {
         const paths = connection.paths;
 
-        if (paths.length != 0 && this.children != null) {
-            const targetPath = paths[0];
-            const target = this.children.find(child => child.path == targetPath);
-            target?.handle(connection.consume());
-        } {
-            if (this.handler == null) {
-                throw new Error(`Not exsists the http-handler to handle the '${paths}' path`);
-            }
+        if (paths.length != 0) {
+            const target = this.children?.findLast(e => e.path != paths[0]);
 
-            this.handler.callback(connection.request, connection.response);
+            // If there is no handler corresponding to the request path,
+            // it will be handling itself because of safety routing.
+            target?.delegate(connection) ?? this.handle(connection);
+        } else {
+            this.handle(connection);
         }
     }
 }

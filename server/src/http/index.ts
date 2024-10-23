@@ -1,15 +1,15 @@
 import http from "http";
 import fs from "fs";
 import path from "path";
-import mime from "mime-types";
 import { HTTPRouter } from "./core/http_router";
+import { SIGN_IN_HTTP_HANDLER } from "../api/sign_in";
+import { SIGN_UP_HTTP_HANDLER } from "../api/sign_up";
 import { HTTPHandler } from "./core/http_handler";
+import { HTTPUtil } from "../utils/http";
+import { HTTPConnection } from "./core/http_connection";
+import { PathUtil } from "../utils/path";
 
-const contentTypeOf = (path: string) => {
-    return mime.lookup(path) || "application/octet-stream";
-}
-
-const server = http.createServer((request, response) => {
+const RESOURCE_HTTP_HANDLER = new HTTPHandler((request, response) => {
     if (request.url === undefined) return;
 
     const ext = path.extname(request.url);
@@ -33,21 +33,31 @@ const server = http.createServer((request, response) => {
                     response.setHeader("Cache-Control", "max-age=31536000, public");
                 }
 
-                response.writeHead(200, {"Content-Type": contentTypeOf(srcPath)});
+                response.writeHead(200, {"Content-Type": HTTPUtil.contentTypeOf(srcPath)});
                 response.end(data);
             }
         });
     } else {
         fs.readFile("../client/dist/index.html", "utf8", (err, data) => {
-            response.writeHead(200, {"Content-Type": contentTypeOf("html")});
+            response.writeHead(200, {"Content-Type": HTTPUtil.contentTypeOf("html")});
             response.end(data);
         });
     }
 });
 
-server.listen(8080);
-
-new HTTPRouter("api", undefined, [
-    new HTTPRouter("sign-in", new HTTPHandler((request, response) => console.log("sign-in requested"))),
-    new HTTPRouter("sign-up", new HTTPHandler((request, response) => console.log("sign-up requested")))
+const HTTP_ROUTER = new HTTPRouter("api", RESOURCE_HTTP_HANDLER, [
+    new HTTPRouter("sign-in", SIGN_IN_HTTP_HANDLER),
+    new HTTPRouter("sign-up", SIGN_UP_HTTP_HANDLER)
 ]);
+
+const server = http.createServer((request, response) => {
+    if (request.url === undefined) return;
+
+    HTTP_ROUTER.delegate(new HTTPConnection(
+        PathUtil.toList(request.url),
+        request,
+        response
+    ))
+});
+
+server.listen(8080);
