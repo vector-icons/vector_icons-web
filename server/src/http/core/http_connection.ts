@@ -7,7 +7,12 @@ export class HTTPConnection {
         public response: http.ServerResponse
     ) {}
 
+    get fristPath() {
+        return this.paths[0];
+    }
+
     consume(): HTTPConnection {
-        return this.paths = this.paths.slice(0, 1), this;
+        this.paths = this.paths.length == 1 ? [] : this.paths.slice(-1);
+        return this;
     }
 }

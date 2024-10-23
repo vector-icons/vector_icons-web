@@ -13,7 +13,7 @@ export class HTTPRouter {
             throw new Error("Not exsists the http-handler to handle the given path.");
         }
 
-        this.handler.callback(connection.request, connection.response);
+        this.handler.delegate(connection);
     }
 
     /** Delegates the response task to the http-handler corresponding to the user request path. */
@@ -21,11 +21,19 @@ export class HTTPRouter {
         const paths = connection.paths;
 
         if (paths.length != 0) {
-            const target = this.children?.findLast(e => e.path != paths[0]);
+            const target = this.children?.findLast(e => e.path == paths[0]);
 
             // If there is no handler corresponding to the request path,
             // it will be handling itself because of safety routing.
-            target?.delegate(connection) ?? this.handle(connection);
+            target?.delegate(connection.consume()) ?? this.handle(connection);
+        } else {
+            this.handle(connection);
+        }
+    }
+
+    perform(connection: HTTPConnection) {
+        if (connection.paths.length != 0 && this.path == connection.fristPath) {
+            this.delegate(connection.consume());
         } else {
             this.handle(connection);
         }

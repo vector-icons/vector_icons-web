@@ -53,11 +53,11 @@ const HTTP_ROUTER = new HTTPRouter("api", RESOURCE_HTTP_HANDLER, [
 const server = http.createServer((request, response) => {
     if (request.url === undefined) return;
 
-    HTTP_ROUTER.delegate(new HTTPConnection(
+    HTTP_ROUTER.perform(new HTTPConnection(
         PathUtil.toList(request.url),
         request,
-        response
-    ))
+        response,
+    ));
 });
 
 server.listen(8080);
