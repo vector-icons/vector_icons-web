@@ -17,6 +17,17 @@ services:
       interval: 1s
       timeout: 1s
       retries: 30 # retry 30s
+
+  redis:
+    container_name: Redis
+    image: redis:7.4-rc2-alpine
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./db/redis/data:/data
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+
   liquibase:
     container_name: PostgreSQL-Liquibase
     image: liquibase/liquibase:4.28.0

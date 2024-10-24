@@ -23,7 +23,7 @@ export class HTTPRouter {
         if (paths.length != 0) {
             const target = this.children?.findLast(e => e.path == paths[0]);
 
-            // If there is no handler corresponding to the request path,
+            // If not exists the handler corresponding to the request path,
             // it will be handling itself because of safety routing.
             target?.delegate(connection.consume()) ?? this.handle(connection);
         } else {
