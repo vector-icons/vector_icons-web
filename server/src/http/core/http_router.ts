@@ -25,7 +25,17 @@ export class HTTPRouter {
 
             // If not exists the handler corresponding to the request path,
             // it will be handling itself because of safety routing.
-            target?.delegate(connection.consume()) ?? this.handle(connection);
+            if (target) {
+                target.delegate(connection.consume());
+            } else {
+                if (this.handler == null) {
+                    connection.response.writeHead(404);
+                    connection.response.end();
+                    return;
+                }
+
+                this.handle(connection);
+            }
         } else {
             this.handle(connection);
         }

@@ -8,6 +8,19 @@ import { HTTPHandler } from "./core/http_handler";
 import { HTTPUtil } from "../utils/http";
 import { HTTPConnection } from "./core/http_connection";
 import { PathUtil } from "../utils/path";
+import { Client } from "pg";
+import { config } from "dotenv";
+
+/** Initializes configuation values in node.js about .env files. */
+config();
+
+/** The value defines the currently active postgresql client instance. */
+export const PG_CLIENT = new Client({
+    port: Number.parseInt(process.env.POSTGRES_PORT as string),
+    user: process.env.POSTGRES_USER,
+    database: process.env.POSTGRES_DB,
+    password: process.env.POSTGRES_PASSWORD
+});
 
 const RESOURCE_HTTP_HANDLER = new HTTPHandler((request, response) => {
     if (request.url === undefined) return;
@@ -60,4 +73,6 @@ const server = http.createServer((request, response) => {
     ));
 });
 
-server.listen(8080);
+server.listen(8080, undefined, undefined, () => {
+    PG_CLIENT.connect();
+});

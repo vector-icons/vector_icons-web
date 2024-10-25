@@ -3,6 +3,7 @@ Create a .env file in the server/ folder and write the code according to the for
 
 ```env
 POSTGRES_DB=quark
+POSTGRES_PORT=5432
 POSTGRES_USER=root
 POSTGRES_PASSWORD=...
 
