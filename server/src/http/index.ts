@@ -10,6 +10,7 @@ import { HTTPConnection } from "./core/http_connection";
 import { PathUtil } from "../utils/path";
 import { Client } from "pg";
 import { config } from "dotenv";
+import { createClient } from "redis";
 
 /** Initializes configuation values in node.js about .env files. */
 config();
@@ -20,6 +21,11 @@ export const PG_CLIENT = new Client({
     user: process.env.POSTGRES_USER,
     database: process.env.POSTGRES_DB,
     password: process.env.POSTGRES_PASSWORD
+});
+
+/** The value defines the currently active redis client instance. */
+export const REDIS_CLIENT = createClient({
+    password: process.env.REDIS_PASSWORD
 });
 
 const RESOURCE_HTTP_HANDLER = new HTTPHandler((request, response) => {
@@ -75,4 +81,5 @@ const server = http.createServer((request, response) => {
 
 server.listen(8080, undefined, undefined, () => {
     PG_CLIENT.connect();
+    REDIS_CLIENT.connect();
 });

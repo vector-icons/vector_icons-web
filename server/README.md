@@ -9,6 +9,9 @@ POSTGRES_PASSWORD=...
 
 REDIS_PORT=6379
 REDIS_PASSWORD={0}
+
+EMAIL_USERNAME=quarkicons@gmail.com
+EMAIL_PASSWORD=...
 ```
 
 And then, create a redis.conf file in the server/ folder and write the code according to the format below.

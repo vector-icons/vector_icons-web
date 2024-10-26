@@ -13,8 +13,8 @@ CREATE TABLE "User"(
     "displayName" VARCHAR(64),
     "alias" VARCHAR(128) NOT NULL UNIQUE,
     "email" VARCHAR(255) NOT NULL UNIQUE,
-    "password" SHA512 NOT NULL,
-    "passwordSalt" SHA256 NOT NULL
+    "password" SHA512,
+    "passwordSalt" SHA256
 );
 
 CREATE INDEX "indexAlias" ON "User"("alias");
