@@ -95,10 +95,7 @@ export const AUTH_HTTP_HANDLER = new HTTPHandler(async (request, response, reque
             REDIS_CLIENT.hExpire("RefreshToken", refreshToken, AuthUtil.REFRESH_TOKEN_EXPIER_DURATION);
 
             response.writeHead(200);
-            response.end(JSON.stringify({
-                access_token: accessToken,
-                refresh_token: refreshToken
-            }));
+            response.end(JSON.stringify({accessToken, refreshToken}));
         } else {
             response.writeHead(400);
             response.end(AuthException.INVALID_NUMBERS);
