@@ -12,7 +12,7 @@ export class HTTPConnection {
     }
 
     consume(): HTTPConnection {
-        this.paths = this.paths.length == 1 ? [] : this.paths.slice(-1);
+        this.paths = this.paths.length == 1 ? [] : this.paths.slice(1, this.paths.length);
         return this;
     }
 }
