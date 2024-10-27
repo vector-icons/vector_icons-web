@@ -7,6 +7,7 @@
     --background-overlay: rgb(230, 231, 234);
     --rearground: rgb(240, 241, 244);
     --rearground-border: rgb(180, 182, 184);
+    --rearground-in-background: rgb(230, 232, 235);
     --foreground: black;
     --foreground2: rgb(50, 50, 50);
     --foreground3: rgb(100, 100, 100);
@@ -41,6 +42,7 @@
     --background-overlay: rgb(38, 41, 44);
     --rearground: rgb(30, 32, 36);
     --rearground-border: rgb(70, 72, 74);
+    --rearground-in-background: rgb(50, 51, 56);
     --foreground: white;
     --foreground2: rgb(200, 200, 200);
     --foreground3: rgb(170, 170, 170);

@@ -223,4 +223,13 @@ export namespace Input {
             </Box>
         )
     }
+
+    export function PrimaryText({placeholder, type = "text"}: {
+        placeholder?: string;
+        type?: string;
+    }) {
+        return (
+            <input class="primary" type={type} placeholder={placeholder} />
+        )
+    }
 }

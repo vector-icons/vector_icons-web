@@ -109,28 +109,29 @@ export function SearchPage() {
 }
 
 function SearchHeader() {
+    const onSignIn = () => {
+        RouterBinding.instance.push("/sign-in");
+    }
+
     return (
         <Row align="center" padding="var(--padding-df)" borderBottom="1px solid var(--rearground-border)">
             <SearchBar />
             <Row align="center" flexShrink="0">
-                <Tooltip message={l10n["not_support_yet"]}>
-                    <Unactive>
-                        <SearchHeaderButton iconName="sign_in" toolText={l10n["sign_in"]} />
-                    </Unactive>
-                </Tooltip>
+                <SearchHeaderButton iconName="sign_in" toolText={l10n["sign_in"]} onTap={onSignIn} />
                 <SearchHeaderThemeSwitch />
             </Row>
         </Row>
     )
 }
 
-function SearchHeaderButton({iconName, toolText}: {
+function SearchHeaderButton({iconName, toolText, onTap}: {
     iconName: string;
     toolText: string;
+    onTap: VoidFunction;
 }) {
     return (
         <Tooltip message={toolText}>
-            <TouchRipple onTap={() => {}}>
+            <TouchRipple onTap={onTap}>
                 <Box padding="var(--padding-df)" borderRadius="1e10px">
                     <RenderIcon.Name name={iconName} size="24px" />
                 </Box>

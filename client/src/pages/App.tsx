@@ -4,6 +4,8 @@ import { LandingPage } from "./Landing";
 import { Route, Router } from "@web-package/react-widgets-router";
 import { createContext } from "preact";
 import { SettingsBinding } from "../settings/settings_binding";
+import { SignInPage } from "./sign-in/SignIn";
+import { SignUpPage } from "./sign-up/SignUp";
 
 export type IconType = {
     name: string;
@@ -33,6 +35,8 @@ export function App() {
             <Router>
                 <Route path="/" component={LandingPage} />
                 <Route path="/app" component={home.SwitchPage} />
+                <Route path="/sign-in" component={SignInPage} />
+                <Route path="/sign-up" component={SignUpPage} />
             </Router>
         </AppContext.Provider>
     )

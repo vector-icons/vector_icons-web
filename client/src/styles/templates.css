@@ -58,3 +58,17 @@ button.tertiary:hover {
 overlay-layout:has(.tooltip) {
     pointer-events: none;
 }
+
+/* ../templates/Input.tsx of Input.Text */
+input.primary {
+    font-size: 16px;
+    padding: var(--padding-df);
+    border-radius: 10px;
+    border: 2px solid var(--foreground5);
+    transition-property: border-color;
+    transition-duration: 0.3s;
+}
+input.primary:hover,
+input.primary:focus {
+    border-color: var(--foreground);
+}
