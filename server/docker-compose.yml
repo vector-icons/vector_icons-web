@@ -12,7 +12,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U root -d ${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 1s
       timeout: 1s
       retries: 30 # retry 30s
@@ -37,7 +37,7 @@ services:
       - ./liquibase/changelog:/liquibase/changelog
     command: >
       --changeLogFile=/changelog/changelog-config.yml
-      --url=jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      --url=jdbc:postgresql://${POSTGRES_PORT}:5432/${POSTGRES_DB}
       --username=${POSTGRES_USER}
       --password=${POSTGRES_PASSWORD}
       update
