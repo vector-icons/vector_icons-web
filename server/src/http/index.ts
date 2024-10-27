@@ -12,6 +12,7 @@ import { Client } from "pg";
 import { config } from "dotenv";
 import { createClient } from "redis";
 import { AUTH_HTTP_HANDLER } from "../api/auth";
+import { TOKEN_HTTP_HANDLER } from "../api/token";
 
 /** Initializes configuation values in node.js about .env files. */
 config();
@@ -68,6 +69,7 @@ const RESOURCE_HTTP_HANDLER = new HTTPHandler((request, response) => {
 const HTTP_ROUTER = new HTTPRouter("api", RESOURCE_HTTP_HANDLER, [
     new HTTPRouter("sign-in", SIGN_IN_HTTP_HANDLER),
     new HTTPRouter("sign-up", SIGN_UP_HTTP_HANDLER, [new HTTPRouter("auth", AUTH_HTTP_HANDLER)]),
+    new HTTPRouter("token", TOKEN_HTTP_HANDLER)
 ]);
 
 const server = http.createServer((request, response) => {

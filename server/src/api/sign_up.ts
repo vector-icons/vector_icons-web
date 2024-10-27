@@ -20,23 +20,23 @@ export enum SignUpException {
 
 export const SIGN_UP_HTTP_HANDLER = new HTTPHandler(async (request, response, requestBody) => {
     // Ignore the request because the request for get method cannot define the body.
-    if (request.method == "GET") {
+    if (request.method != "POST") {
         response.writeHead(400);
-        response.end();
+        response.end(APIException.INVALID_REQUEST_METHOD);
         return;
     }
 
     try {
-        const data = JSON.parse(requestBody) as SignUpRequest;
+        const given = JSON.parse(requestBody) as SignUpRequest;
 
-        if (data.email && data.password && data.alias) {
-            if (await User.existsEmail(data.email)) {
+        if (given.email && given.password && given.alias) {
+            if (await User.existsEmail(given.email)) {
                 response.writeHead(400);
                 response.end(SignUpException.ALREADY_EXISTS_EMAIL);
                 return;
             }
 
-            if (await User.existsAlias(data.alias)) {
+            if (await User.existsAlias(given.alias)) {
                 response.writeHead(400);
                 response.end(SignUpException.ALREADY_EXISTS_ALIAS);
                 return;
@@ -45,9 +45,9 @@ export const SIGN_UP_HTTP_HANDLER = new HTTPHandler(async (request, response, re
             const authUUID = UUID.v4();
             const authNums = AuthUtil.createNumbers(6);
 
-            Mail.sendHTML(data.email, "Your authentication number for sign-up about Quark Icons", authNums);
+            Mail.sendHTML(given.email, "Your authentication numbers for sign-up about Quark Icons", authNums);
 
-            REDIS_CLIENT.hSet("Auth", authUUID, JSON.stringify({...data, ...{
+            REDIS_CLIENT.hSet("Auth", authUUID, JSON.stringify({...given, ...{
                 numbers: authNums,
             }}));
 

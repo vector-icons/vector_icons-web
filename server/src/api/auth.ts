@@ -23,9 +23,9 @@ enum AuthException {
 
 export const AUTH_HTTP_HANDLER = new HTTPHandler(async (request, response, requestBody) => {
     // Ignore the request because the request for get method cannot define the body.
-    if (request.method == "GET") {
+    if (request.method != "POST") {
         response.writeHead(400);
-        response.end();
+        response.end(APIException.INVALID_REQUEST_METHOD);
         return;
     }
 
@@ -89,10 +89,10 @@ export const AUTH_HTTP_HANDLER = new HTTPHandler(async (request, response, reque
             REDIS_CLIENT.hDel("Auth", uuid);
 
             REDIS_CLIENT.hSet("AccessToken", accessToken, userId);
-            REDIS_CLIENT.hExpire("AccessToken", accessToken, 604800); // 1 weak
+            REDIS_CLIENT.hExpire("AccessToken", accessToken, AuthUtil.ACCESS_TOKEN_EXPIER_DURATION);
 
             REDIS_CLIENT.hSet("RefreshToken", refreshToken, userId);
-            REDIS_CLIENT.hExpire("RefreshToken", refreshToken, 31104000); // 1 year
+            REDIS_CLIENT.hExpire("RefreshToken", refreshToken, AuthUtil.REFRESH_TOKEN_EXPIER_DURATION);
 
             response.writeHead(200);
             response.end(JSON.stringify({
