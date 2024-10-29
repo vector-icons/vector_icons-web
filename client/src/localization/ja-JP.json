@@ -56,5 +56,11 @@
     "app_settings_title": "設定",
     "app_settings_description": "このウェブサイトの全体的な機能とオプションを設定します",
     "app_credits_title": "Contributors",
-    "app_credits_description": "A big thank you to all the contributors who have made the Quark Icons open source project possible! The following information details the contributions and provides further project-related information."
+    "app_credits_description": "A big thank you to all the contributors who have made the Quark Icons open source project possible! The following information details the contributions and provides further project-related information.",
+    "sign-up_error": {
+        "already_exists_email": "The account with this email already exists.",
+        "already_exists_alias": "The account with this alias already exists.",
+        "invalid_uuid": "User authentication has expired.",
+        "invalid_numbers": "A given auth-numbers is invalid"
+    }
 }

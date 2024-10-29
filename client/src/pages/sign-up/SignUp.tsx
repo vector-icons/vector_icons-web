@@ -1,13 +1,14 @@
-import { AnimatedSize, AnimatedTransition, Box, Column, Row, Text } from "@web-package/react-widgets";
+import { AnimatedFoldable, AnimatedSize, AnimatedTransition, Box, Column, Row, Text } from "@web-package/react-widgets";
 import { Input } from "../../templates/Input";
 import { Button } from "../../templates/Button";
 import { l10n } from "../../localization/localization";
 import { TouchRipple } from "web-touch-ripple/jsx";
 import { RouterBinding } from "@web-package/react-widgets-router";
 import { Unactive } from "../../templates/Unactive";
-import { useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import { Test } from "../../components/test";
 import { CSSProperties } from "preact/compat";
+import { RenderIcon } from "../../templates/RenderIcon";
 
 enum SignUpStatus {
     INFO,
@@ -18,30 +19,79 @@ export function SignUpPage() {
     const [status, setStatus] = useState(SignUpStatus.INFO);
     const [email, setEmail] = useState<string>("");
     const [alias, setAlias] = useState<string>("");
+    const [error, setError] = useState<string>(null);
     const [password, setPassword] = useState<string>("");
+    const [authNums, setAuthNums] = useState<string>("");
+    const authIdRef = useRef<string>(null);
+    const authId = authIdRef.current; // Authorization UUID
 
-    const isNextable = Test.isEmail(email) && alias != "" && password != "";
+    const isNextable = error != null ? false : Test.isEmail(email) && alias != "" && password != "";
     const NextButton = () => (
-        <Button.Primary text="Next" onTap={() => {
-            if (status == SignUpStatus.INFO) setStatus(SignUpStatus.AUTH);
+        <Button.Primary text="Next" onTap={async () => {
+            if (status == SignUpStatus.INFO) {
+                const result = await fetch("/api/sign-up", {method: "POST", body: JSON.stringify({
+                    email: email,
+                    alias: alias,
+                    password: password
+                })});
+
+                if (result.status == 200) {
+                    // Sets Authorization UUID for finishing sign-up.
+                    authIdRef.current = await result.text();
+                    setStatus(SignUpStatus.AUTH);
+                } else {
+                    result.text().then(setError);
+                } 
+            }
+
+            if (status == SignUpStatus.AUTH) {
+                const result = await fetch(`/api/sign-up/auth?uuid=${authId}`, {
+                    method: "POST",
+                    body: JSON.stringify({numbers: authNums}
+                )});
+
+                if (result.status == 200) {
+                    RouterBinding.instance.push("/app");
+                } else {
+                    result.text().then(setError);
+                }
+            }
         }} />
     );
+
+    // Clears the errors when a user retyping to the information.
+    useEffect(() => setError(null), [email, alias, password, authNums]);
 
     return (
         <Box size="100%" display="flex" justifyContent="center" alignItems="center">
             <Column gap="var(--padding-lg)" padding="var(--padding-lg)" backgroundColor="var(--rearground)" borderRadius="15px">
-                <Column gap="3px">
-                    <Text.h2 fontSize="32px">{l10n["sign_up"]}</Text.h2>
-                    {
-                        status == SignUpStatus.INFO
-                            ? <span>Enter the user information you want to create.</span>
-                            : <span>Enter the emailed authentication number</span>
-                    }
+                <Column>
+                    <Column gap="3px">
+                        <Text.h2 fontSize="32px">{l10n["sign_up"]}</Text.h2>
+                        {
+                            status == SignUpStatus.INFO
+                                ? <span>Enter the user information you want to create.</span>
+                                : <span>Enter the emailed authentication number</span>
+                        }
+                    </Column>
+                    <AnimatedFoldable.Vertical visible={error != null} duration="0.3s">
+                        <Box paddingTop="var(--padding-df)">
+                            <Row
+                                gap="var(--padding-sm)"
+                                align="center"
+                                padding="var(--padding-df)"
+                                backgroundColor="var(--rearground-in-background)"
+                                borderRadius="10px"
+                            >
+                                <RenderIcon.Name name="information" size="16px" /> {l10n["sign-up_error"][error]}
+                            </Row>
+                        </Box>
+                    </AnimatedFoldable.Vertical>
                 </Column>
                 <AnimatedSize duration="0.5s">
                     <AnimatedTransition value={status} animation={{
                         duration: "0.5s",
-                        fadeIn : {from: {transform: "translateX(100%)", opacity: "0"}, to: {transform: "translateX(0px)" , opacity: "1"}},
+                        fadeIn : {from: {transform: "translateX(100%)", opacity: "0"}, to: {transform: "translateX(0px)"  , opacity: "1"}},
                         fadeOut: {from: {transform: "translateX(0px)" , opacity: "1"}, to: {transform: "translateX(-100%)", opacity: "0"}}
                     }}>
                         <Column width="100%" gap="var(--padding-sm)">
@@ -55,7 +105,7 @@ export function SignUpPage() {
                                     </>
                                     :
                                     <>
-                                        <Input.PrimaryText key="auth-numbers" placeholder="Auth Numbers" />
+                                        <Input.PrimaryText key="auth-numbers" onChange={setAuthNums} placeholder="Auth Numbers" />
                                     </>
                             }
                         </Column>
