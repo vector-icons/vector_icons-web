@@ -8,12 +8,10 @@ export namespace Button {
         onTap: VoidFunction
     }) {
         return (
-            <TouchRipple onTap={onTap}>
-                <button className="primary">
-                    {icon ? <RenderIcon.Name size="18px" name={icon} /> : <></>}
-                    {text}
-                </button>
-            </TouchRipple>
+            <button className="primary" onClick={() => onTap()}>
+                {icon ? <RenderIcon.Name size="18px" name={icon} /> : <></>}
+                {text}
+            </button>
         )
     }
 

@@ -3,6 +3,7 @@ import { MutableRef, useEffect, useLayoutEffect, useRef, useState } from "preact
 import { Box, Column, Text } from "@web-package/react-widgets";
 import { Overlay, OverlayAlignment, OverlayDirection, OverlayElement } from "web-overlay-layout";
 import { TouchRipple } from "web-touch-ripple/jsx";
+import { CSSProperties } from "preact/compat";
 
 export namespace Input {
     export function Range({current, min, max, interval = 1, onChange}: {
@@ -224,12 +225,36 @@ export namespace Input {
         )
     }
 
-    export function PrimaryText({placeholder, type = "text"}: {
+    export type InputChangeCallback = (value: string) => void;
+
+    export function PrimaryText({placeholder, onChange, refer, style, type = "text"}: {
         placeholder?: string;
+        onChange?: InputChangeCallback;
+        refer?: MutableRef<string>;
+        style?: CSSProperties;
         type?: string;
     }) {
+        const ref = useRef<HTMLInputElement>(null);
+
+        useLayoutEffect(() => {
+            const input = ref.current;
+            input.oninput = () => {
+                if (refer) {
+                    refer.current = input.value;
+                }
+
+                if (onChange) onChange(input.value);
+            }
+        }, []);
+
         return (
-            <input class="primary" type={type} placeholder={placeholder} />
+            <input
+                ref={ref}
+                type={type}
+                style={style}
+                class="primary"
+                placeholder={placeholder}
+            />
         )
     }
 }

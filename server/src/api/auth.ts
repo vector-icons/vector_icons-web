@@ -85,14 +85,14 @@ export const AUTH_HTTP_HANDLER = new HTTPHandler(async (request, response, reque
                 passSalt
             ]);
 
-            // Authorization uuid must expire because sign-up tasks has finally been completed.
-            REDIS_CLIENT.hDel("Auth", uuid);
-
-            REDIS_CLIENT.hSet("AccessToken", accessToken, userId);
-            REDIS_CLIENT.hExpire("AccessToken", accessToken, AuthUtil.ACCESS_TOKEN_EXPIER_DURATION);
-
-            REDIS_CLIENT.hSet("RefreshToken", refreshToken, userId);
-            REDIS_CLIENT.hExpire("RefreshToken", refreshToken, AuthUtil.REFRESH_TOKEN_EXPIER_DURATION);
+            await REDIS_CLIENT.multi()
+                // Authorization uuid must expire because sign-up tasks has finally been completed.
+                .hDel("Auth", uuid)
+                .hSet("AccessToken", accessToken, userId)
+                .hSet("RefreshToken", refreshToken, userId)
+                .hExpire("AccessToken", accessToken, AuthUtil.ACCESS_TOKEN_EXPIER_DURATION)
+                .hExpire("RefreshToken", refreshToken, AuthUtil.REFRESH_TOKEN_EXPIER_DURATION)
+                .exec();
 
             response.writeHead(200);
             response.end(JSON.stringify({accessToken, refreshToken}));

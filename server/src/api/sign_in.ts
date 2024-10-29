@@ -57,11 +57,12 @@ export const SIGN_IN_HTTP_HANDLER = new HTTPHandler(async (request, response, re
             const accessToken = AuthUtil.createToken();
             const refreshToken = AuthUtil.createToken();
 
-            REDIS_CLIENT.hSet("AccessToken", accessToken, userId);
-            REDIS_CLIENT.hExpire("AccessToken", accessToken, AuthUtil.ACCESS_TOKEN_EXPIER_DURATION);
-
-            REDIS_CLIENT.hSet("RefreshToken", refreshToken, userId);
-            REDIS_CLIENT.hExpire("RefreshToken", refreshToken, AuthUtil.REFRESH_TOKEN_EXPIER_DURATION);
+            await REDIS_CLIENT.multi()
+                .hSet("AccessToken", accessToken, userId)
+                .hSet("RefreshToken", refreshToken, userId)
+                .hExpire("AccessToken", accessToken, AuthUtil.ACCESS_TOKEN_EXPIER_DURATION)
+                .hExpire("RefreshToken", refreshToken, AuthUtil.REFRESH_TOKEN_EXPIER_DURATION)
+                .exec();
 
             response.writeHead(200);
             response.end(JSON.stringify({accessToken, refreshToken}));

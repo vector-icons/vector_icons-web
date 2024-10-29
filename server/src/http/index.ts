@@ -75,11 +75,16 @@ const HTTP_ROUTER = new HTTPRouter("api", RESOURCE_HTTP_HANDLER, [
 const server = http.createServer((request, response) => {
     if (request.url === undefined) return;
 
-    HTTP_ROUTER.perform(new HTTPConnection(
-        PathUtil.toList(request.url),
-        request,
-        response,
-    ));
+    try {
+        HTTP_ROUTER.perform(new HTTPConnection(
+            PathUtil.toList(request.url),
+            request,
+            response,
+        ));
+    } catch {
+        response.writeHead(500);
+        response.end();
+    }
 });
 
 server.listen(8080, undefined, undefined, () => {
