@@ -27,7 +27,7 @@ export function SignUpPage() {
 
     const isNextable = error != null ? false : Test.isEmail(email) && alias != "" && password != "";
     const NextButton = () => (
-        <Button.Primary text="Next" onTap={async () => {
+        <Button.Primary text={status == SignUpStatus.INFO ? l10n["next"] : l10n["done"]} onTap={async () => {
             if (status == SignUpStatus.INFO) {
                 const result = await fetch("/api/sign-up", {method: "POST", body: JSON.stringify({
                     email: email,
@@ -70,8 +70,8 @@ export function SignUpPage() {
                         <Text.h2 fontSize="32px">{l10n["sign_up"]}</Text.h2>
                         {
                             status == SignUpStatus.INFO
-                                ? <span>Enter the user information you want to create.</span>
-                                : <span>Enter the emailed authentication number</span>
+                                ? <span>{l10n["sign-up"]["info_description"]}</span>
+                                : <span>{l10n["sign-up"]["auth_description"]}</span>
                         }
                     </Column>
                     <AnimatedFoldable.Vertical visible={error != null} duration="0.3s">
@@ -83,7 +83,8 @@ export function SignUpPage() {
                                 backgroundColor="var(--rearground-in-background)"
                                 borderRadius="10px"
                             >
-                                <RenderIcon.Name name="information" size="16px" /> {l10n["sign-up_error"][error]}
+                                <RenderIcon.Name name="information" size="16px" />
+                                {l10n["sign-up"][error] ?? l10n["unknown_exception_message"]}
                             </Row>
                         </Box>
                     </AnimatedFoldable.Vertical>
@@ -99,25 +100,25 @@ export function SignUpPage() {
                                 status == SignUpStatus.INFO
                                     ?
                                     <>
-                                        <Input.PrimaryText key="email" onChange={setEmail} placeholder="Email" type="email" />
-                                        <Input.PrimaryText key="alias" onChange={setAlias} placeholder="Alias" />
-                                        <Input.PrimaryText key="password" onChange={setPassword} placeholder="Password" type="password" />
+                                        <Input.PrimaryText key="email" onChange={setEmail} placeholder={l10n["email"]} type="email" />
+                                        <Input.PrimaryText key="alias" onChange={setAlias} placeholder={l10n["alias"]} />
+                                        <Input.PrimaryText key="password" onChange={setPassword} placeholder={l10n["password"]} type="password" />
                                     </>
                                     :
                                     <>
-                                        <Input.PrimaryText key="auth-numbers" onChange={setAuthNums} placeholder="Auth Numbers" />
+                                        <Input.PrimaryText key="auth-numbers" onChange={setAuthNums} placeholder={l10n["auth_numbers"]} />
                                     </>
                             }
                         </Column>
                     </AnimatedTransition>
                 </AnimatedSize>
                 <Column gap="var(--padding-df)">
-                    <Text.span>0/2</Text.span>
+                    <Text.span>{status == SignUpStatus.AUTH ? "1" : "0"}/2</Text.span>
                     <ProgressRange percent={status == SignUpStatus.INFO ? 0 : 0.5} />
                 </Column>
                 <Row gap="var(--padding-df)" align="centerSpaceBetween">
                     <TouchRipple onTap={() => RouterBinding.instance.push("/sign-in")}>
-                        <Text.span fontSize="14px">Sign In</Text.span>
+                        <Text.span fontSize="14px">{l10n["sign_in"]}</Text.span>
                     </TouchRipple>
                     {isNextable ? <NextButton /> : <Unactive children={<NextButton />} />}
                 </Row>
