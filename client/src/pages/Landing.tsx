@@ -1,137 +1,76 @@
 import Logo from "../assets/favicon.svg";
 
-import { AnimatedFoldable, Box, Column, Row, Scrollable } from "@web-package/react-widgets";
-import { TouchRipple } from "web-touch-ripple/jsx";
+import { Box, Column, Row, Scrollable, Text } from "@web-package/react-widgets";
 import { Button } from "../templates/Button";
-import { ReactNode, useState } from "preact/compat";
 import { RouterBinding } from "@web-package/react-widgets-router";
 import { l10n } from "../localization/localization";
 import { RenderIcon } from "../templates/RenderIcon";
+import { Icons } from "./App";
 
 export function LandingPage() {
     return (
         <Scrollable.Vertical>
             <Column>
-                <Box
+                <Column
                     position="relative"
-                    display="flex"
                     width="100%"
                     height="100vh"
-                    justifyContent="center"
-                    flexDirection="column"
                 >
-                    <Column
-                        align="center"
-                        margin="auto"
-                        gap="15px"
-                        padding="15px"
-                    >
-                        <Logo width="100px" />
-                        <Column align="center">
-                            <h1>{l10n["landing_title"]}</h1>
-                            <span>{l10n["landing_introduction"]}</span>
-                        </Column>
-                        <Button.Primary text={l10n["landing_get_started"]} onTap={() => RouterBinding.instance.push("/app")} />
-                    </Column>
-                    <Box position="absolute" size="100%" zIndex="-1">
-                        {/** @ts-ignore */}
-                        <landing-background />
-                    </Box>
-                    <Box 
+                    <Box position="absolute" size="100%" zIndex="-1" overflow="clip" children={<Background />} />
+                    <Box
                         position="absolute"
-                        width="100%"
-                        height="100%"
+                        size="100%"
                         zIndex="-1"
-                        background="linear-gradient(0deg, var(--background-shadow) 20%, transparent)"
+                        background="linear-gradient(0deg, var(--background-shadow), transparent, var(--background-shadow))"
                     />
-                </Box>
-                <Column gap="15px" padding="15px">
-                    <Footer
-                        title="What is it?"
-                        description="This is a curated library of high-quality vector icons designed to enhance your web and mobile applications. Whether you're building a sleek website or a sophisticated app, our icons provide a professional and consistent look."
-                    >
-                        <FooterBlockquote title="Why use it?">
-                            <ul style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                marginTop: "10px",
-                                gap: "5px",
-                                color: "var(--foreground3)"
-                            }}>
-                                <li>Save time: No need to design icons from scratch. Our ready-to-use icons save you valuable development time.</li>
-                                <li>Enhance your design: Our icons are carefully crafted to complement various design styles, adding a touch of elegance to your projects.</li>
-                            </ul>
-                        </FooterBlockquote>
-                        <FooterBlockquote title="About Contributing">
-                            <span>We welcome contributions from the community. Whether you want to fix a bug, add a new icon, or improve the documentation, your help is appreciated.</span>
-                        </FooterBlockquote>
-                    </Footer>
+                    <Row align="centerSpaceBetween" paddingAndGap="var(--padding-df)">
+                        <Row align="center" gap="var(--padding-df)">
+                            <Logo width="40px" />
+                            <Row gap="var(--padding-sm)">
+                                <Text.h2>QUARK ICONS</Text.h2>
+                                <Text.span>OC</Text.span>
+                            </Row>
+                        </Row>
+                        <Row gap="var(--padding-sm)">
+                            <Button.Primary text={l10n["sign_in"]} onTap={() => RouterBinding.instance.push("/sign-in")} />
+                            <Button.Secondary text={l10n["sign_up"]} onTap={() => RouterBinding.instance.push("/sign-up")} />
+                        </Row>
+                    </Row>
+                    <Box padding="200px var(--padding-df)" maxWidth="1000px" margin="0px auto">
+                        <Text fontWeight="bold" fontSize="50px">Welcome!</Text>
+                        <Text color="var(--foreground3)" fontSize="18px">{l10n["landing_introduction"]}</Text>
+                        <Box marginTop="var(--padding-lg)">
+                            <Button.Primary text={l10n["landing_get_started"]} onTap={() => RouterBinding.instance.push("/app")} />
+                        </Box>
+                    </Box>
                 </Column>
             </Column>
         </Scrollable.Vertical>
     )
 }
 
-function Footer({title, description, children}: {
-    title: string,
-    description: string,
-    children?: ReactNode
-}) {
-    const [isOpen, setOpen] = useState(false);
-
+function Background() {
     return (
-        <TouchRipple onTap={() => setOpen(!isOpen)}>
-            <Box
-                display="flex"
-                flexDirection="column"
-                gap="10px"
-                maxWidth="1200px"
-                margin="auto"
-                padding="30px"
-                background="var(--rearground)"
-                border="2px solid var(--rearground-border)"
-                borderRadius="15px"
-            >
-                <h2>{title}</h2>
-                <span>{description}</span>
-                <AnimatedFoldable.Vertical visible={isOpen} duration="0.3s">
-                    <Box width="100%" height="1px" backgroundColor="var(--rearground-border)" marginTop="15px" />
-                    {children}
-                </AnimatedFoldable.Vertical>
-                <span>Click to {isOpen ? "close" : "more"}</span>
-            </Box>
-        </TouchRipple>
-    )
-}
-
-function FooterBlockquote({title, children}: {
-    title: string,
-    children: ReactNode,
-}) {
-    return (
-        <Column
-            gap="5px"
-            opacity="0.75"
-            padding="15px"
-            borderLeft="5px solid var(--foreground4)"
-            margin="15px 0px"
-        >
-            <h3>{title}</h3> {children}
-        </Column>
-    )
-}
-
-function SearchInput() {
-    return (
-        <Row
-            align="center"
+        <Box
+            display="flex"
+            flexWrap="wrap"
+            maxWidth="900px"
+            boxSizing="border-box"
+            gap="var(--padding-df)"
+            padding="var(--padding-df)"
             backgroundColor="var(--rearground)"
-            borderRadius="1e10px"
-            border="2px solid var(--rearground-border)"
-            paddingLeft="var(--padding-df)"
-        >
-            <RenderIcon.Name name="search" size="16px" />
-            <input placeholder={l10n["landing_search_placeholder"]} style={{width: "300px", padding: "var(--padding-df)"}} />
-        </Row>
+            borderRadius="15px"
+            border="1px solid var(--rearground-border)"
+            marginLeft="auto"
+            marginTop="300px"
+            transform="skew(-20deg, -15deg)"
+            boxShadow="10px 10px 20px var(--rearground-border)"
+        >{
+            Icons.slice(0, 220).map((icon, index) => {
+                return <RenderIcon.Name name={icon.name} size="32px" color={
+                    index % 2 == 0 ? "var(--foreground2)" : "var(--foreground4)"
+                } />
+            })
+        }</Box>
     )
 }
