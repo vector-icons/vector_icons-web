@@ -48,5 +48,3 @@ CREATE TABLE "UserDetails"(
     "profileImage" URL,
     FOREIGN KEY("id") REFERENCES "User"("id") ON DELETE CASCADE
 );
-
-INSERT INTO "UserDetails"("id") VALUES('91138b80-e996-41e0-a6f4-79b391537fa6');
