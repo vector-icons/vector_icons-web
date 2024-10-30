@@ -17,7 +17,7 @@ export interface SignUpRequest {
 export enum SignUpException {
     ALREADY_EXISTS_EMAIL = "already_exists_email",
     ALREADY_EXISTS_ALIAS = "already_exists_alias",
-    INVALID_EMAIL = "invalid_email"
+    INVALID_EMAIL_FORMAT = "invalid_email_format"
 }
 
 export const SIGN_UP_HTTP_HANDLER = new HTTPHandler(async (request, response, requestBody) => {
@@ -63,7 +63,7 @@ export const SIGN_UP_HTTP_HANDLER = new HTTPHandler(async (request, response, re
             response.end(authUUID);
         } catch {
             response.writeHead(400);
-            response.end(SignUpException.INVALID_EMAIL);
+            response.end(SignUpException.INVALID_EMAIL_FORMAT);
         }
     } else {
         response.writeHead(400);
