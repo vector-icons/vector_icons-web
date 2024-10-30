@@ -77,18 +77,23 @@ export const AUTH_HTTP_HANDLER = new HTTPHandler(async (request, response, reque
         const accessToken = AuthUtil.createToken();
         const refreshToken = AuthUtil.createToken();
 
-        await PG_CLIENT.query(`START TRANSACTION`);
-        await PG_CLIENT.query(`INSERT INTO "User"("id", "createdAt", "displayName", "alias", "email", "password", "passwordSalt") VALUES($1, CURRENT_TIMESTAMP, $2, $3, $4, $5, $6)`, [
-            userId,
-            displayName,
-            alias,
-            email,
-            password,
-            passSalt
-        ]);
+        try {
+            await PG_CLIENT.query(`START TRANSACTION`);
+            await PG_CLIENT.query(`INSERT INTO "User"("id", "createdAt", "displayName", "alias", "email", "password", "passwordSalt") VALUES($1, CURRENT_TIMESTAMP, $2, $3, $4, $5, $6)`, [
+                userId,
+                displayName,
+                alias,
+                email,
+                password,
+                passSalt
+            ]);
 
-        await PG_CLIENT.query(`INSERT INTO "UserDetails"("id") VALUES($1)`, [userId]);
-        await PG_CLIENT.query(`COMMIT`);
+            await PG_CLIENT.query(`INSERT INTO "UserDetails"("id") VALUES($1)`, [userId]);
+            await PG_CLIENT.query(`COMMIT`);
+        } catch (error) {
+            await PG_CLIENT.query(`ROLLBACK`);
+            throw error; // super throwed.
+        }
 
         await REDIS_CLIENT.multi()
             // Authorization uuid must expire because sign-up tasks has finally been completed.
