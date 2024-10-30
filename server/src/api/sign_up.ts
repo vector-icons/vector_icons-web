@@ -5,6 +5,7 @@ import { AuthUtil } from "../utils/auth";
 import { UUID } from "../utils/uuid";
 import { Mail } from "./components/mail";
 import { User } from "./components/user";
+import { HTTPUtil } from "../utils/http";
 
 export interface SignUpRequest {
     email: string;
@@ -15,7 +16,8 @@ export interface SignUpRequest {
 
 export enum SignUpException {
     ALREADY_EXISTS_EMAIL = "already_exists_email",
-    ALREADY_EXISTS_ALIAS = "already_exists_alias"
+    ALREADY_EXISTS_ALIAS = "already_exists_alias",
+    INVALID_EMAIL = "invalid_email"
 }
 
 export const SIGN_UP_HTTP_HANDLER = new HTTPHandler(async (request, response, requestBody) => {
@@ -26,26 +28,29 @@ export const SIGN_UP_HTTP_HANDLER = new HTTPHandler(async (request, response, re
         return;
     }
 
-    try {
-        const given = JSON.parse(requestBody) as SignUpRequest;
+    const given = HTTPUtil.parseRequest<SignUpRequest>(requestBody, response);
+    if (given == null) {
+        return;
+    }
 
-        if (given.email && given.password && given.alias) {
-            if (await User.existsEmail(given.email)) {
-                response.writeHead(400);
-                response.end(SignUpException.ALREADY_EXISTS_EMAIL);
-                return;
-            }
+    if (given.email && given.password && given.alias) {
+        if (await User.existsEmail(given.email)) {
+            response.writeHead(400);
+            response.end(SignUpException.ALREADY_EXISTS_EMAIL);
+            return;
+        }
 
-            if (await User.existsAlias(given.alias)) {
-                response.writeHead(400);
-                response.end(SignUpException.ALREADY_EXISTS_ALIAS);
-                return;
-            }
+        if (await User.existsAlias(given.alias)) {
+            response.writeHead(400);
+            response.end(SignUpException.ALREADY_EXISTS_ALIAS);
+            return;
+        }
 
-            const authUUID = UUID.v4();
-            const authNums = AuthUtil.createNumbers(6);
+        const authUUID = UUID.v4();
+        const authNums = AuthUtil.createNumbers(6);
 
-            Mail.sendHTML(given.email, "Your authentication numbers for sign-up about Quark Icons", authNums);
+        try {
+            await Mail.sendHTML(given.email, "Your authentication numbers for sign-up about Quark Icons", authNums);
 
             REDIS_CLIENT.hSet("Auth", authUUID, JSON.stringify({...given, ...{
                 numbers: authNums,
@@ -56,12 +61,12 @@ export const SIGN_UP_HTTP_HANDLER = new HTTPHandler(async (request, response, re
 
             response.writeHead(200);
             response.end(authUUID);
-        } else {
+        } catch {
             response.writeHead(400);
-            response.end(APIException.MISSING_REQUEST_FORMAT);
+            response.end(SignUpException.INVALID_EMAIL);
         }
-    } catch (_) {
+    } else {
         response.writeHead(400);
-        response.end(APIException.INVALID_REQUEST_FORMAT);
+        response.end(APIException.MISSING_REQUEST_FORMAT);
     }
 });

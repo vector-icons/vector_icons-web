@@ -1,6 +1,7 @@
 import { PG_CLIENT, REDIS_CLIENT } from "../http";
 import { HTTPHandler } from "../http/core/http_handler";
 import { AuthUtil } from "../utils/auth";
+import { HTTPUtil } from "../utils/http";
 import { PathUtil } from "../utils/path";
 import { UUID } from "../utils/uuid";
 import { APIException } from "./components/http";
@@ -44,64 +45,60 @@ export const AUTH_HTTP_HANDLER = new HTTPHandler(async (request, response, reque
         return;
     }
 
-    try {
-        const authRequest = JSON.parse(rawAuthData!) as AuthData;
-        const requestData = JSON.parse(requestBody) as AuthRequest;
+    const authRequest = JSON.parse(rawAuthData!) as AuthData;
+    const requestData = HTTPUtil.parseRequest<AuthRequest>(requestBody, response);
+    if (requestData == null) return;
 
-        if (!requestData.numbers) {
+    if (!requestData.numbers) {
+        response.writeHead(400);
+        response.end(APIException.MISSING_REQUEST_FORMAT);
+        return;
+    }
+
+    if (requestData.numbers == authRequest.numbers) {
+        if (await User.existsEmail(authRequest.email)) {
             response.writeHead(400);
-            response.end(APIException.MISSING_REQUEST_FORMAT);
+            response.end(SignUpException.ALREADY_EXISTS_EMAIL);
             return;
         }
 
-        if (requestData.numbers == authRequest.numbers) {
-            if (await User.existsEmail(authRequest.email)) {
-                response.writeHead(400);
-                response.end(SignUpException.ALREADY_EXISTS_EMAIL);
-                return;
-            }
-
-            if (await User.existsAlias(authRequest.alias)) {
-                response.writeHead(400);
-                response.end(SignUpException.ALREADY_EXISTS_ALIAS);
-                return;
-            }
-
-            const userId = UUID.v4();
-            const alias = authRequest.alias;
-            const email = authRequest.email;
-            const displayName = authRequest.displayName;
-            const passSalt = createHash("sha256").update(randomBytes(128)).digest("base64");
-            const password = createHash("sha512").update(authRequest.password + passSalt).digest("base64");
-            const accessToken = AuthUtil.createToken();
-            const refreshToken = AuthUtil.createToken();
-
-            PG_CLIENT.query(`INSERT INTO "User"("id", "createdAt", "displayName", "alias", "email", "password", "passwordSalt") VALUES($1, CURRENT_TIMESTAMP, $2, $3, $4, $5, $6)`, [
-                userId,
-                displayName,
-                alias,
-                email,
-                password,
-                passSalt
-            ]);
-
-            await REDIS_CLIENT.multi()
-                // Authorization uuid must expire because sign-up tasks has finally been completed.
-                .hDel("Auth", uuid)
-                .hSet("AccessToken", accessToken, userId)
-                .hSet("RefreshToken", refreshToken, userId)
-                .hExpire("AccessToken", accessToken, AuthUtil.ACCESS_TOKEN_EXPIER_DURATION)
-                .hExpire("RefreshToken", refreshToken, AuthUtil.REFRESH_TOKEN_EXPIER_DURATION)
-                .exec();
-
-            response.writeHead(200);
-            response.end(JSON.stringify({accessToken, refreshToken}));
-        } else {
+        if (await User.existsAlias(authRequest.alias)) {
             response.writeHead(400);
-            response.end(AuthException.INVALID_NUMBERS);
+            response.end(SignUpException.ALREADY_EXISTS_ALIAS);
+            return;
         }
-    } catch (_) {
+
+        const userId = UUID.v4();
+        const alias = authRequest.alias;
+        const email = authRequest.email;
+        const displayName = authRequest.displayName;
+        const passSalt = createHash("sha256").update(randomBytes(128)).digest("base64");
+        const password = createHash("sha512").update(authRequest.password + passSalt).digest("base64");
+        const accessToken = AuthUtil.createToken();
+        const refreshToken = AuthUtil.createToken();
+
+        PG_CLIENT.query(`INSERT INTO "User"("id", "createdAt", "displayName", "alias", "email", "password", "passwordSalt") VALUES($1, CURRENT_TIMESTAMP, $2, $3, $4, $5, $6)`, [
+            userId,
+            displayName,
+            alias,
+            email,
+            password,
+            passSalt
+        ]);
+
+        await REDIS_CLIENT.multi()
+            // Authorization uuid must expire because sign-up tasks has finally been completed.
+            .hDel("Auth", uuid)
+            .hSet("AccessToken", accessToken, userId)
+            .hSet("RefreshToken", refreshToken, userId)
+            .hExpire("AccessToken", accessToken, AuthUtil.ACCESS_TOKEN_EXPIER_DURATION)
+            .hExpire("RefreshToken", refreshToken, AuthUtil.REFRESH_TOKEN_EXPIER_DURATION)
+            .exec();
+
+        response.writeHead(200);
+        response.end(JSON.stringify({accessToken, refreshToken}));
+    } else {
         response.writeHead(400);
-        response.end(APIException.INVALID_REQUEST_FORMAT);
+        response.end(AuthException.INVALID_NUMBERS);
     }
 });
