@@ -6,6 +6,7 @@ import { RouterBinding } from "@web-package/react-widgets-router";
 import { l10n } from "../localization/localization";
 import { RenderIcon } from "../templates/RenderIcon";
 import { Icons } from "./App";
+import { Loading } from "../templates/Loading";
 
 export function LandingPage() {
     return (

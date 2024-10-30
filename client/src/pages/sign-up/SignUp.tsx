@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import { Test } from "../../components/test";
 import { CSSProperties } from "preact/compat";
 import { RenderIcon } from "../../templates/RenderIcon";
+import { User, UserAccount } from "../../components/user";
 
 enum SignUpStatus {
     INFO,
@@ -51,6 +52,9 @@ export function SignUpPage() {
                 )});
 
                 if (result.status == 200) {
+                    User.signIn(await result.json());
+
+                    // Move to application page when after sccessful sign-up the user.
                     RouterBinding.instance.push("/app");
                 } else {
                     result.text().then(setError);

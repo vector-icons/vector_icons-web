@@ -68,7 +68,7 @@ export const SIGN_IN_HTTP_HANDLER = new HTTPHandler(async (request, response, re
             .exec();
 
         response.writeHead(200);
-        response.end(JSON.stringify({accessToken, refreshToken}));
+        response.end(JSON.stringify({userId, accessToken, refreshToken}));
     } else {
         response.writeHead(400);
         response.end(SignInException.INVALID_PASSWORD);

@@ -13,7 +13,6 @@ import { config } from "dotenv";
 import { createClient } from "redis";
 import { AUTH_HTTP_HANDLER } from "../api/auth";
 import { TOKEN_HTTP_HANDLER } from "../api/token";
-import { AuthUtil } from "../utils/auth";
 import { USER_HTTP_HANDLER } from "../api/user";
 
 /** Initializes configuation values in node.js about .env files. */

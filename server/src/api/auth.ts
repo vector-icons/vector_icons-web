@@ -105,7 +105,7 @@ export const AUTH_HTTP_HANDLER = new HTTPHandler(async (request, response, reque
             .exec();
 
         response.writeHead(200);
-        response.end(JSON.stringify({accessToken, refreshToken}));
+        response.end(JSON.stringify({userId, accessToken, refreshToken}));
     } else {
         response.writeHead(400);
         response.end(AuthException.INVALID_NUMBERS);
