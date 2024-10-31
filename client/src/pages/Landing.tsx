@@ -1,12 +1,13 @@
 import Logo from "../assets/favicon.svg";
 
-import { Box, Column, Row, Scrollable, Text } from "@web-package/react-widgets";
+import { AnimatedTransition, Box, Column, Row, Scrollable, Text } from "@web-package/react-widgets";
 import { Button } from "../templates/Button";
 import { RouterBinding } from "@web-package/react-widgets-router";
 import { l10n } from "../localization/localization";
 import { RenderIcon } from "../templates/RenderIcon";
 import { Icons } from "./App";
-import { Loading } from "../templates/Loading";
+import { useLayoutEffect, useRef, useState } from "preact/hooks";
+import { Animation, AnimationStatus, Curve } from "animatable-js";
 
 export function LandingPage() {
     return (
@@ -38,11 +39,11 @@ export function LandingPage() {
                         </Row>
                     </Row>
                     <Box padding="200px var(--padding-df)" maxWidth="1000px" margin="0px auto">
-                        <Text fontWeight="bold" fontSize="50px">Welcome!</Text>
+                        <Text fontWeight="bold" fontSize="50px">WELCOME!</Text>
                         <Text color="var(--foreground3)" fontSize="18px">{l10n["landing_introduction"]}</Text>
-                        <Box marginTop="var(--padding-lg)">
+                        <Row marginTop="var(--padding-lg)">
                             <Button.Primary text={l10n["landing_get_started"]} onTap={() => RouterBinding.instance.push("/app")} />
-                        </Box>
+                        </Row>
                     </Box>
                 </Column>
             </Column>
@@ -51,8 +52,31 @@ export function LandingPage() {
 }
 
 function Background() {
+    const iconsRef = useRef(Icons.slice(0, 220));
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    const [iconsFilled, setIconsFilled] = useState(0);
+
+    useLayoutEffect(() => {
+        iconsRef.current.forEach((_, index) => {
+            const item = wrapperRef.current.children[index] as HTMLElement;
+            item.style.transitionDuration = "1s";
+            item.style.transitionProperty = "transform, scale";
+            item.style.transform = "translate(0px)";
+            item.style.scale = "1";
+            item.getBoundingClientRect();
+
+            setTimeout(() => {
+                item.style.transform = `translate(-${index / 2}px)`;
+                item.style.scale = "1.1";
+
+                setIconsFilled(index);
+            }, index * 10);
+        });
+    }, []);
+
     return (
         <Box
+            ref={wrapperRef}
             display="flex"
             flexWrap="wrap"
             maxWidth="900px"
@@ -68,9 +92,19 @@ function Background() {
             boxShadow="10px 10px 20px var(--rearground-border)"
         >{
             Icons.slice(0, 220).map((icon, index) => {
-                return <RenderIcon.Name name={icon.name} size="32px" color={
-                    index % 2 == 0 ? "var(--foreground2)" : "var(--foreground4)"
-                } />
+                const isFilled = iconsFilled > index;
+
+                return (
+                    <AnimatedTransition value={isFilled} animation={{
+                        duration: "1s",
+                        fadeIn : {from: {opacity: "0"}, to: {opacity: "1"}},
+                        fadeOut: {from: {opacity: "1"}, to: {opacity: "0"}}
+                    }}>
+                        <RenderIcon.Name name={icon.name} filled={isFilled} size="32px" color={
+                            index % 2 == 0 ? "var(--foreground2)" : "var(--foreground4)"
+                        } />
+                    </AnimatedTransition>
+                )
             })
         }</Box>
     )
