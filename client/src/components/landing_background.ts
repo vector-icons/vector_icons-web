@@ -44,12 +44,15 @@ class Net {
 
     constructor(duration: number) {
         this.x = new Animation(duration, null, randomRange(0, 1));
-        this.y = new Animation(duration, null, randomRange(0.75, 1));
+        this.y = new Animation(duration, null, randomRange(0.5, 1));
         this.rotate = new Animation(duration, null, randomRange(0, Math.PI * 2));
         this.fade = new Animation(1000, Curve.Ease);
-        this.size = randomRange(0.75, 1.25);
+        this.size = randomRange(0.7, 1.3);
         this.opacity = randomRange(0.5, 1);
-        this.image = getIconImageAt(Math.floor(randomRange(0, Icons.length)), "gray")
+
+        const style = getComputedStyle(document.documentElement);
+        const color = style.getPropertyValue("--foreground5");
+        this.image = getIconImageAt(Math.floor(randomRange(0, Icons.length)), color);
     }
 
     start() {
@@ -80,10 +83,12 @@ class Net {
         const dx = x - dw / 2;
         const dy = y - dh / 2;
 
+        /*
         if (this.image.isLoaded) {
             ctx.globalAlpha = this.opacity * this.fade.value;
             ctx.drawImage(this.image.element, dx, dy, dw, dh);
         }
+        */
     }
 
     draw(ctx: CanvasRenderingContext2D, others: Net[]) {
@@ -103,7 +108,7 @@ class Net {
                 ctx.beginPath();
                 ctx.moveTo(other.x.value * width, other.y.value * height);
                 ctx.lineTo(x * width, y * height);
-                ctx.lineWidth = 1.5 * window.devicePixelRatio;
+                ctx.lineWidth = 1 * window.devicePixelRatio;
 
                 // 투명도 계산 (0.1 이하일 때 1, 0.1 이상일 때 0으로 변함)
                 const opacity = Math.max(0, 1 - (distance * 10));
@@ -185,7 +190,7 @@ export class LandingBackgroundElement extends HTMLElement {
             this.controller.attach(net);
         }
 
-        attachNets(75);
+        attachNets(100);
         this.controller.start();
     }
 

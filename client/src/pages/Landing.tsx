@@ -18,6 +18,10 @@ export function LandingPage() {
                     width="100%"
                     height="100vh"
                 >
+                    <Box position="absolute" size="100%" zIndex="-1">
+                        {/** @ts-ignore */}
+                        <landing-background />
+                    </Box>
                     <Box position="absolute" size="100%" zIndex="-1" overflow="clip" children={<Background />} />
                     <Box
                         position="absolute"
