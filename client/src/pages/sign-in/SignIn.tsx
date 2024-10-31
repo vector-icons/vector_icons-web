@@ -8,11 +8,12 @@ import { Unactive } from "../../templates/Unactive";
 import GoogleLogo from "../../assets/icons/google_logo.svg";
 import GitHubLogo from "../../assets/icons/github_logo.svg";
 import { RouterBinding } from "@web-package/react-widgets-router";
+import { Area } from "../../templates/Area";
 
 export function SignInPage() {
     return (
-        <Box size="100%" display="flex" justifyContent="center" alignItems="center">
-            <Column gap="var(--padding-lg)" padding="var(--padding-lg)" backgroundColor="var(--rearground)" borderRadius="15px">
+        <Area>
+            <Column gap="var(--padding-lg)">
                 <Column gap="3px">
                     <Text.h2 fontSize="32px">{l10n["sign_in"]}</Text.h2>
                     <span>{l10n["sign-in"]["description"]}</span>
@@ -55,6 +56,6 @@ export function SignInPage() {
                     </Unactive>
                 </Row>
             </Column>
-        </Box>
+        </Area>
     )
 }

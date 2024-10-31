@@ -1,5 +1,6 @@
-import { Canvas, CanvasController } from "@web-package/react-widgets";
+import { Box, Canvas, CanvasController } from "@web-package/react-widgets";
 import { Animation, AnimationStatus, Curve } from "animatable-js";
+import { CSSProperties, ReactNode } from "preact/compat";
 import { useEffect, useRef } from "preact/hooks";
 
 export namespace Loading {

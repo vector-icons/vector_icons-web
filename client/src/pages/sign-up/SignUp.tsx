@@ -10,6 +10,8 @@ import { Test } from "../../components/test";
 import { CSSProperties } from "preact/compat";
 import { RenderIcon } from "../../templates/RenderIcon";
 import { User, UserAccount } from "../../components/user";
+import { Loading } from "../../templates/Loading";
+import { Area } from "../../templates/Area";
 
 enum SignUpStatus {
     INFO,
@@ -23,6 +25,7 @@ export function SignUpPage() {
     const [error, setError] = useState<string>(null);
     const [password, setPassword] = useState<string>("");
     const [authNums, setAuthNums] = useState<string>("");
+    const [isLoading, setLoading] = useState<boolean>(false);
     const authIdRef = useRef<string>(null);
     const authId = authIdRef.current; // Authorization UUID
 
@@ -30,11 +33,13 @@ export function SignUpPage() {
     const NextButton = () => (
         <Button.Primary text={status == SignUpStatus.INFO ? l10n["next"] : l10n["done"]} onTap={async () => {
             if (status == SignUpStatus.INFO) {
+                setLoading(true);
                 const result = await fetch("/api/sign-up", {method: "POST", body: JSON.stringify({
                     email: email,
                     alias: alias,
                     password: password
                 })});
+                setLoading(false);
 
                 if (result.status == 200) {
                     // Sets Authorization UUID for finishing sign-up.
@@ -46,10 +51,12 @@ export function SignUpPage() {
             }
 
             if (status == SignUpStatus.AUTH) {
+                setLoading(true);
                 const result = await fetch(`/api/sign-up/auth?uuid=${authId}`, {
                     method: "POST",
                     body: JSON.stringify({numbers: authNums}
                 )});
+                setLoading(false);
 
                 if (result.status == 200) {
                     User.signIn(await result.json());
@@ -67,8 +74,8 @@ export function SignUpPage() {
     useEffect(() => setError(null), [email, alias, password, authNums]);
 
     return (
-        <Box size="100%" display="flex" justifyContent="center" alignItems="center">
-            <Column gap="var(--padding-lg)" padding="var(--padding-lg)" backgroundColor="var(--rearground)" borderRadius="15px">
+        <Area loading={isLoading}>
+            <Column gap="var(--padding-lg)">
                 <Column>
                     <Column gap="3px">
                         <Text.h2 fontSize="32px">{l10n["sign_up"]}</Text.h2>
@@ -127,7 +134,7 @@ export function SignUpPage() {
                     {isNextable ? <NextButton /> : <Unactive children={<NextButton />} />}
                 </Row>
             </Column>
-        </Box>
+        </Area>
     )
 }
 
