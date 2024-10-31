@@ -92,7 +92,7 @@ function Background() {
             boxShadow="10px 10px 20px var(--rearground-border)"
         >{
             Icons.slice(0, 220).map((icon, index) => {
-                const isFilled = iconsFilled > index;
+                const isFilled = iconsFilled >= index;
 
                 return (
                     <AnimatedTransition value={isFilled} animation={{
