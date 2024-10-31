@@ -13,7 +13,8 @@ import { config } from "dotenv";
 import { createClient } from "redis";
 import { AUTH_HTTP_HANDLER } from "../api/auth";
 import { TOKEN_HTTP_HANDLER } from "../api/token";
-import { USER_HTTP_HANDLER } from "../api/user";
+import { PROFILE_HTTP_HANDLER } from "../api/profile";
+import { SELF_HTTP_HANDLER } from "../api/profile-self";
 
 /** Initializes configuation values in node.js about .env files. */
 config();
@@ -70,23 +71,18 @@ const RESOURCE_HTTP_HANDLER = new HTTPHandler((request, response) => {
 const HTTP_ROUTER = new HTTPRouter("api", RESOURCE_HTTP_HANDLER, [
     new HTTPRouter("sign-in", SIGN_IN_HTTP_HANDLER),
     new HTTPRouter("sign-up", SIGN_UP_HTTP_HANDLER, [new HTTPRouter("auth", AUTH_HTTP_HANDLER)]),
+    new HTTPRouter("profile", PROFILE_HTTP_HANDLER, [new HTTPRouter("self", SELF_HTTP_HANDLER)]),
     new HTTPRouter("token", TOKEN_HTTP_HANDLER),
-    new HTTPRouter("user", USER_HTTP_HANDLER)
 ]);
 
-const server = http.createServer((request, response) => {
+const server = http.createServer(async (request, response) => {
     if (request.url === undefined) return;
 
-    try {
-        HTTP_ROUTER.perform(new HTTPConnection(
-            PathUtil.toList(request.url),
-            request,
-            response,
-        ));
-    } catch {
-        response.writeHead(500);
-        response.end();
-    }
+    HTTP_ROUTER.perform(new HTTPConnection(
+        PathUtil.toList(request.url),
+        request,
+        response,
+    ));
 });
 
 server.listen(8080, undefined, undefined, () => {

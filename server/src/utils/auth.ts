@@ -1,4 +1,7 @@
 import { randomBytes } from "crypto";
+import { REDIS_CLIENT } from "../http";
+import { IncomingMessage } from "http";
+import * as cookie from "cookie";
 
 export class AuthUtil {
     static ACCESS_TOKEN_EXPIER_DURATION = 604800; // 1 weak
@@ -15,5 +18,12 @@ export class AuthUtil {
      */
     static createToken() {
         return randomBytes(32).toString("hex");
+    }
+
+    static async userIdOf(request: IncomingMessage) {
+        if (request.headers.cookie) {
+            const accessToken = cookie.parse(request.headers.cookie).accessToken;
+            return accessToken ? await REDIS_CLIENT.hGet("AccessToken", accessToken) : undefined;
+        }
     }
 }

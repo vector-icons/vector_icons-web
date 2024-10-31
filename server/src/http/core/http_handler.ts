@@ -5,7 +5,7 @@ export type HTTPHandlerListener = (
     request: http.IncomingMessage,
     response: http.ServerResponse,
     requestBody: string
-) => void;
+) => Promise<void> | void;
 
 export class HTTPHandler {
     constructor(public callback: HTTPHandlerListener) {}
@@ -15,7 +15,12 @@ export class HTTPHandler {
         let body = "";
         connection.request.on("data", chunk => body += chunk);
         connection.request.on("end", async () => {
-            this.callback(connection.request, connection.response, body);
+            try {
+                await this.callback(connection.request, connection.response, body);
+            } catch {
+                connection.response.writeHead(500);
+                connection.response.end();
+            }
         });
     }
 }
