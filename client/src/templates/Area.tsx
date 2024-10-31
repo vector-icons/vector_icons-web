@@ -10,7 +10,7 @@ export function Area({loading = false, children}: {
         <Box display="flex" size="100%" boxSizing="border-box" padding="var(--padding-df)">
             <Box
                 position="relative"
-                height="100%"
+                size="100%"
                 maxWidth="max-content"
                 maxHeight="max-content"
                 margin="auto"
