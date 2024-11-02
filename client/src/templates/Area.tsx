@@ -7,7 +7,7 @@ export function Area({loading = false, children}: {
     children: ReactNode;
 }) {
     return (
-        <Box display="flex" size="100%" boxSizing="border-box" padding="var(--padding-df)">
+        <Box display="flex" size="100%" alignItems="center" boxSizing="border-box" padding="var(--padding-df)">
             <Box
                 position="relative"
                 size="100%"

@@ -39,6 +39,9 @@ export const TOKEN_HTTP_HANDLER = new HTTPHandler(async (request, response, requ
         REDIS_CLIENT.hSet("AccessToken", accessToken, userId);
         REDIS_CLIENT.hExpire("AccessToken", accessToken, AuthUtil.ACCESS_TOKEN_EXPIER_DURATION);
 
+        // Sets the access token as the http-only cookie.
+        AuthUtil.setAccessTokenAsCookie(response, accessToken);
+
         response.writeHead(200);
         response.end(accessToken);
     } else {

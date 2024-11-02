@@ -4,11 +4,11 @@ import { Input } from "../../templates/Input";
 import { l10n } from "../../localization/localization";
 import { TouchRipple } from "web-touch-ripple/jsx";
 import { Unactive } from "../../templates/Unactive";
+import { RouterBinding } from "@web-package/react-widgets-router";
+import { Area } from "../../templates/Area";
 
 import GoogleLogo from "../../assets/icons/google_logo.svg";
 import GitHubLogo from "../../assets/icons/github_logo.svg";
-import { RouterBinding } from "@web-package/react-widgets-router";
-import { Area } from "../../templates/Area";
 
 export function SignInPage() {
     return (

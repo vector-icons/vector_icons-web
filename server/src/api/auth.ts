@@ -104,6 +104,9 @@ export const AUTH_HTTP_HANDLER = new HTTPHandler(async (request, response, reque
             .hExpire("RefreshToken", refreshToken, AuthUtil.REFRESH_TOKEN_EXPIER_DURATION)
             .exec();
 
+        // Sets the access token as the http-only cookie.
+        AuthUtil.setAccessTokenAsCookie(response, accessToken);
+
         response.writeHead(200);
         response.end(JSON.stringify({userId, accessToken, refreshToken}));
     } else {
