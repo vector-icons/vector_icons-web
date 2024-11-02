@@ -1,6 +1,6 @@
 import { Box, Column, Row } from "@web-package/react-widgets";
 import { render } from "preact";
-import { ReactNode, useLayoutEffect, useRef } from "preact/compat";
+import { ReactNode, useRef } from "preact/compat";
 import { TouchRipple } from "web-touch-ripple/jsx";
 import { RenderIcon } from "../templates/RenderIcon";
 

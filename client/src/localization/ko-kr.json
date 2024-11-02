@@ -66,7 +66,12 @@
     "app_settings_description": "이 웹사이트의 전반적인 기능 및 설정을 설정합니다.",
     "app_credits_title": "기여자",
     "app_credits_description": "Quark Icons 오픈 소스 프로젝트에서 도움을 주신 모든 기여자들에게 큰 감사를 표합니다! 아래 정보는 기여자에 대한 자세한 정보 및 내용과 프로젝트 관련 추가 정보를 제공합니다.",
-    "sign-in": {"description": "이 사이트에 로그인하여 더 많은 기능을 경험하세요!"},
+    "sign-in": {
+        "description": "이 사이트에 로그인하여 더 많은 기능을 경험하세요!",
+        "invalid_email": "주어진 이메일은 존재하지 않습니다.",
+        "invalid_alias": "주어진 별칭은 존재하지 않습니다.",
+        "invalid_password": "주어진 비밀번호가 유효하지 않습니다."
+    },
     "sign-up": {
         "info_description": "생성할 사용자에 필요한 최소 정보를 입력하세요.",
         "auth_description": "주어진 이메일로 보내진 인증 번호를 입력하세요.",

@@ -1,5 +1,4 @@
 import { API } from "./api";
-import { User } from "./user";
 
 export enum MyUserStatus {
     NONE,
@@ -17,7 +16,7 @@ export class MyUser {
     static profile: API.MyProfile;
 
     static load() {
-        
+
     }
 
     static addStatusListener(listener: MyUserListener) {

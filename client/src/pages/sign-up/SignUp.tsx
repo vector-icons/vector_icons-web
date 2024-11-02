@@ -7,10 +7,7 @@ import { RouterBinding } from "@web-package/react-widgets-router";
 import { Unactive } from "../../templates/Unactive";
 import { useEffect, useRef, useState } from "preact/hooks";
 import { Test } from "../../components/test";
-import { CSSProperties } from "preact/compat";
-import { RenderIcon } from "../../templates/RenderIcon";
-import { User, UserAccount } from "../../components/user";
-import { Loading } from "../../templates/Loading";
+import { User } from "../../components/user";
 import { Area } from "../../templates/Area";
 
 enum SignUpStatus {
@@ -74,7 +71,7 @@ export function SignUpPage() {
     useEffect(() => setError(null), [email, alias, password, authNums]);
 
     return (
-        <Area loading={isLoading}>
+        <Area.Body loading={isLoading}>
             <Column gap="var(--padding-lg)">
                 <Column>
                     <Column gap="3px">
@@ -86,18 +83,7 @@ export function SignUpPage() {
                         }
                     </Column>
                     <AnimatedFoldable.Vertical visible={error != null} duration="0.3s">
-                        <Box paddingTop="var(--padding-df)">
-                            <Row
-                                gap="var(--padding-sm)"
-                                align="center"
-                                padding="var(--padding-df)"
-                                backgroundColor="var(--rearground-in-background)"
-                                borderRadius="10px"
-                            >
-                                <RenderIcon.Name name="information" size="16px" />
-                                {l10n["sign-up"][error] ?? l10n["unknown_exception_message"]}
-                            </Row>
-                        </Box>
+                        <Area.Message content={error != null ? l10n["sign-up"][error] ?? l10n["unknown_exception_message"] : ""} />
                     </AnimatedFoldable.Vertical>
                 </Column>
                 <AnimatedSize duration="0.5s">
@@ -134,7 +120,7 @@ export function SignUpPage() {
                     {isNextable ? <NextButton /> : <Unactive children={<NextButton />} />}
                 </Row>
             </Column>
-        </Area>
+        </Area.Body>
     )
 }
 

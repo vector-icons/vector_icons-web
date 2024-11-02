@@ -20,7 +20,7 @@ export class User {
     }
 
     static signIn(data: API.Account) {
-        Storage.set("user-accounts", [...this.accounts, data]);
+        Storage.set("user-accounts", [...this.accounts.filter(e => e.userId != data.userId), data]);
         Storage.set("user-activeId", data.userId);
     }
 }

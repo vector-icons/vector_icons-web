@@ -1,4 +1,4 @@
-import { Box, Column, Row, Text } from "@web-package/react-widgets";
+import { AnimatedFoldable, Box, Column, Row, Text } from "@web-package/react-widgets";
 import { Button } from "../../templates/Button";
 import { Input } from "../../templates/Input";
 import { l10n } from "../../localization/localization";
@@ -9,18 +9,58 @@ import { Area } from "../../templates/Area";
 
 import GoogleLogo from "../../assets/icons/google_logo.svg";
 import GitHubLogo from "../../assets/icons/github_logo.svg";
+import { useEffect, useState } from "preact/hooks";
+import { Test } from "../../components/test";
+import { User } from "../../components/user";
 
 export function SignInPage() {
+    const [emailOrEmail, setEmailOrAlias] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [isLoading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string>(null);
+    const NextButton = () => (
+        <Button.Primary text={l10n["done"]} onTap={async () => {
+            setLoading(true);
+            const result = await fetch("/api/sign-in", {
+                method: "POST",
+                body: JSON.stringify(
+                    Test.isEmail(emailOrEmail)
+                        ? { email: emailOrEmail, password }
+                        : { alias: emailOrEmail, password }
+                )
+            });
+            setLoading(false);
+
+            if (result.status == 200) {
+                User.signIn(await result.json());
+
+                // Move to application page when after sccessful sign-in the user.
+                RouterBinding.instance.push("/app");
+            } else {
+                result.text().then(setError);
+            }
+        }} />
+    )
+
+    const isNextable = emailOrEmail != "" && password != "";
+
+    useEffect(() => setError(null), [emailOrEmail, password]);
+
     return (
-        <Area>
-            <Column gap="var(--padding-lg)">
-                <Column gap="3px">
-                    <Text.h2 fontSize="32px">{l10n["sign_in"]}</Text.h2>
-                    <span>{l10n["sign-in"]["description"]}</span>
+        <Area.Body loading={isLoading}>
+            <Column minWidth="320px" gap="var(--padding-lg)">
+                <Column>
+                    <Column gap="3px">
+                        <Text.h2 fontSize="32px">{l10n["sign_in"]}</Text.h2>
+                        <span>{l10n["sign-in"]["description"]}</span>
+                    </Column>
+                    <AnimatedFoldable.Vertical visible={error != null} duration="0.3s">
+                        <Area.Message content={error != null ? l10n["sign-in"][error] ?? l10n["unknown_exception_message"] : ""} />
+                    </AnimatedFoldable.Vertical>
                 </Column>
-                <Column gap="var(--padding-sm)" width="320px">
-                    <Input.PrimaryText placeholder={l10n["email_or_alias"]} type="email" />
-                    <Input.PrimaryText placeholder={l10n["password"]} type="password" />
+                <Column gap="var(--padding-sm)" width="100%">
+                    <Input.PrimaryText placeholder={l10n["email_or_alias"]} onChange={setEmailOrAlias} type="email" />
+                    <Input.PrimaryText placeholder={l10n["password"]} onChange={setPassword} type="password" />
                 </Column>
                 <Box position="relative" width="100%" height="1px" backgroundColor="var(--rearground-border)">
                     <Text.span
@@ -51,11 +91,9 @@ export function SignInPage() {
                     <TouchRipple onTap={() => RouterBinding.instance.push("/sign-up")}>
                         <Text.span fontSize="14px">{l10n["sign_up"]}</Text.span>
                     </TouchRipple>
-                    <Unactive>
-                        <Button.Primary text={l10n["done"]} onTap={() => {}} />
-                    </Unactive>
+                    {isNextable ? <NextButton /> : <Unactive><NextButton /></Unactive>}
                 </Row>
             </Column>
-        </Area>
+        </Area.Body>
     )
 }
