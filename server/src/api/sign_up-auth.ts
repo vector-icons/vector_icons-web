@@ -24,13 +24,6 @@ enum AuthException {
 
 export const SIGN_UP_AUTH_HTTP_HANDLER = new HTTPHandler({
     post: async (request, response, requestBody) => {
-        // Ignore the request because the request for get method cannot define the body.
-        if (request.method != "POST") {
-            response.writeHead(400);
-            response.end(APIException.INVALID_REQUEST_METHOD);
-            return;
-        }
-
         const uuid = PathUtil.toUrl(request.url!).searchParams.get("uuid");
         if (!uuid) {
             response.writeHead(400);
@@ -48,8 +41,7 @@ export const SIGN_UP_AUTH_HTTP_HANDLER = new HTTPHandler({
 
         const authRequest = JSON.parse(rawAuthData!) as AuthData;
         const requestData = HTTPUtil.parseRequest<AuthRequest>(requestBody, response);
-        if (requestData == null) return;
-
+        if (!requestData) return;
         if (!requestData.numbers) {
             response.writeHead(400);
             response.end(APIException.MISSING_REQUEST_FORMAT);
@@ -93,7 +85,7 @@ export const SIGN_UP_AUTH_HTTP_HANDLER = new HTTPHandler({
                 await PG_CLIENT.query(`COMMIT`);
             } catch (error) {
                 await PG_CLIENT.query(`ROLLBACK`);
-                throw error; // super throwed.
+                throw error;
             }
 
             await REDIS_CLIENT.multi()

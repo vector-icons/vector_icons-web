@@ -15,8 +15,8 @@ import { SIGN_UP_AUTH_HTTP_HANDLER } from "../api/sign_up-auth";
 import { TOKEN_HTTP_HANDLER } from "../api/token";
 import { PROFILE_HTTP_HANDLER } from "../api/profile";
 import { PROFILE_SELF_HTTP_HANDLER } from "../api/profile-self";
-import { FORGET_PASSWORD_AUTH_HTTP_HANDLER } from "../api/forget_password";
-import { FORGET_PASSWORD_HTTP_HANDLER } from "../api/forget_password-auth";
+import { FORGET_PASSWORD_AUTH_HTTP_HANDLER } from "../api/forget_password-auth";
+import { FORGET_PASSWORD_HTTP_HANDLER } from "../api/forget_password";
 
 /** Initializes configuation values in node.js about .env files. */
 config();

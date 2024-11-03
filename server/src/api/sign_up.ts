@@ -22,17 +22,8 @@ export enum SignUpException {
 
 export const SIGN_UP_HTTP_HANDLER = new HTTPHandler({
     post: async (request, response, requestBody) => {
-        // Ignore the request because the request for get method cannot define the body.
-        if (request.method != "POST") {
-            response.writeHead(400);
-            response.end(APIException.INVALID_REQUEST_METHOD);
-            return;
-        }
-
         const given = HTTPUtil.parseRequest<SignUpRequest>(requestBody, response);
-        if (given == null) {
-            return;
-        }
+        if (!given) return;
 
         if (given.email && given.password && given.alias) {
             if (await User.existsEmail(given.email)) {

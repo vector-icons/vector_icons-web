@@ -14,15 +14,8 @@ enum TokenException {
 
 export const TOKEN_HTTP_HANDLER = new HTTPHandler({
     post: async (request, response, requestBody) => {
-        // Ignore the request because the request for get method cannot define the body.
-        if (request.method != "POST") {
-            response.writeHead(400);
-            response.end(APIException.INVALID_REQUEST_METHOD);
-            return;
-        }
-
         const given = HTTPUtil.parseRequest<TokenRequest>(requestBody, response);
-        if (given == null) return;
+        if (!given) return;
 
         // A refresh token is required when creating an access token.
         if (given.refreshToken) {

@@ -19,17 +19,8 @@ enum SignInException {
 
 export const SIGN_IN_HTTP_HANDLER = new HTTPHandler({
     post: async (request, response, requestBody) => {
-        // Ignore the request because the request for get method cannot define the body.
-        if (request.method != "POST") {
-            response.writeHead(400);
-            response.end(APIException.INVALID_REQUEST_METHOD);
-            return;
-        }
-
         const given = HTTPUtil.parseRequest<SignInRequest>(requestBody, response);
-        if (given == null) {
-            return;
-        }
+        if (!given) return;
 
         let userId: string;
         let password: string;
