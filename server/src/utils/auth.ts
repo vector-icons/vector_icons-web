@@ -4,6 +4,7 @@ import { IncomingMessage, ServerResponse } from "http";
 import * as cookie from "cookie";
 
 export class AuthUtil {
+    static DURATION = 600; // 10 minutes
     static ACCESS_TOKEN_EXPIER_DURATION = 604800; // 1 weak
     static REFRESH_TOKEN_EXPIER_DURATION = 31104000; // 1 year
 
