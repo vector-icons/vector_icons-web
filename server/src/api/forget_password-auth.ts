@@ -62,6 +62,6 @@ export const FORGET_PASSWORD_AUTH_HTTP_HANDLER = new HTTPHandler({
         REDIS_CLIENT.hDel("ForgetPasswordAuth", uuid);
 
         response.writeHead(200);
-        response.end();
+        response.end(JSON.stringify({userId: authRequest.userId}));
     }
 });
