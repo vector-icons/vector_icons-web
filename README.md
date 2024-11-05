@@ -16,7 +16,7 @@
 </div>
 
 # Development
-Refer to [GitBook](docs.quarkicons.com) for details about Quark Icons API usage.
+Refer to [GitBook](https://docs.quarkicons.com) for details about Quark Icons API usage.
 
 # Production
 - Developed by <a href="https://github.com/MTtankkeo">Dev Ttangkong</a>
