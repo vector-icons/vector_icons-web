@@ -15,6 +15,9 @@
     </table>
 </div>
 
+# Development
+Refer to [GitBook](docs.quarkicons.com) for details about Quark Icons API usage.
+
 # Production
 - Developed by <a href="https://github.com/MTtankkeo">Dev Ttangkong</a>
 - Deployed by <a href="https://pages.cloudflare.com/">Cloudflare Pages</a>
