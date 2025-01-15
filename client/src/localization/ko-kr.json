@@ -19,6 +19,11 @@
     "landing_introduction": "심플함 속에 담긴 세련미, 현대적 감각을 완성하는 아이콘 템플릿으로 당신의 디자인에 감성을 더하십시오.",
     "landing_get_started": "시작하기",
     "landing_search_placeholder": "아이콘 또는 별칭 검색",
+    "landing_part1": {
+        "item1": {"title": "오픈소스", "description": "오픈소스로서 Quark Icons는 항상 노력하고 있습니다."},
+        "item2": {"title": "현대적인", "description": "현대적인 디자인으로 애플리케이션에 세련함을 더합니다."},
+        "item3": {"title": "퀄리티", "description": "높은 퀄리티를 위해서 Quark Icons는 항상 노력하고 있습니다."}
+    },
     "app_home": "홈",
     "app_style_guide": "스타일 가이드",
     "app_request": "요청",

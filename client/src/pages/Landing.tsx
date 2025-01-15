@@ -53,7 +53,7 @@ export function LandingPage() {
                         </Box>
                     </Column>
                     <Box position="relative" width="100vw" height="300vh" borderTop="3px double var(--rearground-border)">
-                        <Part1 parentRef={parentRef} />
+                        <Part1.Body parentRef={parentRef} />
                     </Box>
                 </Column>
             </Scrollable.Vertical>
@@ -65,24 +65,6 @@ function Background() {
     const iconsRef = useRef(Icons.slice(0, 220));
     const wrapperRef = useRef<HTMLDivElement>(null);
     const [iconsFilled, setIconsFilled] = useState(0);
-
-    useLayoutEffect(() => {
-        iconsRef.current.forEach((_, index) => {
-            const item = wrapperRef.current.children[index] as HTMLElement;
-            item.style.transitionDuration = "1s";
-            item.style.transitionProperty = "transform, scale";
-            item.style.transform = "translate(0px)";
-            item.style.scale = "1";
-            item.getBoundingClientRect();
-
-            setTimeout(() => {
-                item.style.transform = `translate(-${index / 2}px)`;
-                item.style.scale = "1.1";
-
-                setIconsFilled(index);
-            }, index * 10);
-        });
-    }, []);
 
     return (
         <Box
@@ -105,102 +87,117 @@ function Background() {
                 const isFilled = iconsFilled >= index;
 
                 return (
-                    <AnimatedTransition value={isFilled} animation={{
-                        duration: "1s",
-                        fadeIn : {from: {opacity: "0"}, to: {opacity: "1"}},
-                        fadeOut: {from: {opacity: "1"}, to: {opacity: "0"}}
-                    }}>
-                        <RenderIcon.Name name={icon.name} filled={isFilled} size="32px" color={
-                            index % 2 == 0 ? "var(--foreground2)" : "var(--foreground4)"
-                        } />
-                    </AnimatedTransition>
+                    <RenderIcon.Name name={icon.name} filled={isFilled} size="32px" color={
+                        index % 2 == 0 ? "var(--foreground2)" : "var(--foreground4)"
+                    } />
                 )
             })
         }</Box>
     )
 }
 
-function Part1({parentRef}: {parentRef: MutableRef<HTMLDivElement>}) {
-    const wrapperRef = useRef<HTMLDivElement>();
-    const circleRef = useRef<HTMLDivElement>();
-    const title1Ref = useRef<HTMLDivElement>();
-    const title2Ref = useRef<HTMLDivElement>();
-    const title3Ref = useRef<HTMLDivElement>();
+namespace Part1 {
+    export function Body({parentRef}: {parentRef: MutableRef<HTMLDivElement>}) {
+        const wrapperRef = useRef<HTMLDivElement>();
+        const circleRef = useRef<HTMLDivElement>();
+        const title1Ref = useRef<HTMLDivElement>();
+        const title2Ref = useRef<HTMLDivElement>();
+        const title3Ref = useRef<HTMLDivElement>();
+    
+        useLayoutEffect(() => {
+            const wrapper = wrapperRef.current;
+            const parent = parentRef.current;
+            const scroll = parent.firstElementChild;
+            const circle = circleRef.current;
+            const title1 = title1Ref.current;
+            const title2 = title2Ref.current;
+            const title3 = title3Ref.current;
+            const column = wrapper.getElementsByClassName("items")[0];
 
-    useLayoutEffect(() => {
-        const wrapper = wrapperRef.current;
-        const parent = parentRef.current;
-        const scroll = parent.firstElementChild;
-        const circle = circleRef.current;
-        const title1 = title1Ref.current;
-        const title2 = title2Ref.current;
-        const title3 = title3Ref.current;
-        const column = wrapper.getElementsByClassName("items")[0];
+            const layout = () => {
+                const columnHeight = column.clientHeight - circle.clientHeight;
+                const absScrollTop = scroll.scrollTop / window.innerHeight;
+                const relScrollTop = Math.min(1, Math.max(0, absScrollTop - 1) / 2);
+                // const title1Top = title1.getBoundingClientRect().top;
+                // const title2Top = title2.getBoundingClientRect().top;
+                // const title3Top = title3.getBoundingClientRect().top;
 
-        const layout = () => {
-            const columnHeight = column.clientHeight - circle.clientHeight;
-            const absScrollTop = scroll.scrollTop / window.innerHeight;
-            const relScrollTop = Math.min(1, Math.max(0, absScrollTop - 1) / 2);
-            const title1Top = title1.getBoundingClientRect().top;
-            const title2Top = title2.getBoundingClientRect().top;
-            const title3Top = title3.getBoundingClientRect().top;
-            console.log(relScrollTop);
+                switch (Math.max(1, Math.round(absScrollTop))) {
+                    case 1: title1.style.opacity = "1"; title2.style.opacity = "0.5"; title3.style.opacity = "0.5"; break;
+                    case 2: title2.style.opacity = "1"; title1.style.opacity = "0.5"; title3.style.opacity = "0.5"; break;
+                    case 3: title3.style.opacity = "1"; title1.style.opacity = "0.5"; title2.style.opacity = "0.5"; break;
+                }
 
-            wrapper.style.opacity = `${Math.min(1, absScrollTop)}`;
-            circle.style.transform = `translateY(${columnHeight * relScrollTop}px)`;
-        }
+                const threshold = 0.5; // 0 transparency up to 0.5 scroll position.
+                const maxOpacity = 1;
+                wrapper.style.opacity = `${Math.min(maxOpacity, Math.max(0, (absScrollTop - threshold) / (1 - threshold)))}`;
+                circle.style.transform = `translateY(${columnHeight * relScrollTop}px)`;
+            }
 
-        layout();
-        scroll.addEventListener("scroll", layout);
+            layout();
+            scroll.addEventListener("scroll", layout);
+            window.addEventListener("resize", layout);
+    
+            return () => {
+                scroll.removeEventListener("scroll", layout);
+                window.removeEventListener("resize", layout);
+            };
+        }, []);
 
-        return () => scroll.removeEventListener("scroll", layout);
-    }, []);
-
-    return (
-        <Box
-            position="sticky"
-            ref={wrapperRef}
-            height="100vh"
-            top="0px"
-        >
-            <Row
-                align="center"
-                height="100%"
-                maxWidth="1200px"
-                margin="auto"
-                padding="var(--padding-df)"
-                boxSizing="border-box"
+        return (
+            <Box
+                position="sticky"
+                ref={wrapperRef}
+                height="100vh"
+                top="0px"
             >
-                <Row position="relative" gap="var(--padding-lg)" width="100%">
-                    <Box
-                        position="absolute"
-                        width="2px"
-                        height="calc(100% - 64px)"
-                        backgroundColor="var(--rearground-border)"
-                        transform="translateX(32px)"
-                        margin="32px 0px"
-                    />
-                    <Column height="fit-content">
-                        <Box ref={circleRef} borderRadius="1e10px" border="2px solid var(--rearground-border)" padding="var(--padding-df)">
-                            <Box size="30px" borderRadius="1e10px" backgroundColor="var(--rearground-border)" />
-                        </Box>
-                    </Column>
-                    <Column className="items" gap="100px" width="100%">
-                        <Box ref={title1Ref}>
-                            <Text.h2 fontSize="32px">오픈소스</Text.h2>
-                            <Text.span>오픈적이고 Quark Icons는 항상 노력하고 있습니다.</Text.span>
-                        </Box>
-                        <Box ref={title2Ref}>
-                            <Text.h2 fontSize="32px">현대적인</Text.h2>
-                            <Text.span>현대적인 디자인으로 세련함을 더합니다.</Text.span>
-                        </Box>
-                        <Box ref={title3Ref}>
-                            <Text.h2 fontSize="32px">퀄리티</Text.h2>
-                            <Text.span>높은 퀄리티를 위해서 Quark Icons는 항상 노력하고 있습니다.</Text.span>
-                        </Box>
-                    </Column>
+                <Row
+                    align="center"
+                    height="100%"
+                    maxWidth="1200px"
+                    margin="auto"
+                    padding="var(--padding-df)"
+                    boxSizing="border-box"
+                >
+                    <Row position="relative" gap="var(--padding-lg)" width="100%">
+                        <Box
+                            position="absolute"
+                            width="2px"
+                            height="calc(100% - 64px)"
+                            backgroundColor="var(--rearground-border)"
+                            transform="translateX(32px)"
+                            margin="32px 0px"
+                        />
+                        <Column height="fit-content">
+                            <Box ref={circleRef} borderRadius="1e10px" border="2px solid var(--rearground-border)" padding="var(--padding-df)">
+                                <Box size="30px" borderRadius="1e10px" backgroundColor="var(--rearground-border)" />
+                            </Box>
+                        </Column>
+                        <Column className="items" gap="100px" width="100%">
+                            <Item refer={title1Ref} title={l10n["landing_part1"]["item1"]["title"]} description={l10n["landing_part1"]["item1"]["description"]} />
+                            <Item refer={title2Ref} title={l10n["landing_part1"]["item2"]["title"]} description={l10n["landing_part1"]["item2"]["description"]} />
+                            <Item refer={title3Ref} title={l10n["landing_part1"]["item3"]["title"]} description={l10n["landing_part1"]["item3"]["description"]} />
+                        </Column>
+                    </Row>
                 </Row>
-            </Row>
-        </Box>
-    )
+            </Box>
+        )
+    }
+
+    function Item({refer, title, description}: {
+        refer: MutableRef<HTMLDivElement>;
+        title: string;
+        description: string;
+    }) {
+        return (
+            <Box
+                ref={refer}
+                transitionDuration="0.5s"
+                transitionProperty="opacity"
+            >
+                <Text.h2 fontSize="32px">{title}</Text.h2>
+                <Text.span>{description}</Text.span>
+            </Box>
+        )
+    }
 }
