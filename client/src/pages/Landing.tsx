@@ -9,12 +9,29 @@ import { RouterBinding } from "@web-package/react-widgets-router";
 import { l10n } from "../localization/localization";
 import { RenderIcon } from "../templates/RenderIcon";
 import { Icons } from "./App";
-import { MutableRef, useLayoutEffect, useRef, useState } from "preact/hooks";
+import { MutableRef, useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
 import { CSSProperties } from "react-dom/src";
 import { TouchRipple } from "web-touch-ripple/jsx";
 
 export function LandingPage() {
     const parentRef = useRef<HTMLDivElement>();
+    const bottomTooltipRef = useRef<HTMLDivElement>();
+
+    useEffect(() => {
+        const parent = parentRef.current;
+        const scroll = parent.firstElementChild;
+        const tooltip = bottomTooltipRef.current;
+
+        setTimeout(() => {
+            const tooltip = bottomTooltipRef.current;
+            tooltip.style.opacity = "1";
+        }, 1000);
+
+        scroll.addEventListener("scroll", () => {
+            tooltip.style.opacity = "0";
+            scroll.removeEventListener("scroll", this);
+        });
+    }, []);
 
     return (
         <Box size="100%" ref={parentRef}>
@@ -56,6 +73,19 @@ export function LandingPage() {
                                 <Button.Primary text={l10n["landing_get_started"]} onTap={() => RouterBinding.instance.push("/app")} />
                             </Row>
                         </Box>
+                        <Column align="center" position="absolute" width="100%" bottom="0px" padding="var(--padding-df)">
+                            <Box
+                                ref={bottomTooltipRef}
+                                opacity="0"
+                                transitionProperty="opacity"
+                                transitionDuration="0.5s"
+                            >
+                                <Column align="center" gap="var(--padding-df)" margin="auto" padding="var(--padding-df)">
+                                    <Text.span color="var(--foreground4)">아래로 스크롤할 수 있습니다.</Text.span>
+                                    <RenderIcon.Name name="arrow_bottom" size="14px" color="var(--foreground4)" />
+                                </Column>
+                            </Box>
+                        </Column>
                     </Column>
                     <Box position="relative" height="300vh" borderTop="3px double var(--rearground-border)">
                         <Part1.Body parentRef={parentRef} />
