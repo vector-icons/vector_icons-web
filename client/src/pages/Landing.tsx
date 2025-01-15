@@ -81,7 +81,7 @@ export function LandingPage() {
                                 transitionDuration="0.5s"
                             >
                                 <Column align="center" gap="var(--padding-df)" margin="auto" padding="var(--padding-df)">
-                                    <Text.span color="var(--foreground4)">아래로 스크롤할 수 있습니다.</Text.span>
+                                    <Text.span color="var(--foreground4)">{l10n["landing_scrollable"]}</Text.span>
                                     <RenderIcon.Name name="arrow_bottom" size="14px" color="var(--foreground4)" />
                                 </Column>
                             </Box>
