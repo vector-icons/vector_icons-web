@@ -1,12 +1,16 @@
 import Logo from "../assets/favicon.svg";
+import Part1Background1 from "../assets/images/landing_part1-background1.png";
+import Part1Background2 from "../assets/images/landing_part1-background2.png";
+import Part1Background3 from "../assets/images/landing_part1-background3.png";
 
-import { AnimatedTransition, Box, Column, Row, Scrollable, Text } from "@web-package/react-widgets";
+import { Box, Column, Constraint, ConstraintBuilder, Row, Scrollable, SizeBuilder, Text } from "@web-package/react-widgets";
 import { Button } from "../templates/Button";
 import { RouterBinding } from "@web-package/react-widgets-router";
 import { l10n } from "../localization/localization";
 import { RenderIcon } from "../templates/RenderIcon";
 import { Icons } from "./App";
 import { MutableRef, useLayoutEffect, useRef, useState } from "preact/hooks";
+import { CSSProperties } from "react-dom/src";
 
 export function LandingPage() {
     const parentRef = useRef<HTMLDivElement>();
@@ -52,7 +56,7 @@ export function LandingPage() {
                             </Row>
                         </Box>
                     </Column>
-                    <Box position="relative" width="100vw" height="300vh" borderTop="3px double var(--rearground-border)">
+                    <Box position="relative" height="300vh" borderTop="3px double var(--rearground-border)">
                         <Part1.Body parentRef={parentRef} />
                     </Box>
                 </Column>
@@ -103,7 +107,8 @@ namespace Part1 {
         const title1Ref = useRef<HTMLDivElement>();
         const title2Ref = useRef<HTMLDivElement>();
         const title3Ref = useRef<HTMLDivElement>();
-    
+        const [index, setIndex] = useState<number>();
+
         useLayoutEffect(() => {
             const wrapper = wrapperRef.current;
             const parent = parentRef.current;
@@ -118,11 +123,10 @@ namespace Part1 {
                 const columnHeight = column.clientHeight - circle.clientHeight;
                 const absScrollTop = scroll.scrollTop / window.innerHeight;
                 const relScrollTop = Math.min(1, Math.max(0, absScrollTop - 1) / 2);
-                // const title1Top = title1.getBoundingClientRect().top;
-                // const title2Top = title2.getBoundingClientRect().top;
-                // const title3Top = title3.getBoundingClientRect().top;
+                const relIndex = Math.max(1, Math.round(absScrollTop));
+                setIndex(relIndex - 1);
 
-                switch (Math.max(1, Math.round(absScrollTop))) {
+                switch (relIndex) {
                     case 1: title1.style.opacity = "1"; title2.style.opacity = "0.5"; title3.style.opacity = "0.5"; break;
                     case 2: title2.style.opacity = "1"; title1.style.opacity = "0.5"; title3.style.opacity = "0.5"; break;
                     case 3: title3.style.opacity = "1"; title1.style.opacity = "0.5"; title2.style.opacity = "0.5"; break;
@@ -151,6 +155,38 @@ namespace Part1 {
                 height="100vh"
                 top="0px"
             >
+                <ConstraintBuilder<Boolean>
+                    constraints={[
+                        new Constraint(700, Infinity, true),
+                        new Constraint(0, 700, false),
+                    ]}
+                    usememo={false}
+                    builder={isVisible => {
+                        const style: CSSProperties = {
+                            position: "absolute",
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            transitionProperty: "opacity",
+                            transitionDuration: "0.5s"
+                        }
+
+                        return (
+                            <Box position="absolute" size="100%" display={isVisible ? undefined : "none"}>
+                                <Box position="relative" size="100%">
+                                    <img src={Part1Background1} style={{...style, opacity: index == 0 ? "1" : "0"}} />
+                                    <img src={Part1Background2} style={{...style, opacity: index == 1 ? "1" : "0"}} />
+                                    <img src={Part1Background3} style={{...style, opacity: index == 2 ? "1" : "0"}} />
+                                </Box>
+                            </Box>
+                        )
+                    }}
+                />
+                <Box
+                    position="absolute"
+                    size="100%"
+                    background="linear-gradient(to right, var(--background) 30%, transparent 70%)"
+                />
                 <Row
                     align="center"
                     height="100%"

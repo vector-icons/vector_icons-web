@@ -47,6 +47,21 @@ module.exports = {
                     filename: "fonts/[name][ext]"
                 }
             },
+            // To export the image assets files from `src/` to `dist/`.
+            // And by default, extensions are typical extensions supported by Chrome.
+            {
+                test: /\.(png|jpe?g|webp|avif|hei[cf]|gif|tiff)$/i,
+                use: [{
+                    loader: "image-encode-loader",
+                    options: {
+                        // This format has the best compression rate at the moment.
+                        format: "avif",
+                        generator: {
+                            filename: "images/[name].[ext]"
+                        }
+                    }
+                }],
+            },
             { // To inset localization assets files to bundle files.
                 test: /(?<=localization).+.json$/,
                 type: "asset/source"
