@@ -11,6 +11,7 @@ import { RenderIcon } from "../templates/RenderIcon";
 import { Icons } from "./App";
 import { MutableRef, useLayoutEffect, useRef, useState } from "preact/hooks";
 import { CSSProperties } from "react-dom/src";
+import { TouchRipple } from "web-touch-ripple/jsx";
 
 export function LandingPage() {
     const parentRef = useRef<HTMLDivElement>();
@@ -59,6 +60,7 @@ export function LandingPage() {
                     <Box position="relative" height="300vh" borderTop="3px double var(--rearground-border)">
                         <Part1.Body parentRef={parentRef} />
                     </Box>
+                    <Footer />
                 </Column>
             </Scrollable.Vertical>
         </Box>
@@ -236,4 +238,18 @@ namespace Part1 {
             </Box>
         )
     }
+}
+
+function Footer() {
+    return (
+        <Box width="100%" padding="var(--padding-lg)" borderTop="3px double var(--rearground-border)">
+            <Column gap="var(--padding-df)" maxWidth="1200px" margin="auto">
+                <Row gap="var(--padding-df)">
+                    <TouchRipple onTap={() => window.open("https://github.com/MTtankkeo")}><Text.h3>GitHub</Text.h3></TouchRipple>
+                    <TouchRipple onTap={() => window.open("https://discord.gg/EebbVXgstb")}><Text.h3>Discord</Text.h3></TouchRipple>
+                </Row>
+                <Text.span>Copyright 2025. <a href="https://github.com/MTtankkeo">장천룡(Dev Ttangkong)</a> All rights reserved.</Text.span>
+            </Column>
+        </Box>
+    )
 }
