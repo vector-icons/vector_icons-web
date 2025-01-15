@@ -19,7 +19,8 @@
     "landing_introduction": "モダンでミニマルなスタイルのアイコン",
     "landing_get_started": "始める",
     "landing_search_placeholder": "検索",
-    "landing_scrollable": "You can scroll down.",
+    "landing_scrollable": "You can scroll down",
+    "landing_click_down": "Click to go down",
     "landing_part1": {
         "item1": {"title": "Open Source", "description": "As an open source project, Quark Icons is always striving for excellence."},
         "item2": {"title": "Modern", "description": "Add sophistication to your application with modern designs."},

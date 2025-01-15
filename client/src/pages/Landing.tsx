@@ -3,7 +3,7 @@ import Part1Background1 from "../assets/images/landing_part1-background1.png";
 import Part1Background2 from "../assets/images/landing_part1-background2.png";
 import Part1Background3 from "../assets/images/landing_part1-background3.png";
 
-import { Box, Column, Constraint, ConstraintBuilder, Row, Scrollable, SizeBuilder, Text } from "@web-package/react-widgets";
+import { AnimatedSize, AnimatedTransition, Box, Column, Constraint, ConstraintBuilder, Row, Scrollable, SizeBuilder, Text } from "@web-package/react-widgets";
 import { Button } from "../templates/Button";
 import { RouterBinding } from "@web-package/react-widgets-router";
 import { l10n } from "../localization/localization";
@@ -15,78 +15,12 @@ import { TouchRipple } from "web-touch-ripple/jsx";
 
 export function LandingPage() {
     const parentRef = useRef<HTMLDivElement>();
-    const bottomTooltipRef = useRef<HTMLDivElement>();
-
-    useEffect(() => {
-        const parent = parentRef.current;
-        const scroll = parent.firstElementChild;
-        const tooltip = bottomTooltipRef.current;
-
-        setTimeout(() => {
-            const tooltip = bottomTooltipRef.current;
-            tooltip.style.opacity = "1";
-        }, 1000);
-
-        scroll.addEventListener("scroll", () => {
-            tooltip.style.opacity = "0";
-            scroll.removeEventListener("scroll", this);
-        });
-    }, []);
 
     return (
         <Box size="100%" ref={parentRef}>
             <Scrollable.Vertical>
                 <Column>
-                    <Column
-                        position="relative"
-                        width="100%"
-                        height="100vh"
-                    >
-                        <Box position="absolute" size="100%" zIndex="-1">
-                            {/** @ts-ignore */}
-                            <landing-background />
-                        </Box>
-                        <Box position="absolute" size="100%" zIndex="-1" overflow="clip" children={<Background />} />
-                        <Box
-                            position="absolute"
-                            size="100%"
-                            zIndex="-1"
-                            background="linear-gradient(0deg, var(--background-shadow), transparent, var(--background-shadow))"
-                        />
-                        <Row align="centerSpaceBetween" paddingAndGap="var(--padding-df)">
-                            <Row align="center" gap="var(--padding-df)">
-                                <Logo width="40px" />
-                                <Row gap="var(--padding-sm)">
-                                    <Text.h2>QUARK ICONS</Text.h2>
-                                    <Text.span>OC</Text.span>
-                                </Row>
-                            </Row>
-                            <Row gap="var(--padding-sm)">
-                                <Button.Primary text={l10n["sign_in"]} onTap={() => RouterBinding.instance.push("/sign-in")} />
-                                <Button.Secondary text={l10n["sign_up"]} onTap={() => RouterBinding.instance.push("/sign-up")} />
-                            </Row>
-                        </Row>
-                        <Box padding="200px var(--padding-lg)" maxWidth="1000px" margin="0px auto">
-                            <Text fontWeight="bold" fontSize="50px">WELCOME!</Text>
-                            <Text color="var(--foreground3)" fontSize="18px">{l10n["landing_introduction"]}</Text>
-                            <Row marginTop="var(--padding-lg)">
-                                <Button.Primary text={l10n["landing_get_started"]} onTap={() => RouterBinding.instance.push("/app")} />
-                            </Row>
-                        </Box>
-                        <Column align="center" position="absolute" width="100%" bottom="0px" padding="var(--padding-df)">
-                            <Box
-                                ref={bottomTooltipRef}
-                                opacity="0"
-                                transitionProperty="opacity"
-                                transitionDuration="0.5s"
-                            >
-                                <Column align="center" gap="var(--padding-df)" margin="auto" padding="var(--padding-df)">
-                                    <Text.span color="var(--foreground4)">{l10n["landing_scrollable"]}</Text.span>
-                                    <RenderIcon.Name name="arrow_bottom" size="14px" color="var(--foreground4)" />
-                                </Column>
-                            </Box>
-                        </Column>
-                    </Column>
+                    <PartHeader.Body parentRef={parentRef} />
                     <Box position="relative" height="300vh" borderTop="3px double var(--rearground-border)">
                         <Part1.Body parentRef={parentRef} />
                     </Box>
@@ -100,7 +34,6 @@ export function LandingPage() {
 function Background() {
     const iconsRef = useRef(Icons.slice(0, 220));
     const wrapperRef = useRef<HTMLDivElement>(null);
-    const [iconsFilled, setIconsFilled] = useState(0);
 
     return (
         <Box
@@ -120,7 +53,7 @@ function Background() {
             boxShadow="10px 10px 20px var(--rearground-border)"
         >{
             Icons.slice(0, 220).map((icon, index) => {
-                const isFilled = iconsFilled >= index;
+                const isFilled = index % 2 == 0;
 
                 return (
                     <RenderIcon.Name name={icon.name} filled={isFilled} size="32px" color={
@@ -130,6 +63,114 @@ function Background() {
             })
         }</Box>
     )
+}
+
+namespace PartHeader {
+    export function Body({parentRef}: {parentRef: MutableRef<HTMLDivElement>}) {
+        const bottomTooltipRef = useRef<HTMLDivElement>();
+        const [isTooltipHover, setTooltipHover] = useState(false);
+
+        useEffect(() => {
+            const parent = parentRef.current;
+            const scroll = parent.firstElementChild;
+            const tooltip = bottomTooltipRef.current;
+
+            setTimeout(() => {
+                const tooltip = bottomTooltipRef.current;
+                tooltip.style.opacity = "1";
+                tooltip.onclick = () => scroll.scroll({behavior: "smooth", top: window.innerHeight});
+                tooltip.onmouseenter = () => setTooltipHover(true);
+                tooltip.onmouseleave = () => setTooltipHover(false);
+            }, 1000);
+
+            scroll.addEventListener("scroll", () => {
+                tooltip.style.opacity = "0";
+                scroll.removeEventListener("scroll", this);
+            });
+        }, []);
+
+        return (
+            <ConstraintBuilder
+                constraints={[
+                    new Constraint(600, Infinity, false),
+                    new Constraint(-Infinity, 600, true),
+                ]}
+                usememo={false}
+                builder={isMobile => {
+                    return (
+                        <Column
+                            position="relative"
+                            width="100%"
+                            height="100vh"
+                        >
+                            <Box position="absolute" size="100%" zIndex="-1">
+                                {/** @ts-ignore */}
+                                <landing-background />
+                            </Box>
+                            <Box position="absolute" size="100%" zIndex="-1" overflow="clip" children={<Background />} />
+                            <Box
+                                position="absolute"
+                                size="100%"
+                                zIndex="-1"
+                                background="linear-gradient(to top, var(--background-shadow), transparent, transparent 80%, var(--background-shadow))"
+                            />
+                            <Row align="centerSpaceBetween" paddingAndGap="var(--padding-df)">
+                                <Row align="center" gap="var(--padding-df)">
+                                    <Logo width="40px" />
+                                    {
+                                        !isMobile ?
+                                            <Row gap="var(--padding-sm)">
+                                                <Text.h2>QUARK ICONS</Text.h2>
+                                                <Text.span>OC</Text.span>
+                                            </Row>
+                                        : <></>
+                                    }
+                                </Row>
+                                <Row gap="var(--padding-sm)">
+                                    <Button.Primary text={l10n["sign_in"]} onTap={() => RouterBinding.instance.push("/sign-in")} />
+                                    <Button.Secondary text={l10n["sign_up"]} onTap={() => RouterBinding.instance.push("/sign-up")} />
+                                </Row>
+                            </Row>
+                            <Box padding="200px var(--padding-lg)" maxWidth="1000px" margin="0px auto">
+                                <Text fontWeight="bold" fontSize={isMobile ? "40px" : "50px"}>WELCOME!</Text>
+                                <Text color="var(--foreground3)" fontSize={isMobile ? "16px" : "18px"}>{l10n["landing_introduction"]}</Text>
+                                <Row marginTop="var(--padding-lg)">
+                                    <Button.Primary icon="compass" text={l10n["landing_get_started"]} onTap={() => RouterBinding.instance.push("/app")} />
+                                </Row>
+                            </Box>
+                            <Column align="center" position="absolute" width="100%" bottom="0px" padding="var(--padding-df)">
+                                <Box
+                                    ref={bottomTooltipRef}
+                                    opacity="0"
+                                    transitionProperty="opacity"
+                                    transitionDuration="0.5s"
+                                    userSelect="none"
+                                    cursor="pointer"
+                                >
+                                    <Column align="center" gap="var(--padding-df)" margin="auto" padding="var(--padding-df)">
+                                            <Box
+                                                padding="10px 15px"
+                                                backgroundColor="var(--rearground)"
+                                                borderRadius="15px"
+                                                border="2px solid var(--rearground-border)"
+                                                opacity={isTooltipHover ? "1" : "0.5"}
+                                                transitionProperty="opacity"
+                                                transitionDuration="0.3s"
+                                            >
+                                                <AnimatedSize duration="0.3s" overflow="visible">
+                                                    <Text.span>{isTooltipHover ? l10n["landing_click_down"] : l10n["landing_scrollable"]}</Text.span>
+                                                </AnimatedSize>
+                                            </Box>
+                                        <RenderIcon.Name name="arrow_bottom" size="14px" color="var(--foreground4)" />
+                                    </Column>
+                                </Box>
+                            </Column>
+                        </Column>
+                    )
+                }}
+            />
+        )
+    }
 }
 
 namespace Part1 {
@@ -164,7 +205,7 @@ namespace Part1 {
                     case 3: title3.style.opacity = "1"; title1.style.opacity = "0.5"; title2.style.opacity = "0.5"; break;
                 }
 
-                const threshold = 0.5; // 0 transparency up to 0.5 scroll position.
+                const threshold = 0.3; // 0 transparency up to 0.3 scroll position.
                 const maxOpacity = 1;
                 wrapper.style.opacity = `${Math.min(maxOpacity, Math.max(0, (absScrollTop - threshold) / (1 - threshold)))}`;
                 circle.style.transform = `translateY(${columnHeight * relScrollTop}px)`;
