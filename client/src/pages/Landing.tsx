@@ -3,7 +3,7 @@ import Part1Background1 from "../assets/images/landing_part1-background1.png";
 import Part1Background2 from "../assets/images/landing_part1-background2.png";
 import Part1Background3 from "../assets/images/landing_part1-background3.png";
 
-import { AnimatedSize, AnimatedTransition, Box, Column, Constraint, ConstraintBuilder, Row, Scrollable, SizeBuilder, Text } from "@web-package/react-widgets";
+import { AnimatedFoldable, AnimatedSize, AnimatedTransition, Box, Column, Constraint, ConstraintBuilder, Row, Scrollable, SizeBuilder, Text } from "@web-package/react-widgets";
 import { Button } from "../templates/Button";
 import { RouterBinding } from "@web-package/react-widgets-router";
 import { l10n } from "../localization/localization";
@@ -84,8 +84,13 @@ namespace PartHeader {
             }, 1000);
 
             scroll.addEventListener("scroll", () => {
-                tooltip.style.opacity = "0";
-                scroll.removeEventListener("scroll", this);
+                if (scroll.scrollTop == 0) {
+                    tooltip.style.display = "unset";
+                    tooltip.style.opacity = "1";
+                } else {
+                    tooltip.style.opacity = "0";
+                    scroll.removeEventListener("scroll", this);
+                }
             });
         }, []);
 
@@ -147,22 +152,30 @@ namespace PartHeader {
                                     userSelect="none"
                                     cursor="pointer"
                                 >
-                                    <Column align="center" gap="var(--padding-df)" margin="auto" padding="var(--padding-df)">
+                                    <Box
+                                        opacity={isTooltipHover ? "1" : "0.5"}
+                                        transitionProperty="opacity"
+                                        transitionDuration="0.3s"
+                                    >
+                                        <Column align="center" gap="var(--padding-df)" margin="auto" padding="var(--padding-df)">
+                                            <Row align="center">
+                                                <Box >
+                                                    <RenderIcon.Name name="mouse" size="24px" />
+                                                </Box>
+                                                <AnimatedFoldable.Horizontal visible={isTooltipHover} duration="0.3s">
+                                                    <Text.span marginLeft="var(--padding-sm)" color="var(--foreground)">{l10n["landing_click_down"]}</Text.span>
+                                                </AnimatedFoldable.Horizontal>
+                                            </Row>
                                             <Box
-                                                padding="10px 15px"
-                                                backgroundColor="var(--rearground)"
-                                                borderRadius="15px"
-                                                border="2px solid var(--rearground-border)"
-                                                opacity={isTooltipHover ? "1" : "0.5"}
-                                                transitionProperty="opacity"
-                                                transitionDuration="0.3s"
+                                                animationName="landing-scrollable-tooltip"
+                                                animationDuration="0.5s"
+                                                animationDirection="alternate"
+                                                animationIterationCount="infinite"
                                             >
-                                                <AnimatedSize duration="0.3s" overflow="visible">
-                                                    <Text.span>{isTooltipHover ? l10n["landing_click_down"] : l10n["landing_scrollable"]}</Text.span>
-                                                </AnimatedSize>
+                                                <RenderIcon.Name name="arrow_bottom" size="14px" color="var(--foreground)" />
                                             </Box>
-                                        <RenderIcon.Name name="arrow_bottom" size="14px" color="var(--foreground4)" />
-                                    </Column>
+                                        </Column>
+                                    </Box>
                                 </Box>
                             </Column>
                         </Column>

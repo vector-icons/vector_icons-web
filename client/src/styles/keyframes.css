@@ -35,3 +35,8 @@
     66%  { transform: rotate(-10deg); }
     100% { transform: rotate(0deg); }
 }
+
+@keyframes landing-scrollable-tooltip {
+    0% { transform: translateY(-5px); }
+    100% { transform: translateY(0px); }
+}
