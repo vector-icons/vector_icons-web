@@ -29,6 +29,7 @@
     --padding-md: 15px; /* medium */
     --padding-lg: 30px; /* large */
     --padding-df: var(--padding-md); /* default = medium */
+    --content-max-width: 1200px;
 
     /* About react-widgets-router */
     --router-fadein-keyframe: "page-fadein";

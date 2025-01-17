@@ -1,9 +1,10 @@
 import Logo from "../assets/favicon.svg";
+import LogoIcon from "../assets/icons/logo.svg";
 import Part1Background1 from "../assets/images/landing_part1-background1.png";
 import Part1Background2 from "../assets/images/landing_part1-background2.png";
 import Part1Background3 from "../assets/images/landing_part1-background3.png";
 
-import { AnimatedFoldable, AnimatedSize, AnimatedTransition, Box, Column, Constraint, ConstraintBuilder, Row, Scrollable, SizeBuilder, Text } from "@web-package/react-widgets";
+import { AnimatedFoldable, Box, Column, Constraint, ConstraintBuilder, Row, Scrollable, Text } from "@web-package/react-widgets";
 import { Button } from "../templates/Button";
 import { RouterBinding } from "@web-package/react-widgets-router";
 import { l10n } from "../localization/localization";
@@ -24,6 +25,9 @@ export function LandingPage() {
                     <Box position="relative" height="300vh" borderTop="3px double var(--rearground-border)">
                         <Part1.Body parentRef={parentRef} />
                     </Box>
+                    <Box position="relative" height="300vh" borderTop="3px double var(--rearground-border)">
+                        <Part2.Body parentRef={parentRef} />
+                    </Box>
                     <Footer />
                 </Column>
             </Scrollable.Vertical>
@@ -32,7 +36,6 @@ export function LandingPage() {
 }
 
 function Background() {
-    const iconsRef = useRef(Icons.slice(0, 220));
     const wrapperRef = useRef<HTMLDivElement>(null);
 
     return (
@@ -46,11 +49,11 @@ function Background() {
             padding="var(--padding-df)"
             backgroundColor="var(--rearground)"
             borderRadius="15px"
-            border="1px solid var(--rearground-border)"
+            border="5px solid var(--rearground-border)"
             marginLeft="auto"
             marginTop="300px"
             transform="skew(-20deg, -15deg)"
-            boxShadow="10px 10px 20px var(--rearground-border)"
+            boxShadow="15px 15px 15px var(--rearground-border)"
         >{
             Icons.slice(0, 220).map((icon, index) => {
                 const isFilled = index % 2 == 0;
@@ -159,9 +162,7 @@ namespace PartHeader {
                                     >
                                         <Column align="center" gap="var(--padding-df)" margin="auto" padding="var(--padding-df)">
                                             <Row align="center">
-                                                <Box >
-                                                    <RenderIcon.Name name="mouse" size="24px" />
-                                                </Box>
+                                                <RenderIcon.Name name="mouse" size="24px" />
                                                 <AnimatedFoldable.Horizontal visible={isTooltipHover} duration="0.3s">
                                                     <Text.span marginLeft="var(--padding-sm)" color="var(--foreground)">{l10n["landing_click_down"]}</Text.span>
                                                 </AnimatedFoldable.Horizontal>
@@ -324,10 +325,97 @@ namespace Part1 {
     }
 }
 
+namespace Part2 {
+    export function Body({parentRef}: {parentRef: MutableRef<HTMLDivElement>}) {
+        const wrapperRef = useRef<HTMLDivElement>(null);
+        const progressRef = useRef<HTMLDivElement>(null);
+
+        useLayoutEffect(() => {
+            const wrapper = wrapperRef.current;
+            const progress = progressRef.current;
+            const parent = parentRef.current;
+            const scroll = parent.firstElementChild;
+
+            const layout = () => {
+                const absScrollTop = Math.max(0, (scroll.scrollTop - window.innerHeight * 3) / window.innerHeight);
+                const relScrollTop = Math.min(1, Math.max(0, Math.max(absScrollTop - 1) / 2));
+
+                const threshold = 0.3; // 0 transparency up to 0.3 scroll position.
+                const maxOpacity = 1;
+                wrapper.style.opacity = `${Math.min(maxOpacity, Math.max(0, (absScrollTop - threshold) / (1 - threshold)))}`;
+                progress.style.height = `${relScrollTop * 100}%`;
+            }
+
+            scroll.addEventListener("scroll", layout);
+            window.addEventListener("resize", layout);
+
+            return () => {
+                scroll.removeEventListener("scroll", layout);
+                window.removeEventListener("resize", layout);
+            }
+        });
+
+        return (
+            <Box ref={wrapperRef} position="sticky" top="0px" height="100vh">
+                <Row size="100%">
+                    <Box ref={progressRef} width="5px" backgroundColor="var(--foreground)" />
+                    <Column
+                        className="body"
+                        position="relative"
+                        gap="var(--padding-lg)"
+                        align="center"
+                        size="100%"
+                        margin="auto"
+                        maxWidth="var(--content-max-width)"
+                        padding="var(--padding-df)"
+                        boxSizing="border-box"
+                    >
+                        <Column gap="3px">
+                            <Text.h2 fontSize="32px" textShadow="0px 0px 5px black" color="white">애플리케이션을 더 위대하게!</Text.h2>
+                            <Text.span fontSize="18px" textShadow="0px 0px 5px black" color="rgb(200, 200, 200)">Quark Icons와 함께 하십시오!</Text.span>
+                        </Column>
+                        <Box padding="var(--padding-df)" backgroundColor="var(--background)" border="1px solid var(--rearground-border)" borderRadius="30px">
+                            <Row gap="var(--padding-df)">
+                                <Item title="다양한 아이콘들" description="총 300개에 달하는 아이콘을 무료로 다운로드할 수 있습니다." />
+                                <Item title="적은 용량" description="매우 경량화되어 최적화된 아이콘 SVG 파일 크기를 가지고 있습니다." />
+                                <Item title="일관적인 디자인" description="체계적으로 관리되는 오픈소스 아이콘 템플릿입니다." />
+                            </Row>
+                        </Box>
+                        
+                        <LogoIcon
+                            width="300px"
+                            height="300px"
+                            style={{
+                                position: "absolute",
+                                fill: "#E33223",
+                                size: "300px",
+                                zIndex: "-1",
+                                filter: "drop-shadow(0px 0px 150px #E33223)"
+                            }}
+                        />
+                    </Column>
+                </Row>
+            </Box>
+        )
+    }
+
+    function Item({title, description}: {
+        title: string;
+        description: string;
+    }) {
+        return (
+            <Column padding="var(--padding-df)" gap="3px" backgroundColor="var(--rearground)" borderRadius="15px">
+                <Text.h3>{title}</Text.h3>
+                <Text.span>{description}</Text.span>
+            </Column>
+        )
+    }
+}
+
 function Footer() {
     return (
         <Box width="100%" padding="var(--padding-lg)" borderTop="3px double var(--rearground-border)">
-            <Column gap="var(--padding-df)" maxWidth="1200px" margin="auto">
+            <Column gap="var(--padding-df)" maxWidth="var(--content-max-width)" margin="auto">
                 <Row gap="var(--padding-df)">
                     <TouchRipple onTap={() => window.open("https://github.com/MTtankkeo")}><Text.h3>GitHub</Text.h3></TouchRipple>
                     <TouchRipple onTap={() => window.open("https://discord.gg/EebbVXgstb")}><Text.h3>Discord</Text.h3></TouchRipple>
