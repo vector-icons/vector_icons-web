@@ -376,12 +376,11 @@ namespace Part2 {
                         </Column>
                         <Box padding="var(--padding-df)" backgroundColor="var(--background)" border="1px solid var(--rearground-border)" borderRadius="30px">
                             <Row gap="var(--padding-df)">
-                                <Item title="다양한 아이콘들" description="총 300개에 달하는 아이콘을 무료로 다운로드할 수 있습니다." />
-                                <Item title="적은 용량" description="매우 경량화되어 최적화된 아이콘 SVG 파일 크기를 가지고 있습니다." />
-                                <Item title="일관적인 디자인" description="체계적으로 관리되는 오픈소스 아이콘 템플릿입니다." />
+                                <Item title={l10n["landing_part2"]["item1"]["title"]} description={l10n["landing_part2"]["item1"]["description"]} />
+                                <Item title={l10n["landing_part2"]["item2"]["title"]} description={l10n["landing_part2"]["item2"]["description"]} />
+                                <Item title={l10n["landing_part2"]["item3"]["title"]} description={l10n["landing_part2"]["item3"]["description"]} />
                             </Row>
                         </Box>
-                        
                         <LogoIcon
                             width="300px"
                             height="300px"
@@ -404,10 +403,12 @@ namespace Part2 {
         description: string;
     }) {
         return (
-            <Column padding="var(--padding-df)" gap="3px" backgroundColor="var(--rearground)" borderRadius="15px">
-                <Text.h3>{title}</Text.h3>
-                <Text.span>{description}</Text.span>
-            </Column>
+            <TouchRipple>
+                <Column padding="var(--padding-df)" gap="3px" backgroundColor="var(--rearground)" borderRadius="15px">
+                    <Text.h3>{title}</Text.h3>
+                    <Text.span>{description}</Text.span>
+                </Column>
+            </TouchRipple>
         )
     }
 }

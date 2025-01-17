@@ -26,6 +26,13 @@
         "item2": {"title": "현대적인", "description": "현대적인 디자인으로 애플리케이션에 세련함을 더합니다."},
         "item3": {"title": "퀄리티", "description": "높은 퀄리티를 위해서 Quark Icons는 항상 노력하고 있습니다."}
     },
+    "landing_part2": {
+        "title": "애플리케이션을 더 위대하게!",
+        "description": "프론트 개발을 Quark Icons와 함께 해주세요!",
+        "item1": {"title": "수 많은 아이콘", "description": "총 300개에 달하는 아이콘을 무료로 다운로드할 수 있습니다."},
+        "item2": {"title": "적은 용량", "description": "매우 경량화되어 최적화된 아이콘 SVG 파일을 다운로드할 수 있습니다."},
+        "item3": {"title": "일관된 디자인", "description": "GitHub에서 체계적으로 관리되는 오픈소스 아이콘 템플릿입니다."}
+    },
     "app_home": "홈",
     "app_style_guide": "스타일 가이드",
     "app_request": "요청",

@@ -26,6 +26,13 @@
         "item2": {"title": "Modern", "description": "Add sophistication to your application with modern designs."},
         "item3": {"title": "Quality", "description": "Quark Icons is always committed to delivering high quality."}
     },
+    "landing_part2": {
+        "title": "Make Your Application Greater!",
+        "description": "Develop your frontend with Quark Icons!",
+        "item1": {"title": "Numerous Icons", "description": "Download a total of 300 icons for free."},
+        "item2": {"title": "Compact Size", "description": "Download highly optimized, lightweight SVG icon files."},
+        "item3": {"title": "Consistent Design", "description": "Systematically managed open-source icon templates on GitHub."}
+    },
     "app_home": "Home",
     "app_style_guide": "Style Guide",
     "app_request": "Request",
