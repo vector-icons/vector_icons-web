@@ -1,11 +1,11 @@
 import { AnimatedTransition, Box, Column, Row, Scrollable, Text } from "@web-package/react-widgets";
 import { RenderIcon } from "../../templates/RenderIcon";
 import { Button } from "../../templates/Button";
-import { IconType } from "../App";
+import { AppContext, IconType } from "../App";
 import { Unactive } from "../../templates/Unactive";
 import { l10n } from "../../localization/localization";
 import { Input } from "../../templates/Input";
-import { useRef, useState } from "preact/hooks";
+import { useContext, useRef, useState } from "preact/hooks";
 import { TouchRipple } from "web-touch-ripple/jsx";
 import { User } from "../../components/user";
 import { Storage } from "../../components/storage";
@@ -14,6 +14,7 @@ export function IconPopup({icon, filled}: {
     icon: IconType;
     filled: boolean;
 }) {
+    const setApp = useContext(AppContext);
     const [isFilled, setFilled] = useState(filled);
     const [isMarked, setMarked] = useState(User.markedIcons.some(name => name == icon.name));
     const [iconSize, setIconSize] = useState(Storage.get<number>("search_popup-icon_size") ?? 64);
@@ -22,7 +23,7 @@ export function IconPopup({icon, filled}: {
     const iconHTML = isFilled ? icon.content.filled : icon.content.normal;
     const title = iconName.replace("_", " ").toUpperCase();
 
-    const iconFile = isFilled
+    const iconFileName = isFilled
         ? icon.name + "-filled"
         : icon.name;
 
@@ -31,12 +32,13 @@ export function IconPopup({icon, filled}: {
         const bUrl = URL.createObjectURL(blob);
         const temp = document.createElement('a');
         temp.href = bUrl;
-        temp.download = iconFile;
+        temp.download = iconFileName;
 
         document.body.appendChild(temp), temp.click();
         document.body.removeChild(temp);
 
         URL.revokeObjectURL(bUrl);
+        User.downloadedIcons = [...User.downloadedIcons, iconFileName];
     };
 
     const onMinusIconSize = () => {
@@ -135,7 +137,7 @@ export function IconPopup({icon, filled}: {
                     </Column>
                 </Row>
                 <CodeViewer name="HTML" text={iconHTML} />
-                <CodeViewer name="NPM" text={`<q-icon name="${iconFile}" />`} />
+                <CodeViewer name="NPM" text={`<q-icon name="${iconFileName}" />`} />
             </Column>
         </Box>
     )

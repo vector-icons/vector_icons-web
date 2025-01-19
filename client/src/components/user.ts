@@ -11,6 +11,15 @@ export class User {
         Storage.set("user-marked_icons", values);
     }
 
+    // 사용자가 다운로드한 모든 아이콘의 이름을 리스트 형태로 반환합니다.
+    static get downloadedIcons(): string[] {
+        return Storage.get("user-downloaded_icons") ?? [];
+    }
+
+    static set downloadedIcons(values: string[]) {
+        Storage.set("user-downloaded_icons", values)
+    }
+
     static get accounts(): API.Account[] {
         return Storage.get("user-accounts") ?? [];
     }

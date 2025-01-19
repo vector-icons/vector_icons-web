@@ -12,6 +12,12 @@ import { l10n } from "../../localization/localization";
 import { Unactive } from "../../templates/Unactive";
 import { CreditsPage } from "./Credits";
 import { StyleGuidePage } from "./StyleGuide";
+import { Storage } from "../../components/storage";
+import { User } from "../../components/user";
+import { List } from "../../templates/List";
+import { PopupPage } from "../../components/popup_page";
+import { IconPopup } from "./Search-popup";
+import { Icons } from "../App";
 
 export function SwitchPage() {
     return (
@@ -94,39 +100,42 @@ export namespace SideBar {
                     />
                 </Box>
                 <Scrollable.Vertical>
-                    <TabNavigation.Vertical
-                        index={index}
-                        duration="0.3s"
-                        style={{borderRadius: "1e10px", backgroundColor: "var(--foreground2)", width: "50%"}}
-                    >
-                        <Tooltip message={close ? l10n["app_home"] : null}>
-                            <Item closed={close} selected={index == 0} onTap={homeTapCallback} iconName="home" title={l10n["app_home"]} />
-                        </Tooltip>
-                        <Unactive>
-                            <Tooltip message={close ? l10n["app_request"] : null}>
-                                <Item closed={close} selected={false} onTap={() => {}} iconName="add_circle" title={l10n["app_request"]} />
+                    <Column gap="var(--padding-df)">
+                        <TabNavigation.Vertical
+                            index={index}
+                            duration="0.3s"
+                            style={{borderRadius: "1e10px", backgroundColor: "var(--foreground2)", width: "50%"}}
+                        >
+                            <Tooltip message={close ? l10n["app_home"] : null}>
+                                <Item closed={close} selected={index == 0} onTap={homeTapCallback} iconName="home" title={l10n["app_home"]} />
                             </Tooltip>
-                        </Unactive>
-                        <Unactive>
-                            <Tooltip message={close ? l10n["app_community"] : null}>
-                                <Item closed={close} selected={false} onTap={() => {}} iconName="community" title={l10n["app_community"]} />
+                            <Unactive>
+                                <Tooltip message={close ? l10n["app_request"] : null}>
+                                    <Item closed={close} selected={false} onTap={() => {}} iconName="add_circle" title={l10n["app_request"]} />
+                                </Tooltip>
+                            </Unactive>
+                            <Unactive>
+                                <Tooltip message={close ? l10n["app_community"] : null}>
+                                    <Item closed={close} selected={false} onTap={() => {}} iconName="community" title={l10n["app_community"]} />
+                                </Tooltip>
+                            </Unactive>
+                            <Unactive>
+                                <Tooltip message={close ? l10n["app_storage"] : null}>
+                                    <Item closed={close} selected={false} onTap={() => {}} iconName="storage" title={l10n["app_storage"]} />
+                                </Tooltip>
+                            </Unactive>
+                            <Tooltip message={close ? l10n["app_style_guide"] : null}>
+                                <Item closed={close} selected={index == 4} onTap={styleGuideTapCallback} iconName="image" title={l10n["app_style_guide"]} />
                             </Tooltip>
-                        </Unactive>
-                        <Unactive>
-                            <Tooltip message={close ? l10n["app_storage"] : null}>
-                                <Item closed={close} selected={false} onTap={() => {}} iconName="storage" title={l10n["app_storage"]} />
+                            <Tooltip message={close ? l10n["app_credits"] : null}>
+                                <Item closed={close} selected={index == 5} onTap={creditsTapCallback} iconName="users" title={l10n["app_credits"]} />
                             </Tooltip>
-                        </Unactive>
-                        <Tooltip message={close ? l10n["app_style_guide"] : null}>
-                            <Item closed={close} selected={index == 4} onTap={styleGuideTapCallback} iconName="image" title={l10n["app_style_guide"]} />
-                        </Tooltip>
-                        <Tooltip message={close ? l10n["app_credits"] : null}>
-                            <Item closed={close} selected={index == 5} onTap={creditsTapCallback} iconName="users" title={l10n["app_credits"]} />
-                        </Tooltip>
-                        <Tooltip message={close ? l10n["app_settings"] : null}>
-                            <Item closed={close} selected={index == 6} onTap={settingsTapCallback} iconName="settings" title={l10n["app_settings"]} />
-                        </Tooltip>
-                    </TabNavigation.Vertical>
+                            <Tooltip message={close ? l10n["app_settings"] : null}>
+                                <Item closed={close} selected={index == 6} onTap={settingsTapCallback} iconName="settings" title={l10n["app_settings"]} />
+                            </Tooltip>
+                        </TabNavigation.Vertical>
+                        <History closed={close} />
+                    </Column>
                 </Scrollable.Vertical>
                 <Column marginTop="auto">
                     <Button close={close} reverse={close} text={l10n["close"]} iconName={"arrow_left"} onTap={() => {closeUserRef.current = !close; setClose(!close)}} />
@@ -214,6 +223,54 @@ export namespace SideBar {
                     </Row>
                 </TouchRipple>
             </Box>
+        )
+    }
+
+    function History({closed}: {closed: boolean}) {
+        const downloadedIcons = User.downloadedIcons ?? [];
+        const isNotDownloaded = downloadedIcons.length == 0;
+
+        return (
+            <Column>
+                <AnimatedFoldable.Horizontal visible={!closed} duration="0.3s" overflow="visible" transition={{opacity: true}}>
+                    <AnimatedFoldable.Vertical visible={!closed} duration="0.3s" overflow="visible" transition={{opacity: true}}>
+                        <Text.span marginLeft="var(--padding-df)" paddingBottom="var(--padding-df)">{l10n["app_downloaded_history"]}</Text.span>
+                    </AnimatedFoldable.Vertical>
+                </AnimatedFoldable.Horizontal>
+                <List.Vertical
+                    width="100%"
+                    maxWidth="200px"
+                    backgroundColor="var(--rearground-in-background)"
+                    borderRadius="15px"
+                    overflow="hidden"
+                >
+                    {
+                        isNotDownloaded ?
+                            <Row gap="var(--padding-sm)" padding="var(--padding-df)">
+                                <RenderIcon.Name name="folder" size="18px" color="var(--foreground2)" />
+                                <Text.span>{l10n["app_downloaded_history_none"]}</Text.span>
+                            </Row> :
+                            (downloadedIcons.slice(0, 3)).map((name) => <HistoryItem iconName={name} closed={closed} />)
+                    }
+                </List.Vertical>
+            </Column>
+        )
+    }
+
+    function HistoryItem({iconName, closed}: {iconName: string, closed: boolean}) {
+        const iconNormal = iconName.replace("-filled", "");
+        const iconFilled = iconName.endsWith("filled");
+        const icon = Icons.find(e => e.name == iconNormal);
+
+        return (
+            <TouchRipple onTap={() => PopupPage.open(<IconPopup icon={icon} filled={iconFilled} />)}>
+                <Row width="100%" padding="var(--padding-df)">
+                    <RenderIcon.Name name={iconNormal} filled={iconFilled} size="18px" />
+                    <AnimatedFoldable.Horizontal visible={!closed} duration="0.3s" overflow="visible" transition={{opacity: true}}>
+                        <Text.span marginLeft="var(--padding-df)">{iconFilled ? `${iconNormal} filled` : iconName}</Text.span>
+                    </AnimatedFoldable.Horizontal> 
+                </Row>
+            </TouchRipple>
         )
     }
 }

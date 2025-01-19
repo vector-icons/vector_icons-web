@@ -80,6 +80,8 @@
     "app_settings_description": "Set the overall functionality and options of this website.",
     "app_credits_title": "Contributors",
     "app_credits_description": "A big thank you to all the contributors who have made the Quark Icons open source project possible! The following information details the contributions and provides further project-related information.",
+    "app_downloaded_history": "Download History",
+    "app_downloaded_history_none": "No downloaded icon yet",
     "sign-in": {
         "description": "Sign in to experience more features!",
         "invalid_email": "A given email is not exists.",
