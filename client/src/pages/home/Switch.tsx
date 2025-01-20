@@ -239,22 +239,24 @@ export namespace SideBar {
                     </AnimatedFoldable.Vertical>
                 </AnimatedFoldable.Horizontal>
                 <AnimatedFoldable.Horizontal visible={isEmpty ? !closed : true} duration="0.3s" overflow="visible" transition={{opacity: true}}>
-                    <List.Vertical
-                        width="100%"
-                        maxWidth="200px"
-                        backgroundColor="var(--rearground-in-background)"
-                        borderRadius="15px"
-                        overflow="hidden"
-                    >
-                        {
-                            isNotDownloaded ?
-                                <Row gap="var(--padding-sm)" padding="var(--padding-df)">
-                                    <RenderIcon.Name name="folder" size="18px" color="var(--foreground2)" />
-                                    <Text.span>{l10n["app_downloaded_history_none"]}</Text.span>
-                                </Row> :
-                                (downloadedIcons.slice(0, 3)).map((name) => <HistoryItem iconName={name} closed={closed} />)
-                        }
-                    </List.Vertical>
+                    <AnimatedFoldable.Vertical visible={isEmpty ? !closed : true} duration="0.3s" overflow="visible" transition={{opacity: true}}>
+                        <List.Vertical
+                            width="100%"
+                            maxWidth="200px"
+                            backgroundColor="var(--rearground-in-background)"
+                            borderRadius="15px"
+                            overflow="hidden"
+                        >
+                            {
+                                isNotDownloaded ?
+                                    <Row gap="var(--padding-sm)" padding="var(--padding-df)">
+                                        <RenderIcon.Name name="folder" size="18px" color="var(--foreground2)" />
+                                        <Text.span>{l10n["app_downloaded_history_none"]}</Text.span>
+                                    </Row> :
+                                    (downloadedIcons.slice(0, 3)).map((name) => <HistoryItem iconName={name} closed={closed} />)
+                            }
+                        </List.Vertical>
+                    </AnimatedFoldable.Vertical>
                 </AnimatedFoldable.Horizontal>
             </Column>
         )
