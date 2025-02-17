@@ -14,7 +14,6 @@ import { l10n } from "../../localization/localization";
 import { PopupPage } from "../../components/popup_page";
 import { IconPopup } from "./Search-popup";
 import { User } from "../../components/user";
-import { Unactive } from "../../templates/Unactive";
 import { RouterBinding } from "@web-package/react-widgets-router";
 
 const PreviewControllerContext = createContext<PreviewController>(null);
@@ -114,7 +113,7 @@ function SearchHeader() {
     }
 
     return (
-        <Row align="center" padding="var(--padding-df)" borderBottom="1px solid var(--rearground-border)">
+        <Row align="center" padding="var(--padding-df)">
             <SearchBar />
             <Row align="center" flexShrink="0">
                 <SearchHeaderButton iconName="sign_in" toolText={l10n["sign_in"]} onTap={onSignIn} />
@@ -261,20 +260,22 @@ function SearchBody() {
     }
 
     return (
-        <Scrollable.Vertical>
-            <Column>
-                <SearchBodyHeader />
-                <AnimatedTransition
-                    value={icons.length == 0}
-                    animation={{
-                        duration: "0.3s",
-                        fadeIn:  {from: {opacity: 0}, to: {opacity: 1}},
-                        fadeOut: {from: {opacity: 1}, to: {opacity: 0}},
-                    }}
-                    children={<SearchBodyContent icons={icons} />}
-                />
-            </Column>
-        </Scrollable.Vertical>
+        <Box minWidth="0px" flexShrink="1" backgroundColor="var(--container)" borderRadius="30px">
+            <Scrollable.Vertical>
+                <Column>
+                    <SearchBodyHeader />
+                    <AnimatedTransition
+                        value={icons.length == 0}
+                        animation={{
+                            duration: "0.3s",
+                            fadeIn:  {from: {opacity: 0}, to: {opacity: 1}},
+                            fadeOut: {from: {opacity: 1}, to: {opacity: 0}},
+                        }}
+                        children={<SearchBodyContent icons={icons} />}
+                    />
+                </Column>
+            </Scrollable.Vertical>
+        </Box>
     )
 }
 
@@ -289,7 +290,7 @@ function SearchBodyHeader() {
     }
 
     return (
-        <Column borderBottom="1px solid var(--rearground-border)">
+        <Column>
             <AnimatedFoldable.Vertical visible={!close} duration="0.3s">
                 <Column padding="30px 30px 15px 30px" gap="var(--padding-df)">
                     <Column gap="5px">
@@ -323,14 +324,21 @@ function SearchBodyHeader() {
                 </Column>
             </AnimatedFoldable.Vertical>
             <TouchRipple onTap={onClose}>
-                <Row align="center" paddingAndGap="var(--padding-sm)">
+                <Row
+                    align="center"
+                    paddingAndGap="var(--padding-df)"
+                    backgroundColor="var(--rearground)"
+                    boxShadow="var(--rearground-shadow)"
+                    margin="15px"
+                    borderRadius="10px"
+                >
                     <Box
                         transform={close ? "rotate(0.5turn)" : undefined}
                         transitionProperty="transform"
                         transitionDuration="0.3s"
                         children={<RenderIcon.Name name="arrow_top" size="14px" color="var(--foreground3)" />}
                     />
-                    <Text.span color="var(--foreground3)" fontSize="14px">
+                    <Text.span color="var(--foreground2)" fontSize="14px">
                         {l10n["app_contributing_title"]}
                     </Text.span>
                 </Row>
@@ -392,7 +400,7 @@ function SearchBodyContentItem({icon}: {icon: IconType}) {
 
     if (iconType == PreviewIconType.normal && noneNormal) return <></>;
     if (iconType == PreviewIconType.filled && noneFilled) return <></>;
-    
+
     useEffect(() => {
         controller.addListener((id, event) => {
             if (event == PreviewControllerEvent.iconType
@@ -402,7 +410,7 @@ function SearchBodyContentItem({icon}: {icon: IconType}) {
 
     return (
         <Column align="center" className="icon-grid_item" gap="5px">
-            <Column gap="5px">
+            <Column>
                 {Object.entries(icon.content).map(([key, innerHTML]) => {
                     if (iconType == PreviewIconType.normal && key != "normal") return;
                     if (iconType == PreviewIconType.filled && key != "filled") return;
@@ -414,14 +422,13 @@ function SearchBodyContentItem({icon}: {icon: IconType}) {
                         : icon.name + "-" + key;
 
                     return (
-                        <Invisible size={`calc(${iconSize}px + var(--padding-df) * 2)`}>
+                        <Invisible size={`calc(${iconSize}px + 25px * 2)`}>
                             <Box className="inner" position="relative">
                                 <Tooltip message={iconName + ".svg"}>
                                     <TouchRipple onTap={() => PopupPage.open(<IconPopup icon={icon} filled={isFilled} />)}>
                                         <Box
                                             className="icon"
-                                            padding="var(--padding-df)"
-                                            backgroundColor="var(--rearground)"
+                                            padding="25px"
                                             children={<RenderIcon size={`${iconSize}px`} innerHTML={innerHTML} />}
                                         />
                                     </TouchRipple>
@@ -500,7 +507,7 @@ function SearchBodySideBarInner({expanded}: {expanded: boolean}) {
     }
 
     return (
-        <Box flexShrink="0" borderLeft="1px solid var(--rearground-border)">
+        <Box flexShrink="0">
             <Scrollable.Vertical>
                 <AnimatedFoldable.Horizontal visible={expanded} duration="0.3s">
                     <Column>

@@ -78,8 +78,6 @@ export namespace SideBar {
                 flexShrink="0"
                 gap="var(--padding-df)"
                 padding="var(--padding-df)"
-                backgroundColor="var(--rearground)"
-                borderRight="1px solid var(--rearground-border)"
             >
                 <div onClick={() => RouterBinding.instance.push("/")}>
                     <Row cursor="pointer" userSelect="none">

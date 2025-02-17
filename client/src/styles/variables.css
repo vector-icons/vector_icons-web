@@ -2,12 +2,13 @@
 :root {
     --primary: rgb(0, 100, 255);
     --primary-half: rgb(0, 100, 255, 0.3);
-    --background: white;
+    --background: rgb(243, 243, 246);
     --background-shadow: var(--background);
     --background-overlay: rgb(230, 231, 234);
-    --rearground: rgb(240, 241, 244);
-    --rearground-border: rgb(180, 182, 184);
+    --rearground: rgb(237, 238, 241);
+    --rearground-border: rgb(210, 212, 214);
     --rearground-in-background: rgb(230, 232, 235);
+    --container: white;
     --foreground: black;
     --foreground2: rgb(50, 50, 50);
     --foreground3: rgb(100, 100, 100);
@@ -30,6 +31,8 @@
     --padding-lg: 30px; /* large */
     --padding-df: var(--padding-md); /* default = medium */
     --content-max-width: 1200px;
+    
+    --rearground-shadow: 0px 2px 3px rgb(0, 0, 0, 0.3);
 
     /* About react-widgets-router */
     --router-fadein-keyframe: "page-fadein";
@@ -41,9 +44,10 @@
     --background: rgb(10, 11, 13);
     --background-shadow: black;
     --background-overlay: rgb(40, 41, 44);
-    --rearground: rgb(30, 32, 36);
-    --rearground-border: rgb(70, 72, 74);
+    --rearground: rgb(38, 40, 43);
+    --rearground-border: rgb(50, 52, 55);
     --rearground-in-background: rgb(45, 47, 50);
+    --container: rgb(22, 24, 26);
     --foreground: white;
     --foreground2: rgb(200, 200, 200);
     --foreground3: rgb(170, 170, 170);
