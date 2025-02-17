@@ -37,23 +37,22 @@ button.tertiary:hover {
 }
 
 /* ../pages/Search.tsx of SearchPage */
-.icon-grid_item > * {
+.icon-grid_item > *:nth-child(1) {
     fill: var(--foreground2);
     border-radius: 15px;
     transition-property: fill, background-color;
     transition-duration: 0.2s;
 }
-.icon-grid_item > *:hover {
+.icon-grid_item > *:nth-child(1):hover {
     fill: var(--foreground);
     background-color: var(--rearground);
 }
-
-.icon-grid_item > * > * {
+.icon-grid_item > *:nth-child(1) > * {
     outline: 2px solid transparent;
     border-radius: 15px;
     transition: outline-color 0.2s;
 }
-.icon-grid_item > * > *:hover {
+.icon-grid_item > *:nth-child(1) > *:hover {
     outline: 3px solid var(--primary);
 }
 
