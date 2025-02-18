@@ -16,7 +16,7 @@
     --foreground5: rgb(180, 180, 180);
     --shadow: rgb(0, 0, 0, 0.2);
     --popup-background: white;
-    --popup-rearground: rgb(230, 232, 236);
+    --popup-rearground: rgb(236, 238, 240);
 
     /* About web-touch-ripple */
     --ripple: rgba(0, 0, 0, 0.15);
@@ -44,18 +44,18 @@
     --background: rgb(10, 11, 13);
     --background-shadow: black;
     --background-overlay: rgb(40, 41, 44);
-    --rearground: rgb(38, 40, 43);
+    --rearground: rgb(40, 42, 45);
     --rearground-border: rgb(50, 52, 55);
     --rearground-in-background: rgb(45, 47, 50);
-    --container: rgb(22, 24, 26);
+    --container: rgb(23, 25, 28);
     --foreground: white;
     --foreground2: rgb(200, 200, 200);
     --foreground3: rgb(170, 170, 170);
     --foreground4: rgb(120, 120, 120);
     --foreground5: rgb(80, 80, 80);
     --shadow: rgb(120, 120, 120, 0.2);
-    --popup-background: rgb(32, 33, 35);
-    --popup-rearground: rgb(50, 52, 56);
+    --popup-background: rgb(40, 42, 44);
+    --popup-rearground: rgb(30, 32, 34);
 
     /* About web-touch-ripple */
     --ripple: rgb(255, 255, 255, 0.15);

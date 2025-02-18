@@ -12,7 +12,6 @@ import { l10n } from "../../localization/localization";
 import { Unactive } from "../../templates/Unactive";
 import { CreditsPage } from "./Credits";
 import { StyleGuidePage } from "./StyleGuide";
-import { Storage } from "../../components/storage";
 import { User } from "../../components/user";
 import { List } from "../../templates/List";
 import { PopupPage } from "../../components/popup_page";
@@ -241,7 +240,7 @@ export namespace SideBar {
                         <List.Vertical
                             width="100%"
                             maxWidth="200px"
-                            backgroundColor="var(--rearground-in-background)"
+                            backgroundColor="var(--container)"
                             borderRadius="15px"
                             overflow="hidden"
                         >

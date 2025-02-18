@@ -148,7 +148,7 @@ function CodeViewer({name, text}: {
     text: string;
 }) {
     return (
-        <Column backgroundColor="var(--rearground)" borderRadius="10px">
+        <Column backgroundColor="var(--popup-rearground)" borderRadius="10px">
             <Column padding="var(--padding-df)" paddingBottom="0px">
                 <Text marginBottom="5px">{name}</Text>
                 <Box size="100%" maxWidth="400px">

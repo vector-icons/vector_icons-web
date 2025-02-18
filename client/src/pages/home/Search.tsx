@@ -325,20 +325,20 @@ function SearchBodyHeader() {
             </AnimatedFoldable.Vertical>
             <TouchRipple onTap={onClose}>
                 <Row
-                    align="center"
+                    align="centerLeft"
                     paddingAndGap="var(--padding-df)"
                     backgroundColor="var(--rearground)"
                     boxShadow="var(--rearground-shadow)"
-                    margin="15px"
                     borderRadius="10px"
+                    margin="15px"
                 >
                     <Box
                         transform={close ? "rotate(0.5turn)" : undefined}
                         transitionProperty="transform"
                         transitionDuration="0.3s"
-                        children={<RenderIcon.Name name="arrow_top" size="14px" color="var(--foreground3)" />}
+                        children={<RenderIcon.Name name="arrow_top" size="16px" color="var(--foreground3)" />}
                     />
-                    <Text.span color="var(--foreground2)" fontSize="14px">
+                    <Text.span color="var(--foreground)" fontSize="16px">
                         {l10n["app_contributing_title"]}
                     </Text.span>
                 </Row>
