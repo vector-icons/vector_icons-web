@@ -45,23 +45,20 @@ function Background() {
             flexWrap="wrap"
             maxWidth="900px"
             boxSizing="border-box"
-            gap="var(--padding-df)"
-            padding="var(--padding-df)"
-            backgroundColor="var(--rearground)"
-            borderRadius="15px"
-            border="5px solid var(--rearground-border)"
+            gap="20px"
+            padding="var(--padding-lg)"
+            backgroundColor="var(--container)"
+            borderRadius="30px"
             marginLeft="auto"
             marginTop="300px"
             transform="skew(-20deg, -15deg)"
             boxShadow="15px 15px 15px var(--rearground-border)"
         >{
-            Icons.slice(0, 220).map((icon, index) => {
+            Icons.slice(0, 200).map((icon, index) => {
                 const isFilled = index % 2 == 0;
 
                 return (
-                    <RenderIcon.Name name={icon.name} filled={isFilled} size="32px" color={
-                        index % 2 == 0 ? "var(--foreground2)" : "var(--foreground4)"
-                    } />
+                    <RenderIcon.Name name={icon.name} filled={false} size="32px" color="var(--foreground3)" />
                 )
             })
         }</Box>
@@ -129,7 +126,6 @@ namespace PartHeader {
                                         !isMobile ?
                                             <Row gap="var(--padding-sm)">
                                                 <Text.h2>QUARK ICONS</Text.h2>
-                                                <Text.span>OC</Text.span>
                                             </Row>
                                         : <></>
                                     }
@@ -140,8 +136,8 @@ namespace PartHeader {
                                 </Row>
                             </Row>
                             <Box padding="200px var(--padding-lg)" maxWidth="1000px" margin="0px auto">
-                                <Text fontWeight="bold" fontSize={isMobile ? "40px" : "50px"}>WELCOME!</Text>
-                                <Text color="var(--foreground3)" fontSize={isMobile ? "16px" : "18px"}>{l10n["landing_introduction"]}</Text>
+                                <Text fontWeight="bold" fontSize={isMobile ? "40px" : "60px"}>WELCOME!</Text>
+                                <Text color="var(--foreground2)" fontSize={isMobile ? "16px" : "18px"}>{l10n["landing_introduction"]}</Text>
                                 <Row marginTop="var(--padding-lg)">
                                     <Button.Primary icon="compass" text={l10n["landing_get_started"]} onTap={() => RouterBinding.instance.push("/app")} />
                                 </Row>
