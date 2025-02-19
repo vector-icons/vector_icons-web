@@ -370,7 +370,7 @@ namespace Part2 {
                             <Text.h2 fontSize="32px" textShadow="0px 0px 5px black" color="white">애플리케이션을 더 위대하게!</Text.h2>
                             <Text.span fontSize="18px" textShadow="0px 0px 5px black" color="rgb(200, 200, 200)">Quark Icons와 함께 하십시오!</Text.span>
                         </Column>
-                        <Box padding="var(--padding-df)" backgroundColor="var(--background)" border="1px solid var(--rearground-border)" borderRadius="30px">
+                        <Box padding="var(--padding-df)" backgroundColor="var(--container)" borderRadius="30px">
                             <Row gap="var(--padding-df)">
                                 <Item title={l10n["landing_part2"]["item1"]["title"]} description={l10n["landing_part2"]["item1"]["description"]} />
                                 <Item title={l10n["landing_part2"]["item2"]["title"]} description={l10n["landing_part2"]["item2"]["description"]} />
@@ -400,7 +400,7 @@ namespace Part2 {
     }) {
         return (
             <TouchRipple>
-                <Column padding="var(--padding-df)" gap="3px" backgroundColor="var(--rearground)" borderRadius="15px">
+                <Column padding="var(--padding-df)" gap="3px" backgroundColor="var(--rearground)" borderRadius="15px" border="2px solid var(--rearground-border">
                     <Text.h3>{title}</Text.h3>
                     <Text.span>{description}</Text.span>
                 </Column>
