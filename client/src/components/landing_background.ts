@@ -1,36 +1,7 @@
 import { Animation, Curve, Ticker } from "animatable-js";
-import { Icons } from "../pages/App";
 
 function randomRange(min: number, max: number) {
     return Math.random() * (max - min) + min;
-}
-
-function getIconImageAt(index: number, color: string): NetImage {
-    const docs = new DOMParser().parseFromString(Icons[index]["content"]["normal"], "image/svg+xml");
-    const svg = docs.getElementsByTagName("svg")[0];
-    svg.style.fill = color;
-
-    return new NetImage(svg);
-}
-
-class NetImage {
-    element: HTMLImageElement;
-    isLoaded: boolean = false;
-
-    width: number;
-    height: number;
-
-    constructor(svg: SVGSVGElement) {
-        this.element = new Image();
-        this.element.src = 'data:image/svg+xml;base64,' + btoa(svg.outerHTML);
-        this.element.onload = () => {
-            this.isLoaded = true;
-        }
-
-        const viewbox = svg.getAttribute("viewBox").split(" ");
-        this.width = parseInt(viewbox[2]);
-        this.height = parseInt(viewbox[3]);
-    }
 }
 
 class Net {
@@ -40,7 +11,7 @@ class Net {
     fade: Animation;
     size: number;
     opacity: number;
-    image: NetImage;
+    color: string;
 
     constructor(duration: number) {
         this.x = new Animation(duration, null, randomRange(0, 1));
@@ -49,10 +20,7 @@ class Net {
         this.fade = new Animation(1000, Curve.Ease);
         this.size = randomRange(0.7, 1.3);
         this.opacity = randomRange(0.5, 1);
-
-        const style = getComputedStyle(document.documentElement);
-        const color = style.getPropertyValue("--foreground5");
-        this.image = getIconImageAt(Math.floor(randomRange(0, Icons.length)), color);
+        this.color = `rgb(${randomRange(0, 255)}, ${randomRange(0, 255)}, ${randomRange(0, 255)})`;
     }
 
     start() {
@@ -76,21 +44,6 @@ class Net {
         return Math.sqrt(x * x + y * y);
     }
 
-    drawAt(ctx: CanvasRenderingContext2D, x: number, y: number) {
-        const dpi = window.devicePixelRatio;
-        const dw = (this.image.width * dpi) * this.size;
-        const dh = (this.image.height * dpi) * this.size;
-        const dx = x - dw / 2;
-        const dy = y - dh / 2;
-
-        /*
-        if (this.image.isLoaded) {
-            ctx.globalAlpha = this.opacity * this.fade.value;
-            ctx.drawImage(this.image.element, dx, dy, dw, dh);
-        }
-        */
-    }
-
     draw(ctx: CanvasRenderingContext2D, others: Net[]) {
         const width = ctx.canvas.width;
         const height = ctx.canvas.height;
@@ -99,7 +52,6 @@ class Net {
         const fade = this.fade.value;
 
         ctx.beginPath();
-        this.drawAt(ctx, width * x, height * y);
 
         for (const other of others) {
             const distance = other.distanceTo(this);
@@ -108,17 +60,15 @@ class Net {
                 ctx.beginPath();
                 ctx.moveTo(other.x.value * width, other.y.value * height);
                 ctx.lineTo(x * width, y * height);
-                ctx.lineWidth = 1 * window.devicePixelRatio;
+                ctx.lineWidth = 3 * window.devicePixelRatio;
 
                 // 투명도 계산 (0.1 이하일 때 1, 0.1 이상일 때 0으로 변함)
                 const opacity = Math.max(0, 1 - (distance * 10));
                 const alpha = opacity * Math.min(fade, otherFade);
 
-                const style = getComputedStyle(document.documentElement);
-                const color = style.getPropertyValue("--foreground4");
-
-                ctx.strokeStyle = color;
+                ctx.strokeStyle = this.color;
                 ctx.globalAlpha = alpha;
+                ctx.lineCap = "round";
                 ctx.stroke();
             }
         }
@@ -181,7 +131,7 @@ export class LandingBackgroundElement extends HTMLElement {
         }
 
         const attachNet = () => {
-            const duration = randomRange(10000, 30000);
+            const duration = randomRange(15000, 30000);
             const net = new Net(duration);
             setTimeout(() => {
                 net.end(() => {this.controller.detach(net); attachNet()});
@@ -190,7 +140,7 @@ export class LandingBackgroundElement extends HTMLElement {
             this.controller.attach(net);
         }
 
-        attachNets(100);
+        attachNets(75);
         this.controller.start();
     }
 

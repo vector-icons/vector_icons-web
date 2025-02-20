@@ -35,36 +35,6 @@ export function LandingPage() {
     )
 }
 
-function Background() {
-    const wrapperRef = useRef<HTMLDivElement>(null);
-
-    return (
-        <Box
-            ref={wrapperRef}
-            display="flex"
-            flexWrap="wrap"
-            maxWidth="900px"
-            boxSizing="border-box"
-            gap="20px"
-            padding="var(--padding-lg)"
-            backgroundColor="var(--container)"
-            borderRadius="30px"
-            marginLeft="auto"
-            marginTop="300px"
-            transform="skew(-20deg, -15deg)"
-            boxShadow="15px 15px 15px var(--rearground-border)"
-        >{
-            Icons.slice(0, 200).map((icon, index) => {
-                const isFilled = index % 2 == 0;
-
-                return (
-                    <RenderIcon.Name name={icon.name} filled={false} size="32px" color="var(--foreground3)" />
-                )
-            })
-        }</Box>
-    )
-}
-
 namespace PartHeader {
     export function Body({parentRef}: {parentRef: MutableRef<HTMLDivElement>}) {
         const bottomTooltipRef = useRef<HTMLDivElement>();
@@ -112,7 +82,6 @@ namespace PartHeader {
                                 {/** @ts-ignore */}
                                 <landing-background />
                             </Box>
-                            <Box position="absolute" size="100%" zIndex="-1" overflow="clip" children={<Background />} />
                             <Box
                                 position="absolute"
                                 size="100%"
@@ -120,12 +89,12 @@ namespace PartHeader {
                                 background="linear-gradient(to top, var(--background-shadow), transparent, transparent 80%, var(--background-shadow))"
                             />
                             <Row align="centerSpaceBetween" paddingAndGap="var(--padding-df)">
-                                <Row align="center" gap="var(--padding-df)">
-                                    <Logo width="40px" />
+                                <Row align="center" gap="var(--padding-sm)">
+                                    <Logo width="32px" />
                                     {
                                         !isMobile ?
                                             <Row gap="var(--padding-sm)">
-                                                <Text.h2>QUARK ICONS</Text.h2>
+                                                <Text.h2 fontSize="20px" fontWeight="normal">QUARK ICONS</Text.h2>
                                             </Row>
                                         : <></>
                                     }
@@ -138,8 +107,9 @@ namespace PartHeader {
                             <Box padding="200px var(--padding-lg)" maxWidth="1000px" margin="0px auto">
                                 <Text fontWeight="bold" fontSize={isMobile ? "40px" : "60px"}>WELCOME!</Text>
                                 <Text color="var(--foreground2)" fontSize={isMobile ? "16px" : "18px"}>{l10n["landing_introduction"]}</Text>
-                                <Row marginTop="var(--padding-lg)">
+                                <Row gap="var(--padding-sm)" marginTop="var(--padding-lg)">
                                     <Button.Primary icon="compass" text={l10n["landing_get_started"]} onTap={() => RouterBinding.instance.push("/app")} />
+                                    <Button.Secondary text={l10n["app_settings_title"]} onTap={() => RouterBinding.instance.push("/app/settings")} />
                                 </Row>
                             </Box>
                             <Column align="center" position="absolute" width="100%" bottom="0px" padding="var(--padding-df)">
