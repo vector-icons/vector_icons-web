@@ -48,7 +48,7 @@ button.tertiary:hover {
     background-color: var(--rearground);
 }
 .icon-grid_item > *:nth-child(1) > * {
-    outline: 2px solid transparent;
+    outline: 3px solid transparent;
     border-radius: 15px;
     transition: outline-color 0.2s;
 }
